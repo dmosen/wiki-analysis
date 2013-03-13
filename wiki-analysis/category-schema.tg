@@ -1,0 +1,25 @@
+TGraph 2;
+
+Schema schemas.categoryschema.CategorySchema;
+GraphClass CategoryGraph;
+
+VertexClass Category { 
+	title: String, 
+	level: Integer, 
+	subCategories: Integer, 
+	transitiveSubCategories: Integer, 
+	superCategories: Integer, 
+	pages: Integer,
+	transitivePages: Integer,
+	blacklisted: Boolean
+};
+
+VertexClass Page { 
+	title: String
+};
+
+EdgeClass SubCategory from Category (0,*) role category to Category (0,*) role subCategory {
+	blacklisted: Boolean
+};
+
+EdgeClass SubPage from Category (0,*) role category to Page (0,*) role subPage;

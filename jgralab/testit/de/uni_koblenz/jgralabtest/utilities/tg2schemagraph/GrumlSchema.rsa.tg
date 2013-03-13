@@ -1,0 +1,81 @@
+// JGraLab - The Java Graph Laboratory
+// 
+// Copyright (C) 2006-2011 Institute for Software Technology
+//                         University of Koblenz-Landau, Germany
+//                         ist@uni-koblenz.de
+// 
+// For bug reports, documentation and further information, visit
+// 
+//                         http://jgralab.uni-koblenz.de
+// 
+// This program is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License as published by the
+// Free Software Foundation; either version 3 of the License, or (at your
+// option) any later version.
+// 
+// This program is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+// Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, see <http://www.gnu.org/licenses>.
+// 
+// Additional permission under GNU GPL version 3 section 7
+// 
+// If you modify this Program, or any covered work, by linking or combining
+// it with Eclipse (or a modified version of that program or an Eclipse
+// plugin), containing parts covered by the terms of the Eclipse Public
+// License (EPL), the licensors of this Program grant you additional
+// permission to convey the resulting work.  Corresponding Source for a
+// non-source form of such a combination shall include the source code for
+// the parts of JGraLab used as well as that of the covered work.
+
+TGraph 2;
+Schema de.uni_koblenz.jgralab.grumlschema.GrumlSchema;
+GraphClass SchemaGraph;
+ 
+Package ;
+ 
+Package structure;
+VertexClass VertexClass: GraphElementClass;
+VertexClass Schema { name: String, packagePrefix: String };
+VertexClass Package { qualifiedName: String } ["A Package must either be default or subpackage, but not both"  "forall p: V{Package} @ degree{ContainsDefaultPackage}(p) + degree{ContainsSubPackage}(p) = 1"  ];
+VertexClass EdgeClass: GraphElementClass;
+VertexClass GraphClass: AttributedElementClass ["The GraphClass may not be abstract."  "forall gc: V{GraphClass} @ not gc.isAbstract"  "from gc: V{GraphClass} with gc.isAbstract reportSet gc end"] ["There must be exactly one GraphClass."  "count(V{GraphClass}) = 1"  "V{GraphClass}"];
+abstract VertexClass GraphElementClass: AttributedElementClass;
+VertexClass CompositionClass: AggregationClass;
+VertexClass Constraint { message: String, predicateQuery: String, offendingElementsQuery: String };
+abstract VertexClass AttributedElementClass { isAbstract: Boolean, qualifiedName: String };
+VertexClass Attribute { name: String };
+VertexClass AggregationClass: EdgeClass { aggregateFrom: Boolean };
+EdgeClass HasDomain from Attribute (0, *) to domains.Domain (1, 1);
+EdgeClass HasConstraint from AttributedElementClass (1, 1) to Constraint (0, *) aggregation composite;
+EdgeClass HasAttribute from AttributedElementClass (1, 1) to Attribute (0, *) aggregation composite;
+EdgeClass SpecializesEdgeClass from EdgeClass (0, *) to EdgeClass (0, *);
+EdgeClass To from EdgeClass (0, *) to VertexClass (1, 1) aggregation shared { min: Integer, max: Integer, roleName: String, redefinedRoles: Set<String> };
+EdgeClass From from EdgeClass (0, *) to VertexClass (1, 1) aggregation shared { min: Integer, max: Integer, roleName: String, redefinedRoles: Set<String> };
+EdgeClass ContainsSubPackage from Package (0, 1) to Package (0, *) aggregation composite;
+EdgeClass ContainsDomain from Package (1, 1) to domains.Domain (0, *) aggregation composite;
+EdgeClass ContainsGraphElementClass from Package (1, 1) to GraphElementClass (0, *) aggregation composite;
+EdgeClass ContainsDefaultPackage from Schema (0, 1) to Package (1, 1) aggregation composite;
+EdgeClass DefinesGraphClass from Schema (1, 1) to GraphClass (1, 1) aggregation composite;
+EdgeClass SpecializesVertexClass from VertexClass (0, *) to VertexClass (0, *);
+ 
+Package domains;
+VertexClass SetDomain: CollectionDomain;
+VertexClass StringDomain: Domain;
+VertexClass RecordDomain: Domain;
+VertexClass IntDomain: Domain;
+VertexClass ListDomain: CollectionDomain;
+VertexClass LongDomain: Domain;
+VertexClass MapDomain: Domain ["The key domain of a MapDomain must not be a collection, record, or map"  "forall m: V{MapDomain} @ (forall d: m -->{HasKeyDomain} @ not hasClass{CollectionDomain,RecordDomain,MapDomain}(d))"  ];
+VertexClass EnumDomain: Domain;
+abstract VertexClass Domain { qualifiedName: String };
+VertexClass DoubleDomain: Domain;
+VertexClass BooleanDomain: Domain;
+abstract VertexClass CollectionDomain: Domain;
+EdgeClass HasBaseDomain from CollectionDomain (0, *) to Domain (1, 1);
+EdgeClass HasValueDomain from MapDomain (0, *) to Domain (1, 1);
+EdgeClass HasKeyDomain from MapDomain (0, *) to Domain (1, 1);
+EdgeClass HasRecordDomainComponent from RecordDomain (0, *) to Domain (1, *) aggregation shared { name: String };

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- JGraLab - The Java Graph Laboratory                                      -->
+<!--                                                                          -->
+<!-- Copyright (C) 2006-2011 Institute for Software Technology                -->
+<!--                         University of Koblenz-Landau, Germany            -->
+<!--                         ist@uni-koblenz.de                               -->
+<!--                                                                          -->
+<!-- For bug reports, documentation and further information, visit            -->
+<!--                                                                          -->
+<!--                         http://jgralab.uni-koblenz.de                    -->
+<!--                                                                          -->
+<!-- This program is free software; you can redistribute it and/or modify it  -->
+<!-- under the terms of the GNU General Public License as published by the    -->
+<!-- Free Software Foundation; either version 3 of the License, or (at your   -->
+<!-- option) any later version.                                               -->
+<!--                                                                          -->
+<!-- This program is distributed in the hope that it will be useful, but      -->
+<!-- WITHOUT ANY WARRANTY; without even the implied warranty of               -->
+<!-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General -->
+<!-- Public License for more details.                                         -->
+<!--                                                                          -->
+<!-- You should have received a copy of the GNU General Public License along  -->
+<!-- with this program; if not, see <http://www.gnu.org/licenses>.            -->
+<!--                                                                          -->
+<!-- Additional permission under GNU GPL version 3 section 7                  -->
+<!--                                                                          -->
+<!-- If you modify this Program, or any covered work, by linking or combining -->
+<!-- it with Eclipse (or a modified version of that program or an Eclipse     -->
+<!-- plugin), containing parts covered by the terms of the Eclipse Public     -->
+<!-- License (EPL), the licensors of this Program grant you additional        -->
+<!-- permission to convey the resulting work.  Corresponding Source for a     -->
+<!-- non-source form of such a combination shall include the source code for  -->
+<!-- the parts of JGraLab used as well as that of the covered work.           -->
+
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://schema.omg.org/spec/UML/2.1.1" xsi:schemaLocation="http://schema.omg.org/spec/UML/2.1.1 http://www.eclipse.org/uml2/2.1.0/UML" xmi:id="_saQp5LdAEd-tnLUkmr5DPg" name="de.uni_koblenz.jgralabtest.schemas.commenttest.CommentTestSchema">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_saQp5bdAEd-tnLUkmr5DPg">
+    <importedPackage xmi:type="uml:Model" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Package" xmi:id="_saQp5rdAEd-tnLUkmr5DPg" name="pa">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_saQp57dAEd-tnLUkmr5DPg" annotatedElement="_saQp5rdAEd-tnLUkmr5DPg">
+      <body>&lt;p>&#xD;
+    A comment for package 'pa'&#xD;
+&lt;/p></body>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Class" xmi:id="_saQp6LdAEd-tnLUkmr5DPg" name="V">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_saQp6bdAEd-tnLUkmr5DPg" annotatedElement="_saQp6LdAEd-tnLUkmr5DPg">
+        <body>VertexClass comment</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_saQp6rdAEd-tnLUkmr5DPg" name="pc">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_saQp67dAEd-tnLUkmr5DPg" annotatedElement="_saQp6rdAEd-tnLUkmr5DPg">
+        <body>&lt;p>&#xD;
+    A comment for package 'pc'&#xD;
+&lt;/p></body>
+      </ownedComment>
+      <ownedComment xmi:type="uml:Comment" xmi:id="_saQp7LdAEd-tnLUkmr5DPg" annotatedElement="_saQp6rdAEd-tnLUkmr5DPg">
+        <body>2nd comment for pc</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_saQp7bdAEd-tnLUkmr5DPg" name="W"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_saQp7rdAEd-tnLUkmr5DPg" name="pb"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_saQp77dAEd-tnLUkmr5DPg" name="E" memberEnd="_saQp8bdAEd-tnLUkmr5DPg _saQp9LdAEd-tnLUkmr5DPg">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_saQp8LdAEd-tnLUkmr5DPg" annotatedElement="_saQp77dAEd-tnLUkmr5DPg">
+        <body>&lt;p>&#xD;
+    EdgeClass comment&#xD;
+&lt;/p></body>
+      </ownedComment>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_saQp8bdAEd-tnLUkmr5DPg" name="" visibility="private" type="_saQp6LdAEd-tnLUkmr5DPg" association="_saQp77dAEd-tnLUkmr5DPg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_saQp8rdAEd-tnLUkmr5DPg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_saQp87dAEd-tnLUkmr5DPg"/>
+      </ownedEnd>
+      <ownedEnd xmi:type="uml:Property" xmi:id="_saQp9LdAEd-tnLUkmr5DPg" name="" visibility="private" type="_saQp6LdAEd-tnLUkmr5DPg" association="_saQp77dAEd-tnLUkmr5DPg">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_saQp9bdAEd-tnLUkmr5DPg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_saQp9rdAEd-tnLUkmr5DPg"/>
+      </ownedEnd>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_saQp97dAEd-tnLUkmr5DPg" name="CommentTestGraph">
+    <xmi:Extension extender="http://www.eclipse.org/emf/2002/Ecore">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_saQp-LdAEd-tnLUkmr5DPg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_saQp-bdAEd-tnLUkmr5DPg" key="graphclass"/>
+      </eAnnotations>
+    </xmi:Extension>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_saQp-rdAEd-tnLUkmr5DPg" annotatedElement="_saQp97dAEd-tnLUkmr5DPg">
+      <body>Comment for graphclass</body>
+    </ownedComment>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_saQp-7dAEd-tnLUkmr5DPg" name="En">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_saQp_LdAEd-tnLUkmr5DPg" annotatedElement="_saQp-7dAEd-tnLUkmr5DPg">
+      <body>&lt;p>&#xD;
+    A simple enumeration&#xD;
+&lt;/p></body>
+    </ownedComment>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_saQp_bdAEd-tnLUkmr5DPg" name="A" classifier="_saQp-7dAEd-tnLUkmr5DPg"/>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_saQp_rdAEd-tnLUkmr5DPg" name="B" classifier="_saQp-7dAEd-tnLUkmr5DPg"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_saQp_7dAEd-tnLUkmr5DPg" name="Rd">
+    <xmi:Extension extender="http://www.eclipse.org/emf/2002/Ecore">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_saQqALdAEd-tnLUkmr5DPg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_saQqAbdAEd-tnLUkmr5DPg" key="record"/>
+      </eAnnotations>
+    </xmi:Extension>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_saQqArdAEd-tnLUkmr5DPg" annotatedElement="_saQp_7dAEd-tnLUkmr5DPg">
+      <body>&lt;p>&#xD;
+    A comment for Rd&#xD;
+&lt;/p></body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_saQqA7dAEd-tnLUkmr5DPg" annotatedElement="_saQp_7dAEd-tnLUkmr5DPg">
+      <body>A second comment for Rd</body>
+    </ownedComment>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_saQqBLdAEd-tnLUkmr5DPg" name="x" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#Integer"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_saQqBbdAEd-tnLUkmr5DPg" name="y" visibility="private">
+      <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#Integer"/>
+    </ownedAttribute>
+  </packagedElement>
+  <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_saQqBrdAEd-tnLUkmr5DPg">
+    <xmi:Extension extender="http://www.eclipse.org/emf/2002/Ecore">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_saQqB7dAEd-tnLUkmr5DPg" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://schema.omg.org/spec/UML/2.1.1/StandardProfileL2.xmi#_yzU58YinEdqtvbnfB2L_5w"/>
+      </eAnnotations>
+    </xmi:Extension>
+    <appliedProfile xmi:type="uml:Profile" href="http://schema.omg.org/spec/UML/2.1.1/StandardProfileL2.xmi#_0"/>
+  </profileApplication>
+</uml:Model>

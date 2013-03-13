@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<project name="ist.utilities" basedir="." default="build">
+	<property name="projectname" value="ist_utilities" />
+	<property name="build.dir" value="./ist_utilities/build" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="src.dir" value="./ist_utilities/src" />
+	<property name="lib.dir" value="./lib" />
+	<property name="jar.dir" value="${lib.dir}/ist_utilities" />
+	<property name="javac.targetVM" value="1.6" />
+	<!--property name="debug" value="lines" /-->
+	<property name="compileincludes" value="**" />
+	<property name="compileexcludes" value="" />
+	<property name="main" value="None" />
+
+	<!-- classpath -->
+	<path id="classpath">
+		<pathelement location="${classes.dir}" />
+		<fileset dir="${lib.dir}/apache/commons/cli/" includes="**/*.jar" />
+		<pathelement location="${jar.dir}/${projectname}.jar" />
+		<fileset dir="${lib.dir}/apache/ant/" includes="**/*.jar" />
+		<fileset dir="${lib.dir}/svnkit/" includes="**/*.jar" />
+	</path>
+
+	<target name="build" depends="clean,jar" />
+
+	<target name="compile">
+		<mkdir dir="${classes.dir}" />
+		<javac fork="true" srcdir="${src.dir}" includes="${compileincludes}" excludes="${compileexcludes}" destdir="${classes.dir}" memoryinitialsize="512m" memorymaximumsize="512m" classpathref="classpath" debug="${debug}" source="${javac.targetVM}" target="${javac.targetVM}" includeantruntime="false">
+		</javac>
+	</target>
+
+	<target name="clean">
+		<delete dir="${build.dir}/classes" />
+	</target>
+
+	<target name="cleanall" depends="clean">
+		<delete dir="${jar.dir}" />
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${jar.dir}" />
+		<mkdir dir="${classes.dir}" />
+		<jar destfile="${jar.dir}/${projectname}.jar" basedir="${classes.dir}" compress="true">
+			<manifest>
+				<attribute name="Main-Class" value="de.uni_koblenz.${projectname}.${main}" />
+				<section name="de/uni_koblenz/ist/utilities/">
+					<attribute name="Implementation-Title" value ="IST Utilities"/>
+					<attribute name="Implementation-Version" value="1.2" />
+					<attribute name="Implementation-Vendor" value="University of Koblenz, Institute for Software Technology" />
+				</section>
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- sets the property "jar exists" to true if the project's jar is present -->
+	<target name="jarcheck">
+		<condition property="jar exists">
+			<available file="${jar.dir}/${projectname}.jar" />
+		</condition>
+	</target>
+
+	<!-- calls the build target iff the jar file does not exist yet -->
+	<target name="ensureJarExists" depends="jarcheck" unless="jar exists">
+		<antcall target="build" />
+	</target>
+
+</project>
