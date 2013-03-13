@@ -40,7 +40,7 @@ import de.uni_koblenz.jgralab.Vertex;
 /**
  * 
  * @author dmosen@uni-koblenz.de
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class ExtractDialog extends JDialog {
@@ -235,7 +235,9 @@ public class ExtractDialog extends JDialog {
 					lblLevelValue.setText("" + extractor.getMaxLevel());
 
 					if (extractor.getQueue().isEmpty()) {
-						model.clear();
+						if (model != null) {
+							model.clear();
+						}
 						btnExtractNextLevel.setEnabled(false);
 						btnExtractWholeGraph.setEnabled(false);
 					} else {
@@ -279,8 +281,8 @@ public class ExtractDialog extends JDialog {
 			public void mouseReleased(MouseEvent e) {
 				super.mouseReleased(e);
 				if (pressedIndex == getIndex(e) && pressedIndex > -1) {
-					model.setSelected(model.getElementAt(pressedIndex), pressedIndex, !model
-							.get(pressedIndex).isSelected());
+					model.setSelected(model.getElementAt(pressedIndex),
+							pressedIndex, !model.get(pressedIndex).isSelected());
 				}
 			}
 
