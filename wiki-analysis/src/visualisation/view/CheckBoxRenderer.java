@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Component;
 
 import javax.swing.JTree;
-import javax.swing.UIManager;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import visualisation.model.CategoryTreeModel;
@@ -22,7 +21,7 @@ public class CheckBoxRenderer extends DefaultTreeCellRenderer {
 	private Color selectionBackground;
 
 	public CheckBoxRenderer(CategoryTreeModel model) {
-		selectionBackground = UIManager.getColor("Tree.selectionBackground");
+		selectionBackground = new Color(51, 153, 255);
 		this.model = model;
 	}
 
@@ -41,7 +40,7 @@ public class CheckBoxRenderer extends DefaultTreeCellRenderer {
 			} else {
 				switch (model.getHighlighting(node)) {
 				case 0:
-					setBackground(InfoPanel.zeroColor);
+					setBackground(InfoPanel.zerothColor);
 					break;
 
 				case 1:

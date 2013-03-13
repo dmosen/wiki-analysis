@@ -28,7 +28,7 @@ import javax.swing.JList;
 public class InfoPanel extends JPanel implements PropertyChangeListener {
 
 	// Outsource colors
-	public static final Color zeroColor = Color.LIGHT_GRAY;
+	public static final Color zerothColor = Color.LIGHT_GRAY;
 	public static final Color firstColor = Color.WHITE;
 	public static final Color secondColor = new Color(0xFFCCCC);
 	public static final Color thirdColor = new Color(0xFF8080);
