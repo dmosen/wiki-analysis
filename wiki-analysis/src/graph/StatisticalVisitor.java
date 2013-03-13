@@ -2,7 +2,6 @@ package graph;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import de.uni_koblenz.jgralab.Edge;
@@ -12,12 +11,16 @@ import de.uni_koblenz.jgralab.Vertex;
 /**
  * 
  * @author dmosen@uni-koblenz.de
- *
+ * 
  */
 public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 
 	private GraphProperties gp;
-	private GraphStats stats;
+	private GraphStats graphStats;
+
+	private Vertex root;
+
+	private boolean ignoreEmptyCategories;
 
 	private int pageLinks;
 	private List<Integer> pagesList = new ArrayList<Integer>();
@@ -25,17 +28,24 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 	private int subcategoryLinks;
 	private List<Integer> subcategoriesList = new ArrayList<Integer>();
 
-	private HashSet<Edge> treeEdges = new HashSet<Edge>();
+	public GraphStats getGraphStats() {
+		return graphStats;
+	}
+
+	public StatisticalVisitor(boolean ignoreEmptyCategories) {
+		this.ignoreEmptyCategories = ignoreEmptyCategories;
+	}
 
 	@Override
 	public void visitRoot(Vertex v) {
+		root = v;
 
 		gp = GraphProperties.getInstance();
 
 		pageLinks = 0;
 		subcategoryLinks = 0;
 
-		stats = new GraphStats();
+		graphStats = new GraphStats();
 	}
 
 	@Override
@@ -79,11 +89,11 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 			v.setAttribute("subCategories", subCategories);
 			v.setAttribute("pages", pages);
 
-			stats.setMaxPages(Math.max(pages, stats.getMaxPages()));
-			stats.setMaxSubcategories(Math.max(subCategories,
-					stats.getMaxSubcategories()));
-			stats.setMaxParentCategories(Math.max(parentCategories,
-					stats.getMaxParentCategories()));
+			graphStats.setMaxPages(Math.max(pages, graphStats.getMaxPages()));
+			graphStats.setMaxSubcategories(Math.max(subCategories,
+					graphStats.getMaxSubcategories()));
+			graphStats.setMaxParentCategories(Math.max(parentCategories,
+					graphStats.getMaxParentCategories()));
 
 			pagesList.add(pages);
 
@@ -93,31 +103,50 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 
 	@Override
 	public void leaveVertex(Vertex v) {
-	}
-
-	public GraphStats computeGraphStats() {
-		Collections.sort(pagesList);
-		Collections.sort(subcategoriesList);
-
-		stats.setPagesQuantil25(pagesList.get(pagesList.size() / 4));
-		stats.setPagesMedian(pagesList.get(pagesList.size() / 2));
-		stats.setPagesQuantil75(pagesList.get((pagesList.size() / 4) * 3));
-
-		stats.setSubcategoriesQuantil25(subcategoriesList.get(subcategoriesList
-				.size() / 4));
-		stats.setSubcategoriesMedian(subcategoriesList.get(subcategoriesList
-				.size() / 2));
-		stats.setSubcategoriesQuantil75(subcategoriesList
-				.get((subcategoriesList.size() / 4) * 3));
-
-		stats.setPagesMean(pageLinks / (double) pagesList.size());
-		stats.setSubcategoriesMean(subcategoryLinks / (double) pagesList.size());
-		return stats;
+		if (v.equals(root)) {
+			computeGraphStats(ignoreEmptyCategories);
+		}
 	}
 
 	@Override
 	public void visitTreeEdge(Edge e) {
-		treeEdges.add(e);
+	}
+
+	private GraphStats computeGraphStats(boolean ignoreEmptyCategories) {
+		Collections.sort(pagesList);
+		Collections.sort(subcategoriesList);
+
+		if (ignoreEmptyCategories) {
+			pagesList = removeZeros(pagesList);
+			subcategoriesList = removeZeros(subcategoriesList);
+		}
+
+		graphStats.setPagesQuantil25(pagesList.get(pagesList.size() / 4));
+		graphStats.setPagesMedian(pagesList.get(pagesList.size() / 2));
+		graphStats.setPagesQuantil75(pagesList.get((pagesList.size() / 4) * 3));
+
+		graphStats.setSubcategoriesQuantil25(subcategoriesList
+				.get(subcategoriesList.size() / 4));
+		graphStats.setSubcategoriesMedian(subcategoriesList
+				.get(subcategoriesList.size() / 2));
+		graphStats.setSubcategoriesQuantil75(subcategoriesList
+				.get((subcategoriesList.size() / 4) * 3));
+
+		graphStats.setPagesMean(pageLinks / (double) pagesList.size());
+		graphStats.setSubcategoriesMean(subcategoryLinks
+				/ (double) pagesList.size());
+		return graphStats;
+	}
+
+	private List<Integer> removeZeros(List<Integer> l) {
+		int i = 0;
+		while (i < l.size() && l.get(i) == 0) {
+			i++;
+		}
+		if (i < l.size()) {
+			return l.subList(i, l.size());
+		}
+		return l;
 	}
 
 }

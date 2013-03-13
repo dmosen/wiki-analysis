@@ -67,10 +67,10 @@ public class WikipediaAnalysis {
 	public static GraphStats computeStatistics(Graph graph) {
 		// Calculate simple statistics for the graph
 		BlacklistedGraphDFS dfs = new BlacklistedGraphDFS();
-		StatisticalVisitor statisticalVisitor = new StatisticalVisitor();
+		StatisticalVisitor statisticalVisitor = new StatisticalVisitor(true);
 		dfs.addVisitor(statisticalVisitor);
 		dfs.execute(graph);
-		GraphStats stats = statisticalVisitor.computeGraphStats();
+		GraphStats stats = statisticalVisitor.getGraphStats();
 		dfs.removeVisitor(statisticalVisitor);
 
 		// Calculate reachability count for every vertex
