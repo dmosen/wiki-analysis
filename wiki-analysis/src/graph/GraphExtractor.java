@@ -19,6 +19,14 @@ import de.uni_koblenz.jgralab.NoSuchAttributeException;
 import de.uni_koblenz.jgralab.Vertex;
 
 /**
+ * This class handles the extraction of a category graph in breadth first order
+ * using {@link WikipediaAPI}. There are two possibilities of usage:
+ * <ol>
+ * <li>Extract the whole graph for a given root category. (i.e. the maximal
+ * depth is set to <code>Interger.MAX_VALUE</code>)</li>
+ * <li>Extract the graph until a given level is reached. Whenever the given
+ * level is reached it is possible to exclude vertices from this level.</li>
+ * </ol>
  * 
  * @author dmosen@uni-koblenz.de
  * 
@@ -148,7 +156,7 @@ public class GraphExtractor {
 				for (Vertex v : removeVertices) {
 					graph.deleteVertex(v);
 				}
-				
+
 				return true;
 			}
 		}
