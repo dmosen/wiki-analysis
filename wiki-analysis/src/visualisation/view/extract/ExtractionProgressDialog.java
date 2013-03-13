@@ -3,14 +3,14 @@ package visualisation.view.extract;
 import graph.GraphExtractor;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 
@@ -26,19 +26,17 @@ import de.uni_koblenz.jgralab.NoSuchAttributeException;
 /**
  * 
  * @author dmosen@uni-koblenz.de
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class ExtractionProgressDialog extends JDialog {
-	
+
 	private final JPanel contentPanel = new JPanel();
 
 	private GraphExtractor extractor;
 	private SwingWorker<GraphExtractor, Void> worker;
-
-	private JLabel lblCurrentCategoryValue;
-
-	private JLabel lblLevelValue;
+	private JScrollPane scrollPane;
+	private JTextArea progressArea;
 
 	/**
 	 * Create the dialog.
@@ -46,7 +44,7 @@ public class ExtractionProgressDialog extends JDialog {
 	public ExtractionProgressDialog(GraphExtractor extractor) {
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		this.extractor = extractor;
-		
+
 		initView();
 		initWorker();
 
@@ -54,7 +52,7 @@ public class ExtractionProgressDialog extends JDialog {
 
 	public void showDialog() {
 		this.setModal(true);
-		
+
 		worker.addPropertyChangeListener(new PropertyChangeListener() {
 
 			@Override
@@ -71,7 +69,7 @@ public class ExtractionProgressDialog extends JDialog {
 		});
 
 		worker.execute();
-		
+
 		this.setVisible(true);
 	}
 
@@ -104,12 +102,10 @@ public class ExtractionProgressDialog extends JDialog {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals(GraphExtractor.levelChange)) {
-					lblLevelValue.setText(evt.getNewValue().toString());
-				} else if (evt.getPropertyName().equals(
+				if (evt.getPropertyName().equals(
 						GraphExtractor.categoryChange)) {
-					lblCurrentCategoryValue.setText(evt.getNewValue()
-							.toString());
+					progressArea.append(evt.getNewValue().toString() + "\n");
+					progressArea.setCaretPosition(progressArea.getDocument().getLength());
 				}
 			}
 		});
@@ -117,41 +113,25 @@ public class ExtractionProgressDialog extends JDialog {
 
 	private void initView() {
 		setTitle("Extracting Graph");
-		setBounds(100, 100, 482, 149);
+		setBounds(100, 100, 482, 290);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.PREF_COLSPEC,
-				FormFactory.UNRELATED_GAP_COLSPEC,
-				FormFactory.GLUE_COLSPEC,},
+				ColumnSpec.decode("pref:grow"),
+				FormFactory.RELATED_GAP_COLSPEC,},
 			new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.GLUE_ROWSPEC,}));
 		{
-			JLabel lblLevel = new JLabel("Level");
-			lblLevel.setFont(new Font("Dialog", Font.BOLD, 12));
-			contentPanel.add(lblLevel, "2, 2");
-		}
-		{
-			JLabel lblCurrentCategory = new JLabel("Current category");
-			lblCurrentCategory.setFont(new Font("Dialog", Font.BOLD, 12));
-			contentPanel.add(lblCurrentCategory, "4, 2");
-		}
-		{
-			lblLevelValue = new JLabel("");
-			lblLevelValue.setFont(new Font("Dialog", Font.PLAIN, 12));
-			contentPanel.add(lblLevelValue, "2, 4");
-		}
-		{
-			lblCurrentCategoryValue = new JLabel("");
-			lblCurrentCategoryValue.setFont(new Font("Dialog", Font.PLAIN, 12));
-			contentPanel.add(lblCurrentCategoryValue, "4, 4");
+			scrollPane = new JScrollPane();
+			contentPanel.add(scrollPane, "2, 2, fill, fill");
+			{
+				progressArea = new JTextArea();
+				progressArea.setEditable(false);
+				scrollPane.setViewportView(progressArea);
+			}
 		}
 	}
 

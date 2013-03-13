@@ -170,32 +170,27 @@ public class GraphExtractor {
 			initBfs();
 		}
 
-		String lastCategory = "";
 		String currentCategory = "";
-
-		Integer lastLevel = null;
-		Integer currentLevel = null;
+		Integer currentLevel = 0;
 
 		// bfs
 		while (!queue.isEmpty()) {
 
 			Vertex currentVertex = queue.peek();
 			currentCategory = currentVertex.getAttribute("title");
-			propertyChangeSupport.firePropertyChange(
-					GraphExtractor.categoryChange, lastCategory,
-					currentCategory);
-
 			currentLevel = currentVertex.getAttribute("level");
-			propertyChangeSupport.firePropertyChange(
-					GraphExtractor.levelChange, lastLevel, currentLevel);
 
+			propertyChangeSupport.firePropertyChange(
+					GraphExtractor.categoryChange, null,
+					currentLevel + " " + currentCategory);
+			
 			// stop if queue contains all categories from maxLevel
 			if (currentLevel >= maxLevel) {
 				return graph;
 			}
 
 			queue.poll();
-			System.out.println(currentLevel + "\t" + currentCategory);
+			System.out.println(currentLevel + " " + currentCategory);
 
 			if (extractPages) {
 
@@ -240,8 +235,6 @@ public class GraphExtractor {
 							categoryMap.get(nextCategory));
 				}
 			}
-			lastCategory = currentCategory;
-			lastLevel = currentLevel;
 		}
 
 		return graph;
