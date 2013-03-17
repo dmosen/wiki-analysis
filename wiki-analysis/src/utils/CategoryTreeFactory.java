@@ -14,10 +14,10 @@ import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 /**
  * 
  * @author dmosen@uni-koblenz.de
- *
+ * 
  */
 public class CategoryTreeFactory {
-	
+
 	private static HashSet<Vertex> visitedVertices;
 	private static HashSet<Vertex> leftVertices;
 	private static CategoryTreeNode categoryTreeRoot;
@@ -74,9 +74,13 @@ public class CategoryTreeFactory {
 				parent = categoryTreeNode;
 				Vertex next = e.getOmega();
 
+				// detect cycles
 				if (visitedVertices.contains(next)
 						&& !leftVertices.contains(next)) {
 					e.setAttribute("blacklisted", true);
+					System.out.println("Cycle detected from "
+							+ e.getAlpha().getAttribute("title") + " to "
+							+ e.getOmega().getAttribute("title") + ".");
 				} else {
 					buildCategoryTreeModel(next);
 				}
