@@ -3,6 +3,8 @@ package visualisation.view.extract;
 import graph.GraphExtractor;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
@@ -22,6 +24,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
 import de.uni_koblenz.jgralab.NoSuchAttributeException;
+import javax.swing.JButton;
 
 /**
  * 
@@ -37,6 +40,7 @@ public class ExtractionProgressDialog extends JDialog {
 	private SwingWorker<GraphExtractor, Void> worker;
 	private JScrollPane scrollPane;
 	private JTextArea progressArea;
+	private JButton btnOk;
 
 	/**
 	 * Create the dialog.
@@ -60,8 +64,7 @@ public class ExtractionProgressDialog extends JDialog {
 
 				if (evt.getPropertyName().equals("state")) {
 					if (worker.getState().equals(SwingWorker.StateValue.DONE)) {
-						setVisible(false);
-						dispose();
+						btnOk.setEnabled(true);
 					}
 				}
 
@@ -123,7 +126,9 @@ public class ExtractionProgressDialog extends JDialog {
 				FormFactory.RELATED_GAP_COLSPEC,},
 			new RowSpec[] {
 				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.GLUE_ROWSPEC,}));
+				FormFactory.GLUE_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
 		{
 			scrollPane = new JScrollPane();
 			contentPanel.add(scrollPane, "2, 2, fill, fill");
@@ -133,6 +138,20 @@ public class ExtractionProgressDialog extends JDialog {
 				scrollPane.setViewportView(progressArea);
 			}
 		}
+		{
+			btnOk = new JButton("OK");
+			btnOk.setEnabled(false);
+			contentPanel.add(btnOk, "2, 4, right, default");
+		}
+		
+		btnOk.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				dispose();
+			}
+		});
 	}
 
 }
