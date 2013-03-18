@@ -179,18 +179,19 @@ public class GraphExtractor {
 			Vertex currentVertex = queue.peek();
 			currentCategory = currentVertex.getAttribute("title");
 			currentLevel = currentVertex.getAttribute("level");
-
-			propertyChangeSupport.firePropertyChange(
-					GraphExtractor.categoryChange, null,
-					currentLevel + " " + currentCategory);
 			
 			// stop if queue contains all categories from maxLevel
 			if (currentLevel >= maxLevel) {
 				return graph;
 			}
+			
+			propertyChangeSupport.firePropertyChange(
+					GraphExtractor.categoryChange, null,
+					currentLevel + " " + currentCategory);
 
-			queue.poll();
 			System.out.println(currentLevel + " " + currentCategory);
+			
+			queue.poll();
 
 			if (extractPages) {
 
