@@ -56,6 +56,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 	private JButton btnEditComment;
 	private JLabel lblCategoriesOverallValue;
 	private JLabel lblPagesOverallValue;
+	private JLabel lblCommentValue;
 
 	/**
 	 * Create the panel.
@@ -67,34 +68,56 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		this.controller = controller;
 
 		setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("8dlu"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("8dlu"),
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				FormFactory.PREF_COLSPEC,
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				ColumnSpec.decode("max(75dlu;pref)"),
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				ColumnSpec.decode("left:120dlu"),
-				FormFactory.RELATED_GAP_COLSPEC, }, new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.UNRELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.UNRELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.UNRELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC, RowSpec.decode("50dlu"),
-				FormFactory.UNRELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,},
+			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.UNRELATED_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
 				FormFactory.LINE_GAP_ROWSPEC,
-				RowSpec.decode("max(50dlu;min):grow"), }));
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.UNRELATED_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.UNRELATED_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				RowSpec.decode("50dlu"),
+				FormFactory.UNRELATED_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC,
+				RowSpec.decode("max(50dlu;min):grow"),}));
 
 		JLabel lblCategoriesOverall = new JLabel("Categories overall:");
 		lblCategoriesOverall.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -161,98 +184,106 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		lblParentCategoriesValue = new JLabel("");
 		lblParentCategoriesValue.setFont(new Font("Dialog", Font.PLAIN, 12));
 		add(lblParentCategoriesValue, "8, 16");
+		
+		JLabel lblComment = new JLabel("comment:");
+		lblComment.setFont(new Font("Dialog", Font.PLAIN, 12));
+		add(lblComment, "2, 18, 5, 1");
+		
+		lblCommentValue = new JLabel("");
+		lblCommentValue.setFont(new Font("Dialog", Font.PLAIN, 12));
+		add(lblCommentValue, "8, 18");
 
 		btnEditComment = new JButton("Edit comment ...");
-		add(btnEditComment, "2, 18, 5, 1");
+		add(btnEditComment, "2, 20, 5, 1");
 
 		JLabel lblHighlighting = new JLabel("Highlighting");
 		lblHighlighting.setFont(new Font("Dialog", Font.BOLD, 12));
-		add(lblHighlighting, "2, 20, 7, 1");
+		add(lblHighlighting, "2, 22, 7, 1");
 
 		JLabel lblHighlightinhColor0 = new JLabel("​");
 		lblHighlightinhColor0.setOpaque(true);
 		lblHighlightinhColor0.setFont(new Font("Dialog", Font.BOLD, 12));
 		lblHighlightinhColor0.setBackground(Color.LIGHT_GRAY);
-		add(lblHighlightinhColor0, "2, 22");
+		add(lblHighlightinhColor0, "2, 24");
 
 		JLabel label_0 = new JLabel("=");
-		add(label_0, "4, 22");
+		add(label_0, "4, 24");
 
 		lblHighlightingValue0 = new JLabel("");
 		lblHighlightingValue0.setFont(new Font("Dialog", Font.PLAIN, 12));
-		add(lblHighlightingValue0, "6, 22, 3, 1");
+		add(lblHighlightingValue0, "6, 24, 3, 1");
 
 		JLabel lblHighlightingColor1 = new JLabel("\u200B");
 		lblHighlightingColor1.setBackground(firstColor);
 		lblHighlightingColor1.setOpaque(true);
 		lblHighlightingColor1.setFont(new Font("Dialog", Font.BOLD, 12));
-		add(lblHighlightingColor1, "2, 24, fill, default");
+		add(lblHighlightingColor1, "2, 26, fill, default");
 
 		JLabel label = new JLabel("\u2264");
-		add(label, "4, 24, center, default");
+		add(label, "4, 26, center, default");
 
 		lblHighlightingValue1 = new JLabel("");
 		lblHighlightingValue1.setFont(new Font("Dialog", Font.PLAIN, 12));
-		add(lblHighlightingValue1, "6, 24, 3, 1");
+		add(lblHighlightingValue1, "6, 26, 3, 1");
 
 		JLabel lblHighlightingColor2 = new JLabel("\u200B");
 		lblHighlightingColor2.setBackground(secondColor);
 		lblHighlightingColor2.setOpaque(true);
 		lblHighlightingColor2.setFont(new Font("Dialog", Font.BOLD, 12));
-		add(lblHighlightingColor2, "2, 26, fill, default");
+		add(lblHighlightingColor2, "2, 28, fill, default");
 
 		JLabel label_1 = new JLabel("\u2264");
-		add(label_1, "4, 26, center, default");
+		add(label_1, "4, 28, center, default");
 
 		lblHighlightingValue2 = new JLabel("");
 		lblHighlightingValue2.setFont(new Font("Dialog", Font.PLAIN, 12));
-		add(lblHighlightingValue2, "6, 26, 3, 1");
+		add(lblHighlightingValue2, "6, 28, 3, 1");
 
 		JLabel lblHighlightingColor3 = new JLabel("\u200B");
 		lblHighlightingColor3.setBackground(thirdColor);
 		lblHighlightingColor3.setOpaque(true);
 		lblHighlightingColor3.setFont(new Font("Dialog", Font.BOLD, 12));
-		add(lblHighlightingColor3, "2, 28, fill, default");
+		add(lblHighlightingColor3, "2, 30, fill, default");
 
 		JLabel label_2 = new JLabel("\u2264");
-		add(label_2, "4, 28, center, default");
+		add(label_2, "4, 30, center, default");
 
 		lblHighlightingValue3 = new JLabel("");
 		lblHighlightingValue3.setFont(new Font("Dialog", Font.PLAIN, 12));
-		add(lblHighlightingValue3, "6, 28, 3, 1");
+		add(lblHighlightingValue3, "6, 30, 3, 1");
 
 		JLabel lblHighlightingColor4 = new JLabel("\u200B");
 		lblHighlightingColor4.setBackground(fourthColor);
 		lblHighlightingColor4.setOpaque(true);
 		lblHighlightingColor4.setFont(new Font("Dialog", Font.BOLD, 12));
-		add(lblHighlightingColor4, "2, 30, fill, default");
+		add(lblHighlightingColor4, "2, 32, fill, default");
 
 		JLabel label_3 = new JLabel("\u2264");
-		add(label_3, "4, 30, center, default");
+		add(label_3, "4, 32, center, default");
 
 		lblHighlightingValue4 = new JLabel("");
 		lblHighlightingValue4.setFont(new Font("Dialog", Font.PLAIN, 12));
-		add(lblHighlightingValue4, "6, 30, 3, 1");
+		add(lblHighlightingValue4, "6, 32, 3, 1");
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-		add(scrollPane_1, "2, 34, 7, 1, fill, fill");
+		add(scrollPane_1, "2, 36, 7, 1, fill, fill");
 
 		parentsList = new JList<String>();
 		scrollPane_1.setViewportView(parentsList);
 
 		JLabel lblPagesHeading = new JLabel("Pages");
 		lblPagesHeading.setFont(new Font("Dialog", Font.BOLD, 12));
-		add(lblPagesHeading, "2, 36, 7, 1");
+		add(lblPagesHeading, "2, 38, 7, 1");
 
 		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane, "2, 38, 7, 1, fill, fill");
+		add(scrollPane, "2, 40, 7, 1, fill, fill");
 
 		pagesList = new JList<String>();
 		scrollPane.setViewportView(pagesList);
 
 		JLabel lblParentsHeading = new JLabel("Parent Categories");
 		lblParentsHeading.setFont(new Font("Dialog", Font.BOLD, 12));
-		add(lblParentsHeading, "2, 32, 7, 1");
+		add(lblParentsHeading, "2, 34, 7, 1");
 
 		addComponentListeners();
 
@@ -289,6 +320,10 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 			updateLegend();
 			clearSelectionValues();
 		}
+		
+		if (property.equals(Controller.commentChange)) {
+			updateComment();
+		}
 
 	}
 
@@ -307,11 +342,11 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		lblParentCategoriesValue.setText("");
 		pagesList.setListData(new String[]{});
 		parentsList.setListData(new String[]{});
+		lblCommentValue.setText("");
 		btnEditComment.setEnabled(false);
 	}
 
 	private void updateSelectionValues() {
-		btnEditComment.setEnabled(true);
 		CategoryTreeNode node = model.getSelectedNode();
 		lblSelectedNodeValue.setText(node.getTitle());
 		lblPagesValue.setText("" + node.getPages());
@@ -322,6 +357,13 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		lblParentCategoriesValue.setText("" + node.getParentCategories());
 		pagesList.setListData(node.getPageStrings());
 		parentsList.setListData(node.getParentCategoryStrings());
+		btnEditComment.setEnabled(true);
+		updateComment();
+	}
+	
+	private void updateComment() {
+		CategoryTreeNode node = model.getSelectedNode();
+		lblCommentValue.setText(node.getComment());
 	}
 
 	private void updateLegend() {

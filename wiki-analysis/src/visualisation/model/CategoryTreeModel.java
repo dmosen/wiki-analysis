@@ -113,7 +113,9 @@ public class CategoryTreeModel extends DefaultTreeModel {
 	}
 	
 	public void setComment(CategoryTreeNode node, String comment) {
+		String oldComment = node.getComment();
 		node.setComment(comment);
+		firePropertyChangeEvent(Controller.commentChange, oldComment, comment);
 	}
 
 	public HighlightingMode getHighlightingMode() {

@@ -42,7 +42,7 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 		if (parentEdge != null) {
 			return parentEdge.getAttribute("comment");
 		}
-		return null;
+		return "";
 	}
 	
 	public void setComment(String comment) {

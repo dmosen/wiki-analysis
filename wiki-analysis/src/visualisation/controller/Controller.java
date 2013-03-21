@@ -21,6 +21,7 @@ public class Controller {
 	public static final String treeSelectionChange = "treeSelectionChange";
 	public static final String highlightingModeChange = "highlightingModeChange";
 	public static final String graphChange = "graphChange";
+	public static final String commentChange = "commentChange";
 
 	private CategoryTreeModel model;
 
