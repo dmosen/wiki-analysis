@@ -8,12 +8,13 @@ import javax.swing.tree.TreePath;
 
 import visualisation.model.CategoryTreeModel;
 import visualisation.model.CategoryTreeNode;
+import visualisation.view.EditCommentDialog;
 import de.uni_koblenz.jgralab.Graph;
 
 /**
  * 
  * @author dmosen@uni-koblenz.de
- *
+ * 
  */
 public class Controller {
 
@@ -67,5 +68,16 @@ public class Controller {
 			}
 		}
 	}
-	
+
+	public void editCommentButtonClicked(ActionEvent e) {
+		EditCommentDialog dialog = new EditCommentDialog(model
+				.getSelectedNode().getTitle(), model.getSelectedNode()
+				.getComment());
+		
+		String comment = dialog.showDialog();
+		if (comment != null) {
+			model.setComment(model.getSelectedNode(), comment);
+		}
+	}
+
 }

@@ -62,7 +62,8 @@ public class WikipediaAnalysis {
 	/**
 	 * Computes statistical data on the given category graph
 	 * 
-	 * @throws AlgorithmTerminatedException
+	 * @param graph
+	 * @return
 	 */
 	public static GraphStats computeStatistics(Graph graph) {
 		// Calculate simple statistics for the graph
@@ -145,10 +146,10 @@ public class WikipediaAnalysis {
 	 */
 	public static CategoryTreeModel createCategoryTreeModel(Graph graph) {
 
-		computeStatistics(graph);
-
 		CategoryTreeModel model = new CategoryTreeModel(graph);
 
+		computeStatistics(graph);
+		
 		return model;
 	}
 

@@ -7,34 +7,22 @@ package graph;
  */
 public class GraphStats {
 
+	private int categories;
+	private int pages;
 	private int pageLinks;
-
 	private int subcategoryLinks;
-	
 	private int maxPages;
-
 	private int maxTransitivePages;
-
 	private int maxSubcategories;
-
 	private int maxTransitiveSubcategories;
-
 	private int maxParentCategories;
-
 	private int pagesQuantil25;
-		
 	private int pagesMedian;
-	
 	private int pagesQuantil75;
-	
 	private double pagesMean;
-
 	private int subcategoriesQuantil25;
-		
 	private int subcategoriesMedian;
-
 	private int subcategoriesQuantil75;
-		
 	private double subcategoriesMean;
 
 	public GraphStats() {
@@ -45,6 +33,22 @@ public class GraphStats {
 		maxSubcategories = 0;
 		maxTransitiveSubcategories = 0;
 		maxParentCategories = 0;
+	}
+
+	public int getCategories() {
+		return categories;
+	}
+
+	protected void setCategories(int categories) {
+		this.categories = categories;
+	}
+
+	public int getPages() {
+		return pages;
+	}
+
+	protected void setPages(int pages) {
+		this.pages = pages;
 	}
 
 	public int getMaxPages() {

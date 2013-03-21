@@ -52,6 +52,10 @@ public class CategoryTreeModel extends DefaultTreeModel {
 
 		setGraph(graph);
 	}
+	
+	public Graph getGraph() {
+		return graph;
+	}
 
 	public void setGraph(Graph graph) {
 		setRoot(CategoryTreeFactory.buildCategoryTreeModel(graph));
@@ -60,6 +64,10 @@ public class CategoryTreeModel extends DefaultTreeModel {
 		blacklistedNodes = new ArrayList<CategoryTreeNode>();
 		firePropertyChangeEvent(Controller.graphChange, this.graph,
 				this.graph = graph);
+	}
+	
+	public GraphStats getStats() {
+		return stats;
 	}
 
 	public String getRootCategory() {
@@ -102,6 +110,10 @@ public class CategoryTreeModel extends DefaultTreeModel {
 				blacklistedNodes.remove(node);
 			}
 		}
+	}
+	
+	public void setComment(CategoryTreeNode node, String comment) {
+		node.setComment(comment);
 	}
 
 	public HighlightingMode getHighlightingMode() {

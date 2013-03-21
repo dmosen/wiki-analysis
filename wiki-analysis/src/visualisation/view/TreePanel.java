@@ -8,14 +8,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import visualisation.controller.Controller;
 import visualisation.model.CategoryTreeModel;
-import visualisation.model.CategoryTreeNode;
 
 import com.jidesoft.swing.CheckBoxTree;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 /**
  * 
@@ -25,14 +25,17 @@ import com.jidesoft.swing.CheckBoxTree;
 @SuppressWarnings("serial")
 public class TreePanel extends JPanel implements PropertyChangeListener {
 
+	private CategoryTreeModel model;
 	private Controller controller;
-
-	private MyCheckBoxTree tree;
+	private CheckBoxTree tree;
+	private JLabel lblRootCategory;
 
 	/**
 	 * Create the panel.
 	 */
 	public TreePanel(CategoryTreeModel model, Controller controller) {
+
+		this.model = model;
 		this.controller = controller;
 
 		setLayout(new BorderLayout(0, 0));
@@ -40,14 +43,19 @@ public class TreePanel extends JPanel implements PropertyChangeListener {
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane);
 
-		tree = new MyCheckBoxTree();
+		tree = new CheckBoxTree();
 		tree.setDigIn(false);
+		tree.setRootVisible(false);
 		tree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
 		scrollPane.setViewportView(tree);
 
 		tree.setModel(model);
 		tree.setCellRenderer(new CheckBoxRenderer(model));
+		
+		lblRootCategory = new JLabel(model.getRootCategory());
+		lblRootCategory.setFont(new Font("Dialog", Font.BOLD, 12));
+		scrollPane.setColumnHeaderView(lblRootCategory);
 
 		addComponentListeners();
 	}
@@ -72,24 +80,14 @@ public class TreePanel extends JPanel implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+		
 		if (evt.getPropertyName().equals(Controller.highlightingModeChange)) {
 			tree.repaint();
 		}
-	}
-
-}
-
-@SuppressWarnings("serial")
-class MyCheckBoxTree extends CheckBoxTree {
-	
-	@Override
-	public boolean isCheckBoxVisible(TreePath path) {
-		if (path.getLastPathComponent() instanceof CategoryTreeNode) {
-			if (((CategoryTreeNode)path.getLastPathComponent()).isRoot()) {
-				return false;
-			}
+		
+		if (evt.getPropertyName().equals(Controller.graphChange)) {
+			lblRootCategory.setText(model.getRootCategory());
 		}
-		return super.isCheckBoxVisible(path);
 	}
 
 }

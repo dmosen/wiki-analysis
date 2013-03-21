@@ -35,6 +35,36 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 	public String getTitle() {
 		return vertex.getAttribute("title");
 	}
+	
+	public String getComment() {
+		Edge parentEdge = getParentEdge();
+		
+		if (parentEdge != null) {
+			return parentEdge.getAttribute("comment");
+		}
+		return null;
+	}
+	
+	public void setComment(String comment) {
+		Edge parentEdge = getParentEdge();
+		
+		if (parentEdge != null) {
+			parentEdge.setAttribute("comment", comment);
+		}
+	}
+	
+	private Edge getParentEdge() {
+		Vertex child = getVertex();
+		Vertex parent = getParent().getVertex();
+		Edge parentEdge = null;
+		
+		for (Edge e : child.incidences(GraphProperties.getInstance().subCategoryLinkEC, EdgeDirection.IN)) {
+			if (e.getAlpha().equals(parent) && e.getOmega().equals(child)) {
+				parentEdge = e;
+			}
+		}
+		return parentEdge;
+	}
 
 	public Vertex getVertex() {
 		return vertex;

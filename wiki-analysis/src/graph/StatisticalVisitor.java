@@ -21,6 +21,9 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 	private Vertex root;
 
 	private boolean ignoreEmptyCategories;
+	
+	private int pages;
+	private int categories;
 
 	private int pageLinks;
 	private List<Integer> pagesList = new ArrayList<Integer>();
@@ -42,6 +45,9 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 
 		gp = GraphProperties.getInstance();
 
+		pages = 0;
+		categories = 0;
+		
 		pageLinks = 0;
 		subcategoryLinks = 0;
 
@@ -56,8 +62,7 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 		}
 
 		// count sub category links
-		if (e.isInstanceOf(gp.subCategoryLinkEC)
-				&& !(Boolean) e.getAttribute("blacklisted")) {
+		if (e.isInstanceOf(gp.subCategoryLinkEC)) {
 			subcategoryLinks++;
 		}
 	}
@@ -65,6 +70,8 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 	@Override
 	public void visitVertex(Vertex v) {
 		if (v.isInstanceOf(gp.categoryNodeVC)) {
+			categories++;
+			
 			// count in-links from parent categories which are not blacklisted
 			int parentCategories = 0;
 			for (Edge e : v.incidences(gp.subCategoryLinkEC, EdgeDirection.IN)) {
@@ -99,6 +106,10 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 
 			subcategoriesList.add(subCategories);
 		}
+		
+		if (v.isInstanceOf(gp.pageNodeVC)) {
+			pages++;
+		}
 	}
 
 	@Override
@@ -113,6 +124,12 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 	}
 
 	private GraphStats computeGraphStats(boolean ignoreEmptyCategories) {
+		graphStats.setPageLinks(pageLinks);
+		graphStats.setSubcategoryLinks(subcategoryLinks);
+		
+		graphStats.setPages(pages);
+		graphStats.setCategories(categories);
+				
 		Collections.sort(pagesList);
 		Collections.sort(subcategoriesList);
 

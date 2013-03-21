@@ -36,14 +36,6 @@ public class CategoryTreeFactory {
 	 */
 	public static CategoryTreeNode buildCategoryTreeModel(Graph graph) {
 
-		// Check if there are vertices which are unreachable from the root.
-		for (Vertex v : graph
-				.vertices(GraphProperties.getInstance().categoryNodeVC)) {
-			if (!v.equals(graph.getFirstVertex())) {
-				blacklistRecursively(v);
-			}
-		}
-
 		Vertex root = graph.getFirstVertex();
 
 		visitedVertices = new HashSet<Vertex>();
@@ -78,6 +70,7 @@ public class CategoryTreeFactory {
 				if (visitedVertices.contains(next)
 						&& !leftVertices.contains(next)) {
 					e.setAttribute("blacklisted", true);
+					e.setAttribute("comment", "blacklisted by cycle detection");
 					System.out.println("Cycle detected from "
 							+ e.getAlpha().getAttribute("title") + " to "
 							+ e.getOmega().getAttribute("title") + ".");
@@ -87,38 +80,6 @@ public class CategoryTreeFactory {
 			}
 		}
 		leftVertices.add(current);
-	}
-
-	private static void blacklistRecursively(Vertex v) {
-
-		// check if vertex is unreachable (i.e. all incoming links are
-		// blacklisted)
-		boolean allIncomingEdgesBlacklisted = true;
-		for (Edge e : v.incidences(
-				GraphProperties.getInstance().subCategoryLinkEC,
-				EdgeDirection.IN)) {
-			if (!(Boolean) e.getAttribute("blacklisted")) {
-				allIncomingEdgesBlacklisted = false;
-				break;
-			}
-		}
-
-		// if all incoming edges are blacklisted, blacklist the vertex
-		// itself and all its outgoing edges
-		if (allIncomingEdgesBlacklisted) {
-			v.setAttribute("blacklisted", true);
-
-			for (Edge e : v.incidences(
-					GraphProperties.getInstance().subCategoryLinkEC,
-					EdgeDirection.OUT)) {
-				if (!(Boolean) e.getAttribute("blacklisted")) {
-					e.setAttribute("blacklisted", true);
-
-					// check if targets of the edges must be blacklisted
-					blacklistRecursively(e.getOmega());
-				}
-			}
-		}
 	}
 
 }

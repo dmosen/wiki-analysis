@@ -118,7 +118,7 @@ public class ApplicationView {
 				"2, 2, fill, fill");
 		model.addPropertyChangeListener(treePanel);
 
-		InfoPanel infoPanel = new InfoPanel(model);
+		InfoPanel infoPanel = new InfoPanel(model, controller);
 		frmCategoryTreeExtraction.getContentPane().add(infoPanel,
 				"4, 2, fill, fill");
 		model.addPropertyChangeListener(infoPanel);
