@@ -124,6 +124,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		add(lblCategoriesOverall, "2, 2, 5, 1");
 
 		lblCategoriesOverallValue = new JLabel("");
+		lblCategoriesOverallValue.setFont(new Font("Dialog", Font.PLAIN, 12));
 		add(lblCategoriesOverallValue, "8, 2");
 
 		JLabel lblPagesOverall = new JLabel("Pages overall:");
@@ -194,6 +195,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		add(lblCommentValue, "8, 18");
 
 		btnEditComment = new JButton("Edit comment ...");
+		btnEditComment.setFont(new Font("Dialog", Font.PLAIN, 12));
 		add(btnEditComment, "2, 20, 5, 1");
 
 		JLabel lblHighlighting = new JLabel("Highlighting");
@@ -207,6 +209,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		add(lblHighlightinhColor0, "2, 24");
 
 		JLabel label_0 = new JLabel("=");
+		label_0.setFont(new Font("Dialog", Font.PLAIN, 12));
 		add(label_0, "4, 24");
 
 		lblHighlightingValue0 = new JLabel("");
@@ -220,6 +223,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		add(lblHighlightingColor1, "2, 26, fill, default");
 
 		JLabel label = new JLabel("\u2264");
+		label.setFont(new Font("Dialog", Font.PLAIN, 12));
 		add(label, "4, 26, center, default");
 
 		lblHighlightingValue1 = new JLabel("");
@@ -233,6 +237,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		add(lblHighlightingColor2, "2, 28, fill, default");
 
 		JLabel label_1 = new JLabel("\u2264");
+		label_1.setFont(new Font("Dialog", Font.PLAIN, 12));
 		add(label_1, "4, 28, center, default");
 
 		lblHighlightingValue2 = new JLabel("");
@@ -246,6 +251,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		add(lblHighlightingColor3, "2, 30, fill, default");
 
 		JLabel label_2 = new JLabel("\u2264");
+		label_2.setFont(new Font("Dialog", Font.PLAIN, 12));
 		add(label_2, "4, 30, center, default");
 
 		lblHighlightingValue3 = new JLabel("");
@@ -259,6 +265,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		add(lblHighlightingColor4, "2, 32, fill, default");
 
 		JLabel label_3 = new JLabel("\u2264");
+		label_3.setFont(new Font("Dialog", Font.PLAIN, 12));
 		add(label_3, "4, 32, center, default");
 
 		lblHighlightingValue4 = new JLabel("");
@@ -269,6 +276,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		add(scrollPane_1, "2, 36, 7, 1, fill, fill");
 
 		parentsList = new JList<String>();
+		parentsList.setFont(new Font("Dialog", Font.PLAIN, 12));
 		scrollPane_1.setViewportView(parentsList);
 
 		JLabel lblPagesHeading = new JLabel("Pages");
@@ -279,6 +287,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		add(scrollPane, "2, 40, 7, 1, fill, fill");
 
 		pagesList = new JList<String>();
+		pagesList.setFont(new Font("Dialog", Font.PLAIN, 12));
 		scrollPane.setViewportView(pagesList);
 
 		JLabel lblParentsHeading = new JLabel("Parent Categories");
