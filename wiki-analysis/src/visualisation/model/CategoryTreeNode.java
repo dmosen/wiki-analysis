@@ -11,7 +11,7 @@ import de.uni_koblenz.jgralab.Vertex;
 /**
  * 
  * @author dmosen@uni-koblenz.de
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class CategoryTreeNode extends DefaultMutableTreeNode {
@@ -35,30 +35,40 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 	public String getTitle() {
 		return vertex.getAttribute("title");
 	}
-	
+
 	public String getComment() {
 		Edge parentEdge = getParentEdge();
-		
+
 		if (parentEdge != null) {
 			return parentEdge.getAttribute("comment");
 		}
+		
+		if (isRoot()) {
+			return "root category";
+		}
+		
 		return "";
 	}
-	
+
 	public void setComment(String comment) {
 		Edge parentEdge = getParentEdge();
-		
+
 		if (parentEdge != null) {
 			parentEdge.setAttribute("comment", comment);
 		}
 	}
-	
+
 	private Edge getParentEdge() {
 		Vertex child = getVertex();
-		Vertex parent = getParent().getVertex();
+		Vertex parent = null;
+		if (getParent() != null) {
+			parent = getParent().getVertex();
+		}
 		Edge parentEdge = null;
-		
-		for (Edge e : child.incidences(GraphProperties.getInstance().subCategoryLinkEC, EdgeDirection.IN)) {
+
+		for (Edge e : child.incidences(
+				GraphProperties.getInstance().subCategoryLinkEC,
+				EdgeDirection.IN)) {
 			if (e.getAlpha().equals(parent) && e.getOmega().equals(child)) {
 				parentEdge = e;
 			}
@@ -123,7 +133,7 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 		}
 		return result;
 	}
-	
+
 	@Override
 	public String toString() {
 		return getTitle();

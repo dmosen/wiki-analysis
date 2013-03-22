@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -68,56 +69,35 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		this.controller = controller;
 
 		setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("8dlu"),
+				FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("8dlu"),
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				FormFactory.PREF_COLSPEC,
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				ColumnSpec.decode("max(75dlu;pref)"),
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				ColumnSpec.decode("left:120dlu"),
-				FormFactory.RELATED_GAP_COLSPEC,},
-			new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.UNRELATED_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_COLSPEC, }, new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.UNRELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.UNRELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.UNRELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.LINE_GAP_ROWSPEC, RowSpec.decode("50dlu"),
+				FormFactory.UNRELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
 				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.UNRELATED_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.UNRELATED_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC,
-				RowSpec.decode("50dlu"),
-				FormFactory.UNRELATED_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.LINE_GAP_ROWSPEC,
-				RowSpec.decode("max(50dlu;min):grow"),}));
+				RowSpec.decode("max(50dlu;min):grow"), }));
 
 		JLabel lblCategoriesOverall = new JLabel("Categories overall:");
 		lblCategoriesOverall.setFont(new Font("Dialog", Font.PLAIN, 12));
@@ -185,11 +165,11 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		lblParentCategoriesValue = new JLabel("");
 		lblParentCategoriesValue.setFont(new Font("Dialog", Font.PLAIN, 12));
 		add(lblParentCategoriesValue, "8, 16");
-		
+
 		JLabel lblComment = new JLabel("comment:");
 		lblComment.setFont(new Font("Dialog", Font.PLAIN, 12));
 		add(lblComment, "2, 18, 5, 1");
-		
+
 		lblCommentValue = new JLabel("");
 		lblCommentValue.setFont(new Font("Dialog", Font.PLAIN, 12));
 		add(lblCommentValue, "8, 18");
@@ -329,7 +309,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 			updateLegend();
 			clearSelectionValues();
 		}
-		
+
 		if (property.equals(Controller.commentChange)) {
 			updateComment();
 		}
@@ -349,8 +329,8 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		lblSubcategoriesValue.setText("");
 		lblSubcategoriesTransitiveValue.setText("");
 		lblParentCategoriesValue.setText("");
-		pagesList.setListData(new String[]{});
-		parentsList.setListData(new String[]{});
+		pagesList.setModel(new DefaultListModel<String>());
+		parentsList.setModel(new DefaultListModel<String>());
 		lblCommentValue.setText("");
 		btnEditComment.setEnabled(false);
 	}
@@ -366,10 +346,16 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		lblParentCategoriesValue.setText("" + node.getParentCategories());
 		pagesList.setListData(node.getPageStrings());
 		parentsList.setListData(node.getParentCategoryStrings());
-		btnEditComment.setEnabled(true);
+
+		if (model.getSelectedNode().isRoot()) {
+			btnEditComment.setEnabled(false);
+		} else {
+			btnEditComment.setEnabled(true);
+		}
+		
 		updateComment();
 	}
-	
+
 	private void updateComment() {
 		CategoryTreeNode node = model.getSelectedNode();
 		lblCommentValue.setText(node.getComment());
