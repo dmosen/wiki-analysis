@@ -21,7 +21,7 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 	private Vertex root;
 
 	private boolean ignoreEmptyCategories;
-	
+
 	private int pages;
 	private int categories;
 
@@ -47,7 +47,7 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 
 		pages = 0;
 		categories = 0;
-		
+
 		pageLinks = 0;
 		subcategoryLinks = 0;
 
@@ -71,7 +71,7 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 	public void visitVertex(Vertex v) {
 		if (v.isInstanceOf(gp.categoryNodeVC)) {
 			categories++;
-			
+
 			// count in-links from parent categories which are not blacklisted
 			int parentCategories = 0;
 			for (Edge e : v.incidences(gp.subCategoryLinkEC, EdgeDirection.IN)) {
@@ -106,7 +106,7 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 
 			subcategoriesList.add(subCategories);
 		}
-		
+
 		if (v.isInstanceOf(gp.pageNodeVC)) {
 			pages++;
 		}
@@ -126,10 +126,10 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 	private GraphStats computeGraphStats(boolean ignoreEmptyCategories) {
 		graphStats.setPageLinks(pageLinks);
 		graphStats.setSubcategoryLinks(subcategoryLinks);
-		
+
 		graphStats.setPages(pages);
 		graphStats.setCategories(categories);
-				
+
 		Collections.sort(pagesList);
 		Collections.sort(subcategoriesList);
 
@@ -140,14 +140,15 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 
 		graphStats.setPagesQuantil25(pagesList.get(pagesList.size() / 4));
 		graphStats.setPagesMedian(pagesList.get(pagesList.size() / 2));
-		graphStats.setPagesQuantil75(pagesList.get((pagesList.size() / 4) * 3));
-
+		graphStats
+					.setPagesQuantil75(pagesList.get((pagesList.size() * 3) / 4));
+		
 		graphStats.setSubcategoriesQuantil25(subcategoriesList
 				.get(subcategoriesList.size() / 4));
 		graphStats.setSubcategoriesMedian(subcategoriesList
 				.get(subcategoriesList.size() / 2));
 		graphStats.setSubcategoriesQuantil75(subcategoriesList
-				.get((subcategoriesList.size() / 4) * 3));
+				.get((subcategoriesList.size() * 3) / 4));
 
 		graphStats.setPagesMean(pageLinks / (double) pagesList.size());
 		graphStats.setSubcategoriesMean(subcategoryLinks

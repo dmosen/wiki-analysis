@@ -25,7 +25,7 @@ import de.uni_koblenz.jgralab.Vertex;
 /**
  * 
  * @author dmosen@uni-koblenz.de
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class CategoryTreeModel extends DefaultTreeModel {
@@ -52,7 +52,7 @@ public class CategoryTreeModel extends DefaultTreeModel {
 
 		setGraph(graph);
 	}
-	
+
 	public Graph getGraph() {
 		return graph;
 	}
@@ -62,10 +62,10 @@ public class CategoryTreeModel extends DefaultTreeModel {
 		stats = WikipediaAnalysis.computeStatistics(graph);
 
 		blacklistedNodes = new ArrayList<CategoryTreeNode>();
-		firePropertyChangeEvent(Controller.graphChange, this.graph,
-				this.graph = graph);
+		this.graph = graph;
+		firePropertyChangeEvent(Controller.graphChange, null, graph);
 	}
-	
+
 	public GraphStats getStats() {
 		return stats;
 	}
@@ -111,7 +111,7 @@ public class CategoryTreeModel extends DefaultTreeModel {
 			}
 		}
 	}
-	
+
 	public void setComment(CategoryTreeNode node, String comment) {
 		String oldComment = node.getComment();
 		node.setComment(comment);

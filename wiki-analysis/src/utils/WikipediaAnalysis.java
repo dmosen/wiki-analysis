@@ -8,16 +8,19 @@ import graph.GraphStats;
 import graph.JSONVisitor;
 import graph.ReachabilityCountVisitor;
 import graph.StatisticalVisitor;
+import graph.BlacklistedOrCommentedEdgeVisitor;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.xml.sax.SAXException;
 
 import visualisation.model.CategoryTreeModel;
 import visualisation.model.CategoryTreeNode;
+import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.GraphIO;
 import de.uni_koblenz.jgralab.GraphIOException;
@@ -176,6 +179,14 @@ public class WikipediaAnalysis {
 		System.out.println("Extracting Graph for " + rootCategory + " ...");
 		graph = extractor.extract();
 		return graph;
+	}
+	
+	public static ArrayList<Edge> getBlacklistedOrCommentedEdges(Graph graph) throws AlgorithmTerminatedException {
+		IterativeDepthFirstSearch dfs = new IterativeDepthFirstSearch(graph);
+		BlacklistedOrCommentedEdgeVisitor visitor = new BlacklistedOrCommentedEdgeVisitor();
+		dfs.addVisitor(visitor);
+		dfs.execute();
+		return visitor.getEdges();
 	}
 
 }

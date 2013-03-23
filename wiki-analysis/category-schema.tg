@@ -19,6 +19,7 @@ VertexClass Page {
 };
 
 EdgeClass SubCategory from Category (0,*) role category to Category (0,*) role subCategory {
+	backwardArc: Boolean,
 	blacklisted: Boolean,
 	comment: String
 };

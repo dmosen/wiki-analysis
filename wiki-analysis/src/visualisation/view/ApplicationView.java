@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import visualisation.controller.Controller;
 import visualisation.model.CategoryTreeModel;
 import visualisation.view.extract.ExtractDialog;
+import visualisation.view.table.TableDialog;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -40,14 +41,18 @@ import de.uni_koblenz.jgralab.Vertex;
  */
 public class ApplicationView {
 
+	private Controller controller;
+	private CategoryTreeModel model;
+	private Graph graph;
+		
 	private JFrame frmCategoryTreeExtraction;
 	private JFileChooser fileChooser;
-	private Controller controller;
+
 	private JMenuItem mntmLoad;
 	private JMenuItem mntmExtract;
 	private JMenuItem mntmSave;
 
-	private Graph graph;
+	private JMenuItem mntmTable;
 
 	/**
 	 * Launch the application.
@@ -81,7 +86,7 @@ public class ApplicationView {
 		// TODO instead of directly loading a graph leave it to the user to load
 		// an existing graph or to extract a model
 		graph = null;
-		CategoryTreeModel model = null;
+		model = null;
 
 		try {
 			graph = GraphIO.loadGraphFromFile("data/simple_graph.tg", null);
@@ -130,17 +135,23 @@ public class ApplicationView {
 		JMenuBar menuBar = new JMenuBar();
 		frmCategoryTreeExtraction.setJMenuBar(menuBar);
 
-		JMenu mnMenu = new JMenu("File");
-		menuBar.add(mnMenu);
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
 
 		mntmExtract = new JMenuItem("Extract ...");
-		mnMenu.add(mntmExtract);
+		mnFile.add(mntmExtract);
 
 		mntmLoad = new JMenuItem("Load ...");
-		mnMenu.add(mntmLoad);
+		mnFile.add(mntmLoad);
 
 		mntmSave = new JMenuItem("Save ...");
-		mnMenu.add(mntmSave);
+		mnFile.add(mntmSave);
+		
+		JMenu mnView = new JMenu("View");
+		menuBar.add(mnView);
+		
+		mntmTable = new JMenuItem("Table ...");
+		mnView.add(mntmTable);
 
 		addComponentListeners();
 
@@ -176,6 +187,16 @@ public class ApplicationView {
 					showSaveRemovedCategoriesDialog(extractor);
 					controller.graphChanged(graph);
 				}
+			}
+		});
+		
+		mntmTable.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TableDialog dialog = new TableDialog(graph);
+				dialog.showDialog();
+				controller.graphChanged(graph);
 			}
 		});
 	}

@@ -49,6 +49,7 @@ public class ExtractDialog extends JDialog {
 	private JButton okButton;
 	private JButton cancelButton;
 	private JCheckBox ckbxExtractPages;
+	private JLabel lblSelectCategoriesTo;
 
 	/**
 	 * Create the dialog.
@@ -70,16 +71,25 @@ public class ExtractDialog extends JDialog {
 				ColumnSpec.decode("max(40dlu;pref)"),
 				ColumnSpec.decode("max(100dlu;pref)"),
 				ColumnSpec.decode("pref:grow"),
-				FormFactory.RELATED_GAP_COLSPEC, }, new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				RowSpec.decode("12dlu"), FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,},
+			new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				RowSpec.decode("12dlu"),
+				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("default:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC, });
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,});
 		contentPanel.setLayout(fl_contentPanel);
 		{
 			JLabel lblRootCategory = new JLabel("Root category");
@@ -98,7 +108,7 @@ public class ExtractDialog extends JDialog {
 		}
 		{
 			JSeparator separator = new JSeparator();
-			contentPanel.add(separator, "2, 5, 5, 1");
+			contentPanel.add(separator, "2, 7, 5, 1");
 		}
 		{
 			JLabel lblCurrentLevel = new JLabel("Current level:");
@@ -111,8 +121,13 @@ public class ExtractDialog extends JDialog {
 			contentPanel.add(lblLevelValue, "4, 6");
 		}
 		{
+			lblSelectCategoriesTo = new JLabel("Select categories to be excluded:");
+			lblSelectCategoriesTo.setFont(new Font("Dialog", Font.ITALIC, 12));
+			contentPanel.add(lblSelectCategoriesTo, "2, 8, 5, 1");
+		}
+		{
 			JScrollPane scrollPane = new JScrollPane();
-			contentPanel.add(scrollPane, "2, 8, 5, 1, fill, fill");
+			contentPanel.add(scrollPane, "2, 10, 5, 1, fill, fill");
 			{
 				list = new CheckBoxListWithSelectable();
 				scrollPane.setViewportView(list);
@@ -120,17 +135,17 @@ public class ExtractDialog extends JDialog {
 		}
 		{
 			btnExtractNextLevel = new JButton("Extract next level ...");
-			contentPanel.add(btnExtractNextLevel, "2, 10, 3, 1");
+			contentPanel.add(btnExtractNextLevel, "2, 12, 3, 1");
 		}
 		{
 			btnExtractWholeGraph = new JButton("Extract whole graph");
-			contentPanel.add(btnExtractWholeGraph, "2, 12, 3, 1");
+			contentPanel.add(btnExtractWholeGraph, "2, 14, 3, 1");
 		}
 		{
 			ckbxExtractPages = new JCheckBox("extract pages for categories");
 			ckbxExtractPages.setSelected(true);
 			ckbxExtractPages.setFont(new Font("Dialog", Font.PLAIN, 12));
-			contentPanel.add(ckbxExtractPages, "2, 14, 4, 1");
+			contentPanel.add(ckbxExtractPages, "2, 16, 4, 1");
 		}
 		{
 			JPanel buttonPane = new JPanel();
@@ -157,10 +172,10 @@ public class ExtractDialog extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String category = "Category:" + textField.getText();
+				String category = textField.getText();
 
 				// valid category chosen
-				if (WikipediaAPI.isValidPage(category)) {
+				if (WikipediaAPI.isValidCategory(category)) {
 					
 					// warn the user
 					int answer = JOptionPane
@@ -203,10 +218,10 @@ public class ExtractDialog extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String category = "Category:" + textField.getText();
+				String category = textField.getText();
 
 				// valid category chosen
-				if (WikipediaAPI.isValidPage(category)) {
+				if (WikipediaAPI.isValidCategory(category)) {
 					
 
 					if (extractor == null) {
@@ -276,7 +291,7 @@ public class ExtractDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				extractor = null;
 				setVisible(false);
-				invalidate();
+				dispose();
 			}
 		});
 	}

@@ -27,7 +27,7 @@ public class CategoryTreeFactory {
 	 * Builds a category tree from a given graph conforming to the schema
 	 * <code>category-schema.tg</code> and returns the root node of the
 	 * constructed tree. If the graph contains cycles the responsible backward
-	 * links are detected and marked as "blacklisted" inside the graph.
+	 * arcs are detected and marked as inside the graph.
 	 * 
 	 * @param graph
 	 * @return the {@link CategoryTreeNode} representing the root node of the
@@ -70,7 +70,11 @@ public class CategoryTreeFactory {
 				if (visitedVertices.contains(next)
 						&& !leftVertices.contains(next)) {
 					e.setAttribute("blacklisted", true);
-					e.setAttribute("comment", "blacklisted by cycle detection");
+					e.setAttribute("backwardArc", true);
+					if (e.getAttribute("comment") == null) {
+						e.setAttribute("comment",
+								"blacklisted by cycle detection");
+					}
 					System.out.println("Cycle detected from "
 							+ e.getAlpha().getAttribute("title") + " to "
 							+ e.getOmega().getAttribute("title") + ".");

@@ -42,11 +42,11 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 		if (parentEdge != null) {
 			return parentEdge.getAttribute("comment");
 		}
-		
+
 		if (isRoot()) {
 			return "root category";
 		}
-		
+
 		return "";
 	}
 
@@ -54,7 +54,11 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 		Edge parentEdge = getParentEdge();
 
 		if (parentEdge != null) {
-			parentEdge.setAttribute("comment", comment);
+			if (comment.isEmpty()) {
+				parentEdge.setAttribute("comment", null);
+			} else {
+				parentEdge.setAttribute("comment", comment);
+			}
 		}
 	}
 

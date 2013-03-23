@@ -64,6 +64,7 @@ public class ExtractionProgressDialog extends JDialog {
 
 				if (evt.getPropertyName().equals("state")) {
 					if (worker.getState().equals(SwingWorker.StateValue.DONE)) {
+						progressArea.append("DONE!");
 						btnOk.setEnabled(true);
 					}
 				}

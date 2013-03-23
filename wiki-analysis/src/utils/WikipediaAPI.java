@@ -44,7 +44,8 @@ public class WikipediaAPI {
 		return getCategoryMembers(category, Cmtype.SUBCAT);
 	}
 
-	public static boolean isValidPage(String title) {
+	public static boolean isValidCategory(String title) {
+		title = "Category:" + title;
 		List<Page> pages = connector.queryInfo(user,
 				Arrays.asList(new String[] { title }));
 		if (!pages.isEmpty()) {
@@ -73,7 +74,7 @@ public class WikipediaAPI {
 
 		do {
 			String[] query = new String[] { "list", "categorymembers",
-					"cmtitle", category, "cmtype", cmtype.id, "cmlimit", "max",
+					"cmtitle", "Category:" + category, "cmtype", cmtype.id, "cmlimit", "max",
 					"cmcontinue", cmcontinue };
 
 			String rawXmlResponse = processQuery(query);
@@ -86,7 +87,7 @@ public class WikipediaAPI {
 			List<PageInfo> pages = parser.getPagesList();
 
 			for (PageInfo p : pages) {
-				result.add(p.getTitle());
+				result.add(p.getTitle().replaceFirst(".*:", ""));
 			}
 
 			cmcontinue = parser.getCmContinue();
