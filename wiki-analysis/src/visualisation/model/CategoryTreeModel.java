@@ -327,8 +327,12 @@ public class CategoryTreeModel extends DefaultTreeModel {
 	}
 
 	public void removeBlacklistedCategories() {
+		
 		if (blacklistedNodes.size() > 0) {
 			for (CategoryTreeNode node : blacklistedNodes) {
+				if (node.isRoot()) {
+					continue;
+				}
 				Vertex parentVertex = node.getParent().getVertex();
 				Vertex vertex = node.getVertex();
 

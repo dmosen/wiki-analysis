@@ -17,7 +17,7 @@ import de.uni_koblenz.jgralab.algolib.algorithms.search.visitors.DFSVisitorAdapt
  * @author dmosen@uni-koblenz.de
  *
  */
-public class JSONVisitor extends DFSVisitorAdapter {
+public class JSONTreeExportVisitor extends DFSVisitorAdapter {
 
 	private JSONObject root;
 	private Stack<JSONObject> stack = new Stack<JSONObject>();

@@ -1,14 +1,14 @@
 package utils;
 
 import graph.BlacklistedGraphDFS;
+import graph.BlacklistedOrCommentedEdgeVisitor;
 import graph.CSVVisitor;
 import graph.GraphExtractor;
 import graph.GraphProperties;
 import graph.GraphStats;
-import graph.JSONVisitor;
+import graph.JSONGraphExportVisitor;
 import graph.ReachabilityCountVisitor;
 import graph.StatisticalVisitor;
-import graph.BlacklistedOrCommentedEdgeVisitor;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -45,20 +45,19 @@ public class WikipediaAnalysis {
 			+ "_page_table.csv";
 
 	/**
-	 * Saves the category tree as JSON file
+	 * Saves the category graph as JSON file
 	 * 
 	 * @throws AlgorithmTerminatedException
 	 */
-	public static void saveJSONTree(Graph graph) throws IOException,
-			AlgorithmTerminatedException {
+	public static void saveGraphAsJSON(Graph graph, File file)
+			throws IOException, AlgorithmTerminatedException {
 		IterativeDepthFirstSearch dfs = new IterativeDepthFirstSearch(graph);
-		JSONVisitor visitor = new JSONVisitor();
+		JSONGraphExportVisitor visitor = new JSONGraphExportVisitor();
 		dfs.addVisitor(visitor);
 		dfs.execute();
 
-		BufferedWriter jsonWriter = new BufferedWriter(new FileWriter(new File(
-				"json.js")));
-		jsonWriter.write("var json = " + visitor.getJSON() + ";");
+		BufferedWriter jsonWriter = new BufferedWriter(new FileWriter(file));
+		jsonWriter.write(visitor.getJSON().toJSONString());
 		jsonWriter.close();
 	}
 
@@ -152,7 +151,7 @@ public class WikipediaAnalysis {
 		CategoryTreeModel model = new CategoryTreeModel(graph);
 
 		computeStatistics(graph);
-		
+
 		return model;
 	}
 
@@ -180,8 +179,9 @@ public class WikipediaAnalysis {
 		graph = extractor.extract();
 		return graph;
 	}
-	
-	public static ArrayList<Edge> getBlacklistedOrCommentedEdges(Graph graph) throws AlgorithmTerminatedException {
+
+	public static ArrayList<Edge> getBlacklistedOrCommentedEdges(Graph graph)
+			throws AlgorithmTerminatedException {
 		IterativeDepthFirstSearch dfs = new IterativeDepthFirstSearch(graph);
 		BlacklistedOrCommentedEdgeVisitor visitor = new BlacklistedOrCommentedEdgeVisitor();
 		dfs.addVisitor(visitor);

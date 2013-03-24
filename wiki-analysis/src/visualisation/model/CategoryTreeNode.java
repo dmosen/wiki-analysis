@@ -109,7 +109,7 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 	}
 
 	public int getSubcategoriesTransitive() {
-		return vertex.getAttribute("transitiveSubCategories");
+		return vertex.getAttribute("transitiveSubcategories");
 	}
 
 	public String[] getPageStrings() {

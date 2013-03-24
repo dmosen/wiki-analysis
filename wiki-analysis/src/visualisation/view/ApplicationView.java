@@ -18,6 +18,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import utils.WikipediaAnalysis;
 import visualisation.controller.Controller;
 import visualisation.model.CategoryTreeModel;
 import visualisation.view.extract.ExtractDialog;
@@ -33,6 +34,7 @@ import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.GraphIO;
 import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.Vertex;
+import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 
 /**
  * 
@@ -53,6 +55,7 @@ public class ApplicationView {
 	private JMenuItem mntmSave;
 
 	private JMenuItem mntmTable;
+	private JMenuItem mntmExportAsJson;
 
 	/**
 	 * Launch the application.
@@ -147,6 +150,9 @@ public class ApplicationView {
 		mntmSave = new JMenuItem("Save ...");
 		mnFile.add(mntmSave);
 		
+		mntmExportAsJson = new JMenuItem("Export as JSON ...");
+		mnFile.add(mntmExportAsJson);
+		
 		JMenu mnView = new JMenu("View");
 		menuBar.add(mnView);
 		
@@ -190,6 +196,30 @@ public class ApplicationView {
 			}
 		});
 		
+		mntmExportAsJson.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				fileChooser.setDialogTitle("Save JSON graph");
+				int value = fileChooser.showSaveDialog(frmCategoryTreeExtraction);
+				
+				if (value == JFileChooser.APPROVE_OPTION) {
+					File file = fileChooser.getSelectedFile();
+
+					try {
+						WikipediaAnalysis.saveGraphAsJSON(graph,file);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (AlgorithmTerminatedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+			}
+		});
+		
 		mntmTable.addActionListener(new ActionListener() {
 			
 			@Override
@@ -222,7 +252,7 @@ public class ApplicationView {
 	private void showSaveGraphDialog() {
 		fileChooser.setDialogTitle("Save graph");
 		int value = fileChooser.showSaveDialog(frmCategoryTreeExtraction);
-
+		
 		if (value == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 
@@ -232,7 +262,6 @@ public class ApplicationView {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
 		}
 	}
 

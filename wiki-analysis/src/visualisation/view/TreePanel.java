@@ -90,5 +90,4 @@ class MyCheckBoxTree extends CheckBoxTree {
 		}
 		return super.isCheckBoxVisible(path);
 	}
-
 }
