@@ -57,12 +57,12 @@ public class CSVVisitor extends DFSVisitorAdapter {
 		}
 
 		if (v.isInstanceOf(gp.pageNodeVC)) {
-			for (Edge e : v.incidences(gp.pageLinkEC, EdgeDirection.IN)) {
+			for (Edge e : v.incidences(gp.containsPageLinkEC, EdgeDirection.IN)) {
 				pageTable.append(v.getId() + "\t");
 				pageTable.append(v.getAttribute("title") + "\t");
 				pageTable.append(e.getAlpha().getId() + "\t");
 				pageTable.append(e.getAlpha().getAttribute("title") + "\t");
-				pageTable.append(v.getDegree(gp.pageLinkEC, EdgeDirection.IN) + "\n");
+				pageTable.append(v.getDegree(gp.containsPageLinkEC, EdgeDirection.IN) + "\n");
 			}
 		}
 	}

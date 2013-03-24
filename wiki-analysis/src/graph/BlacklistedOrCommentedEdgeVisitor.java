@@ -19,7 +19,7 @@ public class BlacklistedOrCommentedEdgeVisitor extends DFSVisitorAdapter {
 	@Override
 	public void visitEdge(Edge e) throws AlgorithmTerminatedException {
 		super.visitEdge(e);
-		if (e.isInstanceOf(GraphProperties.getInstance().subCategoryLinkEC)) {
+		if (e.isInstanceOf(GraphProperties.getInstance().subcategoryLinkEC)) {
 			if ((Boolean) e.getAttribute("blacklisted")
 					|| e.getAttribute("comment") != null) {
 				edges.add(e);

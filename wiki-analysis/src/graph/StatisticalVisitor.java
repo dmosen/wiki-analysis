@@ -57,12 +57,12 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 	@Override
 	public void visitEdge(Edge e) {
 		// count page links
-		if (e.isInstanceOf(gp.pageLinkEC)) {
+		if (e.isInstanceOf(gp.containsPageLinkEC)) {
 			pageLinks++;
 		}
 
 		// count sub category links
-		if (e.isInstanceOf(gp.subCategoryLinkEC)) {
+		if (e.isInstanceOf(gp.subcategoryLinkEC)) {
 			subcategoryLinks++;
 		}
 	}
@@ -74,7 +74,7 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 
 			// count in-links from parent categories which are not blacklisted
 			int parentCategories = 0;
-			for (Edge e : v.incidences(gp.subCategoryLinkEC, EdgeDirection.IN)) {
+			for (Edge e : v.incidences(gp.subcategoryLinkEC, EdgeDirection.IN)) {
 				if (!(Boolean) e.getAttribute("blacklisted")) {
 					parentCategories++;
 				}
@@ -82,18 +82,18 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 
 			// count out-links to sub categories which are not blacklisted
 			int subCategories = 0;
-			for (Edge e : v.incidences(gp.subCategoryLinkEC, EdgeDirection.OUT)) {
+			for (Edge e : v.incidences(gp.subcategoryLinkEC, EdgeDirection.OUT)) {
 				if (!(Boolean) e.getAttribute("blacklisted")) {
 					subCategories++;
 				}
 			}
 
 			// count pages contained in the current category
-			int pages = v.getDegree(gp.pageLinkEC, EdgeDirection.OUT);
+			int pages = v.getDegree(gp.containsPageLinkEC, EdgeDirection.OUT);
 
 			// set values for the current vertex
-			v.setAttribute("superCategories", parentCategories);
-			v.setAttribute("subCategories", subCategories);
+			v.setAttribute("parentCategories", parentCategories);
+			v.setAttribute("subcategories", subCategories);
 			v.setAttribute("pages", pages);
 
 			graphStats.setMaxPages(Math.max(pages, graphStats.getMaxPages()));

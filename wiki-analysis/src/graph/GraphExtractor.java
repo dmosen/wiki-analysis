@@ -107,8 +107,8 @@ public class GraphExtractor {
 			LinkedList<Vertex> path = new LinkedList<Vertex>();
 			path.addFirst(vertex);
 			do {
-				if (child.getDegree(gp.subCategoryLinkEC, EdgeDirection.IN) > 0) {
-					Edge e = child.getFirstIncidence(gp.subCategoryLinkEC,
+				if (child.getDegree(gp.subcategoryLinkEC, EdgeDirection.IN) > 0) {
+					Edge e = child.getFirstIncidence(gp.subcategoryLinkEC,
 							EdgeDirection.IN);
 					parent = e.getAlpha();
 					path.addFirst(parent);
@@ -130,18 +130,18 @@ public class GraphExtractor {
 				queue.remove(vertex);
 
 				// delete all sub category links pointing to the vertex
-				for (Edge e : vertex.incidences(gp.subCategoryLinkEC,
+				for (Edge e : vertex.incidences(gp.subcategoryLinkEC,
 						EdgeDirection.IN)) {
 					removeEdges.add(e);
 				}
 
 				// delete all page links pointing from the vertex to a page
-				for (Edge e : vertex.incidences(gp.pageLinkEC,
+				for (Edge e : vertex.incidences(gp.containsPageLinkEC,
 						EdgeDirection.OUT)) {
 					removeEdges.add(e);
 					// delete only these pages which are not contained in
 					// another category
-					if (e.getOmega().getDegree(gp.pageLinkEC, EdgeDirection.IN) == 1) {
+					if (e.getOmega().getDegree(gp.containsPageLinkEC, EdgeDirection.IN) == 1) {
 						removeVertices.add(e.getOmega());
 						pageMap.remove(e.getOmega().getAttribute("title"));
 					}
@@ -207,7 +207,7 @@ public class GraphExtractor {
 					} else {
 						pageVertex = pageMap.get(page);
 					}
-					graph.createEdge(gp.pageLinkEC, currentVertex, pageVertex);
+					graph.createEdge(gp.containsPageLinkEC, currentVertex, pageVertex);
 				}
 			}
 
@@ -225,14 +225,14 @@ public class GraphExtractor {
 					nextVertex.setAttribute("level", currentLevel + 1);
 					queue.add(nextVertex);
 					categoryMap.put(nextCategory, nextVertex);
-					graph.createEdge(gp.subCategoryLinkEC, currentVertex,
+					graph.createEdge(gp.subcategoryLinkEC, currentVertex,
 							nextVertex);
 				}
 				// if category already seen, add an edge only and report a frond
 				else {
 					System.out.println("Frond from " + currentCategory + " to "
 							+ nextCategory + " detected!");
-					graph.createEdge(gp.subCategoryLinkEC, currentVertex,
+					graph.createEdge(gp.subcategoryLinkEC, currentVertex,
 							categoryMap.get(nextCategory));
 				}
 			}

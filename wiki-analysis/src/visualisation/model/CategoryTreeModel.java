@@ -334,7 +334,7 @@ public class CategoryTreeModel extends DefaultTreeModel {
 
 				// mark edge inside graph as blacklisted
 				Edge removeEdge = null;
-				for (Edge e : vertex.incidences(gp.subCategoryLinkEC,
+				for (Edge e : vertex.incidences(gp.subcategoryLinkEC,
 						EdgeDirection.IN)) {
 					if (e.getAlpha().equals(parentVertex)
 							&& e.getOmega().equals(vertex)) {

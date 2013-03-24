@@ -39,7 +39,7 @@ public class ReachabilityCountVisitor implements BlacklistedGraphDFSVisitor {
 	@Override
 	public void leaveVertex(Vertex v) {
 		if (v.equals(root)) {
-			v.setAttribute("transitiveSubCategories", subcategoryCount);
+			v.setAttribute("transitiveSubcategories", subcategoryCount);
 			v.setAttribute("transitivePages", pagesCount);
 		}
 	}

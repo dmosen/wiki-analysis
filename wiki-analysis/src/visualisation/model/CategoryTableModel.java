@@ -68,7 +68,7 @@ public class CategoryTableModel extends AbstractTableModel {
 		Edge current = edge;
 
 		do {
-			for (Edge e : current.getAlpha().incidences(gp.subCategoryLinkEC,
+			for (Edge e : current.getAlpha().incidences(gp.subcategoryLinkEC,
 					EdgeDirection.IN)) {
 				if (!(Boolean) e.getAttribute("backwardArc")) {
 					current = e;
@@ -85,7 +85,7 @@ public class CategoryTableModel extends AbstractTableModel {
 	private int calculateIndegree(Vertex v) {
 		int indegree = 0;
 
-		for (Edge e : v.incidences(gp.subCategoryLinkEC, EdgeDirection.IN)) {
+		for (Edge e : v.incidences(gp.subcategoryLinkEC, EdgeDirection.IN)) {
 			if (!(Boolean) e.getAttribute("backwardArc")) {
 				indegree++;
 			}

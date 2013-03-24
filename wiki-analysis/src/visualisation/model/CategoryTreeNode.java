@@ -71,7 +71,7 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 		Edge parentEdge = null;
 
 		for (Edge e : child.incidences(
-				GraphProperties.getInstance().subCategoryLinkEC,
+				GraphProperties.getInstance().subcategoryLinkEC,
 				EdgeDirection.IN)) {
 			if (e.getAlpha().equals(parent) && e.getOmega().equals(child)) {
 				parentEdge = e;
@@ -93,7 +93,7 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 	}
 
 	public int getParentCategories() {
-		return vertex.getAttribute("superCategories");
+		return vertex.getAttribute("parentCategories");
 	}
 
 	public int getPages() {
@@ -105,7 +105,7 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 	}
 
 	public int getSubcategories() {
-		return vertex.getAttribute("subCategories");
+		return vertex.getAttribute("subcategories");
 	}
 
 	public int getSubcategoriesTransitive() {
@@ -114,10 +114,10 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 
 	public String[] getPageStrings() {
 		String[] result = new String[getVertex().getDegree(
-				GraphProperties.getInstance().pageLinkEC, EdgeDirection.OUT)];
+				GraphProperties.getInstance().containsPageLinkEC, EdgeDirection.OUT)];
 		int i = 0;
 		for (Edge e : getVertex().incidences(
-				GraphProperties.getInstance().pageLinkEC, EdgeDirection.OUT)) {
+				GraphProperties.getInstance().containsPageLinkEC, EdgeDirection.OUT)) {
 			result[i++] = ((String) e.getOmega().getAttribute("title"));
 		}
 		return result;
@@ -125,11 +125,11 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 
 	public String[] getParentCategoryStrings() {
 		String[] result = new String[getVertex().getDegree(
-				GraphProperties.getInstance().subCategoryLinkEC,
+				GraphProperties.getInstance().subcategoryLinkEC,
 				EdgeDirection.IN)];
 		int i = 0;
 		for (Edge e : getVertex().incidences(
-				GraphProperties.getInstance().subCategoryLinkEC,
+				GraphProperties.getInstance().subcategoryLinkEC,
 				EdgeDirection.IN)) {
 			if (!(Boolean) e.getAttribute("blacklisted")) {
 				result[i++] = ((String) e.getAlpha().getAttribute("title"));

@@ -59,7 +59,7 @@ public class CategoryTreeFactory {
 		}
 
 		for (Edge e : current.incidences(
-				GraphProperties.getInstance().subCategoryLinkEC,
+				GraphProperties.getInstance().subcategoryLinkEC,
 				EdgeDirection.OUT)) {
 			if (!(Boolean) e.getAttribute("blacklisted")) {
 

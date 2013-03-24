@@ -13,13 +13,13 @@ import de.uni_koblenz.jgralab.schema.VertexClass;
  */
 public class GraphProperties {
 
-	private static final String SCHEMA_FILE = "category-schema.tg";
+	private static final String SCHEMA_FILE = "category-graph-schema.tg";
 	public final Schema schema;
 
 	public final VertexClass categoryNodeVC;
 	public final VertexClass pageNodeVC;
-	public final EdgeClass subCategoryLinkEC;
-	public final EdgeClass pageLinkEC;
+	public final EdgeClass subcategoryLinkEC;
+	public final EdgeClass containsPageLinkEC;
 
 	private static GraphProperties instance = null;
 
@@ -46,8 +46,8 @@ public class GraphProperties {
 
 		categoryNodeVC = schema.getGraphClass().getVertexClass("Category");
 		pageNodeVC = schema.getGraphClass().getVertexClass("Page");
-		subCategoryLinkEC = schema.getGraphClass().getEdgeClass("SubCategory");
-		pageLinkEC = schema.getGraphClass().getEdgeClass("SubPage");
+		subcategoryLinkEC = schema.getGraphClass().getEdgeClass("Subcategory");
+		containsPageLinkEC = schema.getGraphClass().getEdgeClass("ContainsPage");
 	}
 
 }

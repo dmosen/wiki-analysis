@@ -56,7 +56,7 @@ public class BlacklistedGraphDFS {
 
 		for (Edge e : current.incidences(EdgeDirection.OUT)) {
 			// process only those edges which are not blacklisted
-			if (!e.isInstanceOf(gp.subCategoryLinkEC)
+			if (!e.isInstanceOf(gp.subcategoryLinkEC)
 					|| !(Boolean) e.getAttribute("blacklisted")) {
 
 				visitEdge(e);
