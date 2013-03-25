@@ -105,7 +105,6 @@ public class TableDialog extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
 				dispose();
 			}
 		});

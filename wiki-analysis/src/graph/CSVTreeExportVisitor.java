@@ -13,7 +13,7 @@ import de.uni_koblenz.jgralab.algolib.algorithms.search.visitors.DFSVisitorAdapt
  * @author dmosen@uni-koblenz.de
  *
  */
-public class CSVVisitor extends DFSVisitorAdapter {
+public class CSVTreeExportVisitor extends DFSVisitorAdapter {
 
 	StringBuilder categoryTable;
 	StringBuilder pageTable;

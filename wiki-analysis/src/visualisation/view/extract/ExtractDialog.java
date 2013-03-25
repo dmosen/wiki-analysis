@@ -290,7 +290,6 @@ public class ExtractDialog extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				extractor = null;
-				setVisible(false);
 				dispose();
 			}
 		});

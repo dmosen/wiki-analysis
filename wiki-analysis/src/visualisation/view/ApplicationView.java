@@ -46,7 +46,7 @@ public class ApplicationView {
 	private Controller controller;
 	private CategoryTreeModel model;
 	private Graph graph;
-		
+
 	private JFrame frmCategoryTreeExtraction;
 	private JFileChooser fileChooser;
 
@@ -149,13 +149,13 @@ public class ApplicationView {
 
 		mntmSave = new JMenuItem("Save ...");
 		mnFile.add(mntmSave);
-		
+
 		mntmExportAsJson = new JMenuItem("Export as JSON ...");
 		mnFile.add(mntmExportAsJson);
-		
+
 		JMenu mnView = new JMenu("View");
 		menuBar.add(mnView);
-		
+
 		mntmTable = new JMenuItem("Table ...");
 		mnView.add(mntmTable);
 
@@ -189,25 +189,27 @@ public class ApplicationView {
 				GraphExtractor extractor = dialog.showDialog();
 				if (extractor != null) {
 					graph = extractor.getGraph();
-					showSaveGraphDialog();
-					showSaveRemovedCategoriesDialog(extractor);
+					if (extractor.getRemovedCategoryPaths().size() > 0) {
+						showSaveRemovedCategoriesDialog(extractor);
+					}
 					controller.graphChanged(graph);
 				}
 			}
 		});
-		
+
 		mntmExportAsJson.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				fileChooser.setDialogTitle("Save JSON graph");
-				int value = fileChooser.showSaveDialog(frmCategoryTreeExtraction);
-				
+				int value = fileChooser
+						.showSaveDialog(frmCategoryTreeExtraction);
+
 				if (value == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
 
 					try {
-						WikipediaAnalysis.saveGraphAsJSON(graph,file);
+						WikipediaAnalysis.saveGraphAsJSON(graph, file);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -219,9 +221,9 @@ public class ApplicationView {
 
 			}
 		});
-		
+
 		mntmTable.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TableDialog dialog = new TableDialog(graph);
@@ -252,7 +254,7 @@ public class ApplicationView {
 	private void showSaveGraphDialog() {
 		fileChooser.setDialogTitle("Save graph");
 		int value = fileChooser.showSaveDialog(frmCategoryTreeExtraction);
-		
+
 		if (value == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 

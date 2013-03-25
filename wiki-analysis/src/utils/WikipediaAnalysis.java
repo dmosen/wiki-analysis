@@ -2,7 +2,7 @@ package utils;
 
 import graph.BlacklistedGraphDFS;
 import graph.BlacklistedOrCommentedEdgeVisitor;
-import graph.CSVVisitor;
+import graph.CSVTreeExportVisitor;
 import graph.GraphExtractor;
 import graph.GraphProperties;
 import graph.GraphStats;
@@ -98,7 +98,7 @@ public class WikipediaAnalysis {
 	public static void saveTables(Graph graph)
 			throws AlgorithmTerminatedException, IOException {
 		IterativeDepthFirstSearch dfs = new IterativeDepthFirstSearch(graph);
-		CSVVisitor visitor = new CSVVisitor();
+		CSVTreeExportVisitor visitor = new CSVTreeExportVisitor();
 		dfs.addVisitor(visitor);
 		dfs.execute();
 		BufferedWriter categoryTable = new BufferedWriter(new FileWriter(
