@@ -21,7 +21,8 @@ public class CategoryTreeFactory {
 	private static HashSet<Vertex> visitedVertices;
 	private static HashSet<Vertex> leftVertices;
 	private static CategoryTreeNode categoryTreeRoot;
-	private static CategoryTreeNode parent;
+	private static CategoryTreeNode parentNode;
+	private static Edge parentEdge;
 
 	/**
 	 * Builds a category tree from a given graph conforming to the schema
@@ -41,7 +42,8 @@ public class CategoryTreeFactory {
 		visitedVertices = new HashSet<Vertex>();
 		leftVertices = new HashSet<Vertex>();
 
-		parent = null;
+		parentNode = null;
+		parentEdge = null;
 
 		buildCategoryTreeModel(root);
 		return categoryTreeRoot;
@@ -49,13 +51,14 @@ public class CategoryTreeFactory {
 
 	private static void buildCategoryTreeModel(Vertex current) {
 
-		CategoryTreeNode categoryTreeNode = new CategoryTreeNode(current);
+		CategoryTreeNode categoryTreeNode = new CategoryTreeNode(current,
+				parentEdge);
 		visitedVertices.add(current);
 
-		if (parent == null) {
+		if (parentNode == null) {
 			categoryTreeRoot = categoryTreeNode;
 		} else {
-			parent.add(categoryTreeNode);
+			parentNode.add(categoryTreeNode);
 		}
 
 		for (Edge e : current.incidences(
@@ -63,7 +66,9 @@ public class CategoryTreeFactory {
 				EdgeDirection.OUT)) {
 			if (!(Boolean) e.getAttribute("blacklisted")) {
 
-				parent = categoryTreeNode;
+				parentNode = categoryTreeNode;
+				parentEdge = e;
+
 				Vertex next = e.getOmega();
 
 				// detect cycles

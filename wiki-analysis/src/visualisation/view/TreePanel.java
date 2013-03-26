@@ -40,6 +40,9 @@ public class TreePanel extends JPanel implements PropertyChangeListener {
 		add(scrollPane);
 
 		tree = new MyCheckBoxTree();
+
+		controller.setCheckBoxTreeSelectionModel(tree.getCheckBoxTreeSelectionModel());
+		
 		tree.setDigIn(false);
 		tree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -47,7 +50,7 @@ public class TreePanel extends JPanel implements PropertyChangeListener {
 
 		tree.setModel(model);
 		tree.setCellRenderer(new CheckBoxRenderer(model));
-
+		
 		addComponentListeners();
 	}
 
@@ -57,14 +60,6 @@ public class TreePanel extends JPanel implements PropertyChangeListener {
 			@Override
 			public void valueChanged(TreeSelectionEvent e) {
 				controller.treeSelectionChanged(e);
-			}
-		});
-		
-		tree.getCheckBoxTreeSelectionModel().addTreeSelectionListener(new TreeSelectionListener() {
-			
-			@Override
-			public void valueChanged(TreeSelectionEvent e) {
-				controller.treeBlacklistingChanged(e);
 			}
 		});
 	}

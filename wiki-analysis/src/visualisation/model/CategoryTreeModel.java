@@ -1,6 +1,5 @@
 package visualisation.model;
 
-import graph.GraphProperties;
 import graph.GraphStats;
 
 import java.beans.PropertyChangeListener;
@@ -10,17 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 import utils.CategoryTreeFactory;
 import utils.WikipediaAnalysis;
 import visualisation.controller.Controller;
 import visualisation.controller.HighlightingMode;
-import de.uni_koblenz.jgralab.Edge;
-import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.GraphIO;
 import de.uni_koblenz.jgralab.GraphIOException;
-import de.uni_koblenz.jgralab.Vertex;
 
 /**
  * 
@@ -33,7 +30,6 @@ public class CategoryTreeModel extends DefaultTreeModel {
 	private PropertyChangeSupport propertyChangeSupport;
 
 	private Graph graph;
-	private GraphProperties gp;
 	private GraphStats stats;
 
 	private CategoryTreeNode selectedNode;
@@ -43,8 +39,6 @@ public class CategoryTreeModel extends DefaultTreeModel {
 
 	public CategoryTreeModel(Graph graph) {
 		super(CategoryTreeFactory.buildCategoryTreeModel(graph));
-
-		gp = GraphProperties.getInstance();
 
 		propertyChangeSupport = new PropertyChangeSupport(this);
 
@@ -326,36 +320,29 @@ public class CategoryTreeModel extends DefaultTreeModel {
 		}
 	}
 
-	public void removeBlacklistedCategories() {
-		
-		if (blacklistedNodes.size() > 0) {
-			for (CategoryTreeNode node : blacklistedNodes) {
+	public void removeBlacklistedCategories(TreePath[] paths) {
+
+		for (int i = 0; i < paths.length; i++) {
+			if (paths[i].getLastPathComponent() instanceof CategoryTreeNode) {
+				CategoryTreeNode node = (CategoryTreeNode) paths[i]
+						.getLastPathComponent();
+
 				if (node.isRoot()) {
 					continue;
 				}
-				Vertex parentVertex = node.getParent().getVertex();
-				Vertex vertex = node.getVertex();
+				node.setBlacklisting(true);
 
-				// mark edge inside graph as blacklisted
-				Edge removeEdge = null;
-				for (Edge e : vertex.incidences(gp.subcategoryLinkEC,
-						EdgeDirection.IN)) {
-					if (e.getAlpha().equals(parentVertex)
-							&& e.getOmega().equals(vertex)) {
-						removeEdge = e;
-					}
-				}
+				CategoryTreeNode parent = node.getParent();
+				int index = parent.getIndex(node);
 
-				if (removeEdge != null) {
-					removeEdge.setAttribute("blacklisted", true);
-				}
+				node.removeFromParent();
+
+				fireTreeNodesRemoved(this, parent.getPath(),
+						new int[] { index }, new CategoryTreeNode[] { node });
 			}
-			// rebuild the model for the changed graph
-			setRoot(CategoryTreeFactory.buildCategoryTreeModel(graph));
-			stats = WikipediaAnalysis.computeStatistics(graph);
-
-			firePropertyChangeEvent(Controller.graphChange, null, graph);
 		}
+		stats = WikipediaAnalysis.computeStatistics(graph);
+		firePropertyChangeEvent(Controller.statsChange, null, stats);
 	}
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {

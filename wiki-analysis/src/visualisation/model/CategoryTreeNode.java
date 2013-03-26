@@ -2,6 +2,8 @@ package visualisation.model;
 
 import graph.GraphProperties;
 
+import java.util.ArrayList;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import de.uni_koblenz.jgralab.Edge;
@@ -16,20 +18,28 @@ import de.uni_koblenz.jgralab.Vertex;
 @SuppressWarnings("serial")
 public class CategoryTreeNode extends DefaultMutableTreeNode {
 
+	GraphProperties gp = GraphProperties.getInstance();
+	
 	private Vertex vertex;
-	private boolean blacklisted;
+	private Edge edge;
 
-	public CategoryTreeNode(Vertex vertex) {
-		super(vertex);
+	public CategoryTreeNode(Vertex vertex, Edge edge) {
+		super(edge);
 		this.vertex = vertex;
+		this.edge = edge;
 	}
 
 	public boolean isBlacklisted() {
-		return blacklisted;
+		if (edge != null) {
+			return edge.getAttribute("blacklisted");
+		}
+		return false;
 	}
 
 	public void setBlacklisting(boolean value) {
-		this.blacklisted = value;
+		if (edge != null) {
+			edge.setAttribute("blacklisted", value);
+		}
 	}
 
 	public String getTitle() {
@@ -37,51 +47,14 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 	}
 
 	public String getComment() {
-		Edge parentEdge = getParentEdge();
-
-		if (parentEdge != null) {
-			return parentEdge.getAttribute("comment");
-		}
-
 		if (isRoot()) {
 			return "root category";
 		}
-
-		return "";
+		return edge.getAttribute("comment");
 	}
 
 	public void setComment(String comment) {
-		Edge parentEdge = getParentEdge();
-
-		if (parentEdge != null) {
-			if (comment.isEmpty()) {
-				parentEdge.setAttribute("comment", null);
-			} else {
-				parentEdge.setAttribute("comment", comment);
-			}
-		}
-	}
-
-	private Edge getParentEdge() {
-		Vertex child = getVertex();
-		Vertex parent = null;
-		if (getParent() != null) {
-			parent = getParent().getVertex();
-		}
-		Edge parentEdge = null;
-
-		for (Edge e : child.incidences(
-				GraphProperties.getInstance().subcategoryLinkEC,
-				EdgeDirection.IN)) {
-			if (e.getAlpha().equals(parent) && e.getOmega().equals(child)) {
-				parentEdge = e;
-			}
-		}
-		return parentEdge;
-	}
-
-	public Vertex getVertex() {
-		return vertex;
+		edge.setAttribute("comment", comment);
 	}
 
 	public CategoryTreeNode getParent() {
@@ -90,10 +63,6 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 
 	public CategoryTreeNode getChildAt(int index) {
 		return (CategoryTreeNode) super.getChildAt(index);
-	}
-
-	public int getParentCategories() {
-		return vertex.getAttribute("parentCategories");
 	}
 
 	public int getPages() {
@@ -113,29 +82,28 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 	}
 
 	public String[] getPageStrings() {
-		String[] result = new String[getVertex().getDegree(
-				GraphProperties.getInstance().containsPageLinkEC, EdgeDirection.OUT)];
+		String[] result = new String[vertex.getDegree(
+				GraphProperties.getInstance().containsPageLinkEC,
+				EdgeDirection.OUT)];
 		int i = 0;
-		for (Edge e : getVertex().incidences(
-				GraphProperties.getInstance().containsPageLinkEC, EdgeDirection.OUT)) {
+		for (Edge e : vertex.incidences(
+				GraphProperties.getInstance().containsPageLinkEC,
+				EdgeDirection.OUT)) {
 			result[i++] = ((String) e.getOmega().getAttribute("title"));
 		}
 		return result;
 	}
 
 	public String[] getParentCategoryStrings() {
-		String[] result = new String[getVertex().getDegree(
-				GraphProperties.getInstance().subcategoryLinkEC,
-				EdgeDirection.IN)];
-		int i = 0;
-		for (Edge e : getVertex().incidences(
+		ArrayList<String> results = new ArrayList<String>();
+		for (Edge e : vertex.incidences(
 				GraphProperties.getInstance().subcategoryLinkEC,
 				EdgeDirection.IN)) {
 			if (!(Boolean) e.getAttribute("blacklisted")) {
-				result[i++] = ((String) e.getAlpha().getAttribute("title"));
+				results.add((String) e.getAlpha().getAttribute("title"));
 			}
 		}
-		return result;
+		return results.toArray(new String[results.size()]);
 	}
 
 	@Override

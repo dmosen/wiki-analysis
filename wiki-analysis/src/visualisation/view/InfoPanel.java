@@ -304,16 +304,16 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 			updateLegend();
 		}
 
-		if (property.equals(Controller.graphChange)) {
+		if (property.equals(Controller.graphChange)
+				| property.equals(Controller.statsChange)) {
 			updateOverallValues();
 			updateLegend();
 			clearSelectionValues();
 		}
-
+		
 		if (property.equals(Controller.commentChange)) {
 			updateComment();
 		}
-
 	}
 
 	private void updateOverallValues() {
@@ -343,16 +343,18 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		lblSubcategoriesValue.setText("" + node.getSubcategories());
 		lblSubcategoriesTransitiveValue.setText(""
 				+ node.getSubcategoriesTransitive());
-		lblParentCategoriesValue.setText("" + node.getParentCategories());
 		pagesList.setListData(node.getPageStrings());
-		parentsList.setListData(node.getParentCategoryStrings());
+
+		String[] parentCategories = node.getParentCategoryStrings();
+		lblParentCategoriesValue.setText("" + parentCategories.length);
+		parentsList.setListData(parentCategories);
 
 		if (model.getSelectedNode().isRoot()) {
 			btnEditComment.setEnabled(false);
 		} else {
 			btnEditComment.setEnabled(true);
 		}
-		
+
 		updateComment();
 	}
 
