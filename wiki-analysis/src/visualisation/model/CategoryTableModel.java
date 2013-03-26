@@ -1,30 +1,25 @@
 package visualisation.model;
 
-import graph.GraphProperties;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.table.AbstractTableModel;
 
+import schemas.categoryschema.Category;
+import schemas.categoryschema.CategoryGraph;
+import schemas.categoryschema.Subcategory;
 import utils.WikipediaAnalysis;
-import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.EdgeDirection;
-import de.uni_koblenz.jgralab.Graph;
-import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 
 @SuppressWarnings("serial")
 public class CategoryTableModel extends AbstractTableModel {
 
-	private GraphProperties gp;
-
 	private static String[] headings = new String[] { "Path", "Title",
 			"Blacklisting", "Comment" };
-	private ArrayList<Edge> edges = new ArrayList<Edge>();
+	private ArrayList<Subcategory> edges = new ArrayList<Subcategory>();
 
-	public CategoryTableModel(Graph graph) {
-		gp = GraphProperties.getInstance();
+	public CategoryTableModel(CategoryGraph graph) {
 		try {
 			edges = WikipediaAnalysis.getBlacklistedOrCommentedEdges(graph);
 		} catch (AlgorithmTerminatedException e) {
@@ -50,30 +45,29 @@ public class CategoryTableModel extends AbstractTableModel {
 			return getPath(edges.get(rowIndex));
 
 		case 1:
-			return getTitle(edges.get(rowIndex));
+			return edges.get(rowIndex).getOmega().get_title();
 
 		case 2:
-			return getBlacklisting(edges.get(rowIndex));
+			return edges.get(rowIndex).is_blacklisted();
 
 		case 3:
-			return getComment(edges.get(rowIndex));
+			return edges.get(rowIndex).get_comment();
 		}
 		return "";
 	}
 
-	private Object getPath(Edge edge) {
+	private Object getPath(Subcategory edge) {
 		LinkedList<String> path = new LinkedList<String>();
-		path.addFirst((String) edge.getAlpha().getAttribute("title"));
+		path.addFirst((String) edge.getAlpha().get_title());
 
-		Edge current = edge;
+		Subcategory current = edge;
 
 		do {
-			for (Edge e : current.getAlpha().incidences(gp.subcategoryLinkEC,
+			for (Subcategory e : current.getAlpha().getSubcategoryIncidences(
 					EdgeDirection.IN)) {
-				if (!(Boolean) e.getAttribute("backwardArc")) {
+				if (!e.is_backwardArc()) {
 					current = e;
-					path.addFirst((String) current.getAlpha().getAttribute(
-							"title"));
+					path.addFirst((String) current.getAlpha().get_title());
 					break;
 				}
 			}
@@ -82,11 +76,11 @@ public class CategoryTableModel extends AbstractTableModel {
 		return path.toString();
 	}
 
-	private int calculateIndegree(Vertex v) {
+	private int calculateIndegree(Category v) {
 		int indegree = 0;
 
-		for (Edge e : v.incidences(gp.subcategoryLinkEC, EdgeDirection.IN)) {
-			if (!(Boolean) e.getAttribute("backwardArc")) {
+		for (Subcategory e : v.getSubcategoryIncidences(EdgeDirection.IN)) {
+			if (!e.is_backwardArc()) {
 				indegree++;
 			}
 		}
@@ -124,32 +118,19 @@ public class CategoryTableModel extends AbstractTableModel {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 		case 2:
-			edges.get(rowIndex).setAttribute("blacklisted", aValue);
+			edges.get(rowIndex).set_blacklisted((Boolean) aValue);
 			fireTableCellUpdated(rowIndex, columnIndex);
 			break;
 
 		case 3:
-			edges.get(rowIndex).setAttribute("comment", aValue);
+			edges.get(rowIndex).set_comment((String) aValue);
 			fireTableCellUpdated(rowIndex, columnIndex);
 			break;
 		}
 	}
-
-	private Object getTitle(Edge edge) {
-		return edge.getOmega().getAttribute("title");
-	}
-
-	private Object getComment(Edge edge) {
-		return edge.getAttribute("comment");
-	}
-
-	private Object getBlacklisting(Edge edge) {
-		return edge.getAttribute("blacklisted");
-	}
-
 }

@@ -1,13 +1,12 @@
 package utils;
 
-import graph.GraphProperties;
-
 import java.util.HashSet;
 
+import schemas.categoryschema.Category;
+import schemas.categoryschema.CategoryGraph;
+import schemas.categoryschema.Subcategory;
 import visualisation.model.CategoryTreeNode;
-import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.EdgeDirection;
-import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 
@@ -22,7 +21,7 @@ public class CategoryTreeFactory {
 	private static HashSet<Vertex> leftVertices;
 	private static CategoryTreeNode categoryTreeRoot;
 	private static CategoryTreeNode parentNode;
-	private static Edge parentEdge;
+	private static Subcategory parentEdge;
 
 	/**
 	 * Builds a category tree from a given graph conforming to the schema
@@ -35,9 +34,9 @@ public class CategoryTreeFactory {
 	 *         tree
 	 * @throws AlgorithmTerminatedException
 	 */
-	public static CategoryTreeNode buildCategoryTreeModel(Graph graph) {
+	public static CategoryTreeNode buildCategoryTreeModel(CategoryGraph graph) {
 
-		Vertex root = graph.getFirstVertex();
+		Category root = graph.getFirstCategory();
 
 		visitedVertices = new HashSet<Vertex>();
 		leftVertices = new HashSet<Vertex>();
@@ -49,7 +48,7 @@ public class CategoryTreeFactory {
 		return categoryTreeRoot;
 	}
 
-	private static void buildCategoryTreeModel(Vertex current) {
+	private static void buildCategoryTreeModel(Category current) {
 
 		CategoryTreeNode categoryTreeNode = new CategoryTreeNode(current,
 				parentEdge);
@@ -61,28 +60,26 @@ public class CategoryTreeFactory {
 			parentNode.add(categoryTreeNode);
 		}
 
-		for (Edge e : current.incidences(
-				GraphProperties.getInstance().subcategoryLinkEC,
-				EdgeDirection.OUT)) {
-			if (!(Boolean) e.getAttribute("blacklisted")) {
+		for (Subcategory e : current
+				.getSubcategoryIncidences(EdgeDirection.OUT)) {
+			if (!e.is_blacklisted()) {
 
 				parentNode = categoryTreeNode;
 				parentEdge = e;
 
-				Vertex next = e.getOmega();
+				Category next = e.getOmega();
 
 				// detect cycles
 				if (visitedVertices.contains(next)
 						&& !leftVertices.contains(next)) {
-					e.setAttribute("blacklisted", true);
-					e.setAttribute("backwardArc", true);
-					if (e.getAttribute("comment") == null) {
-						e.setAttribute("comment",
-								"blacklisted by cycle detection");
+					e.set_blacklisted(true);
+					e.set_backwardArc(true);
+					if (e.get_comment() == null) {
+						e.set_comment("blacklisted by cycle detection");
 					}
 					System.out.println("Cycle detected from "
-							+ e.getAlpha().getAttribute("title") + " to "
-							+ e.getOmega().getAttribute("title") + ".");
+							+ e.getAlpha().get_title() + " to "
+							+ e.getOmega().get_title() + ".");
 				} else {
 					buildCategoryTreeModel(next);
 				}

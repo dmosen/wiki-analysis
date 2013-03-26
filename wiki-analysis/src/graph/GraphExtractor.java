@@ -10,6 +10,12 @@ import java.util.List;
 
 import org.xml.sax.SAXException;
 
+import schemas.categoryschema.Category;
+import schemas.categoryschema.CategoryGraph;
+import schemas.categoryschema.CategorySchema;
+import schemas.categoryschema.ContainsPage;
+import schemas.categoryschema.Page;
+import schemas.categoryschema.Subcategory;
 import utils.WikipediaAPI;
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.EdgeDirection;
@@ -39,15 +45,14 @@ public class GraphExtractor {
 	private PropertyChangeSupport propertyChangeSupport;
 
 	private String rootCategory;
-	private Graph graph;
-	private GraphProperties gp;
-	private LinkedList<Vertex> queue;
+	private CategoryGraph graph;
+	private LinkedList<Category> queue;
 	private int maxLevel;
-	private HashMap<String, Vertex> categoryMap;
-	private HashMap<String, Vertex> pageMap;
+	private HashMap<String, Category> categoryMap;
+	private HashMap<String, Page> pageMap;
 	private boolean extractPages;
 
-	private List<List<Vertex>> removedCategoryPaths;
+	private List<List<Category>> removedCategoryPaths;
 
 	public GraphExtractor(String rootCategory) {
 		this(rootCategory, Integer.MAX_VALUE);
@@ -61,15 +66,15 @@ public class GraphExtractor {
 		this.propertyChangeSupport = new PropertyChangeSupport(this);
 		this.rootCategory = rootCategory;
 		this.maxLevel = maxLevel;
-		removedCategoryPaths = new ArrayList<List<Vertex>>();
+		removedCategoryPaths = new ArrayList<List<Category>>();
 		extractPages = true;
 	}
 
-	public Graph getGraph() {
+	public CategoryGraph getGraph() {
 		return graph;
 	}
 
-	public LinkedList<Vertex> getQueue() {
+	public LinkedList<Category> getQueue() {
 		return queue;
 	}
 
@@ -81,7 +86,7 @@ public class GraphExtractor {
 		this.maxLevel = maxLevel;
 	}
 
-	public List<List<Vertex>> getRemovedCategoryPaths() {
+	public List<List<Category>> getRemovedCategoryPaths() {
 		return removedCategoryPaths;
 	}
 
@@ -98,18 +103,18 @@ public class GraphExtractor {
 	 *            the vertex to be removed from the current maxLevel
 	 * @return true if the vertex was removed, false otherwise
 	 */
-	public boolean removeAtMaxLevel(Vertex vertex) {
+	public boolean removeAtMaxLevel(Category vertex) {
 		if (vertex != null && queue.contains(vertex)) {
 
-			Vertex child = vertex;
-			Vertex parent = null;
+			Category child = vertex;
+			Category parent = null;
 
-			LinkedList<Vertex> path = new LinkedList<Vertex>();
+			LinkedList<Category> path = new LinkedList<Category>();
 			path.addFirst(vertex);
 			do {
-				if (child.getDegree(gp.subcategoryLinkEC, EdgeDirection.IN) > 0) {
-					Edge e = child.getFirstIncidence(gp.subcategoryLinkEC,
-							EdgeDirection.IN);
+				if (child.getDegree(Subcategory.EC, EdgeDirection.IN) > 0) {
+					Subcategory e = child
+							.getFirstSubcategoryIncidence(EdgeDirection.IN);
 					parent = e.getAlpha();
 					path.addFirst(parent);
 					child = parent;
@@ -126,24 +131,25 @@ public class GraphExtractor {
 
 				// delete the vertex itself
 				removeVertices.add(vertex);
-				categoryMap.remove(vertex.getAttribute("title"));
+				categoryMap.remove(vertex.get_title());
 				queue.remove(vertex);
 
-				// delete all sub category links pointing to the vertex
-				for (Edge e : vertex.incidences(gp.subcategoryLinkEC,
-						EdgeDirection.IN)) {
+				// delete all subcategory links pointing to the vertex
+				for (Subcategory e : vertex
+						.getSubcategoryIncidences(EdgeDirection.IN)) {
 					removeEdges.add(e);
 				}
 
 				// delete all page links pointing from the vertex to a page
-				for (Edge e : vertex.incidences(gp.containsPageLinkEC,
-						EdgeDirection.OUT)) {
+				for (ContainsPage e : vertex
+						.getContainsPageIncidences(EdgeDirection.OUT)) {
 					removeEdges.add(e);
 					// delete only these pages which are not contained in
 					// another category
-					if (e.getOmega().getDegree(gp.containsPageLinkEC, EdgeDirection.IN) == 1) {
+					if (e.getOmega().getDegree(ContainsPage.EC,
+							EdgeDirection.IN) == 1) {
 						removeVertices.add(e.getOmega());
-						pageMap.remove(e.getOmega().getAttribute("title"));
+						pageMap.remove(e.getOmega().get_title());
 					}
 				}
 
@@ -176,21 +182,21 @@ public class GraphExtractor {
 		// bfs
 		while (!queue.isEmpty()) {
 
-			Vertex currentVertex = queue.peek();
+			Category currentVertex = queue.peek();
 			currentCategory = currentVertex.getAttribute("title");
 			currentLevel = currentVertex.getAttribute("level");
-			
+
 			// stop if queue contains all categories from maxLevel
 			if (currentLevel >= maxLevel) {
 				return graph;
 			}
-			
+
 			propertyChangeSupport.firePropertyChange(
-					GraphExtractor.categoryChange, null,
-					currentLevel + " " + currentCategory);
+					GraphExtractor.categoryChange, null, currentLevel + " "
+							+ currentCategory);
 
 			System.out.println(currentLevel + " " + currentCategory);
-			
+
 			queue.poll();
 
 			if (extractPages) {
@@ -199,40 +205,38 @@ public class GraphExtractor {
 
 				// add all contained pages to the category
 				for (String page : pages) {
-					Vertex pageVertex;
+					Page pageVertex;
 					if (!pageMap.containsKey(page)) {
-						pageVertex = graph.createVertex(gp.pageNodeVC);
-						pageVertex.setAttribute("title", page);
+						pageVertex = graph.createPage();
+						pageVertex.set_title(page);
 						pageMap.put(page, pageVertex);
 					} else {
 						pageVertex = pageMap.get(page);
 					}
-					graph.createEdge(gp.containsPageLinkEC, currentVertex, pageVertex);
+					graph.createContainsPage(currentVertex, pageVertex);
 				}
 			}
 
 			List<String> subCategories = WikipediaAPI
-					.getSubCategories((String) currentVertex
-							.getAttribute("title"));
+					.getSubCategories(currentVertex.get_title());
 
 			// add all next categories to the queue if not seen already
 			for (String nextCategory : subCategories) {
 				// if category not seen already and level < maximum level, add
 				// new vertex and edge
 				if (!categoryMap.containsKey(nextCategory)) {
-					Vertex nextVertex = graph.createVertex(gp.categoryNodeVC);
-					nextVertex.setAttribute("title", nextCategory);
-					nextVertex.setAttribute("level", currentLevel + 1);
+					Category nextVertex = graph.createCategory();
+					nextVertex.set_title(nextCategory);
+					nextVertex.set_level(currentLevel + 1);
 					queue.add(nextVertex);
 					categoryMap.put(nextCategory, nextVertex);
-					graph.createEdge(gp.subcategoryLinkEC, currentVertex,
-							nextVertex);
+					graph.createSubcategory(currentVertex, nextVertex);
 				}
 				// if category already seen, add an edge only and report a frond
 				else {
 					System.out.println("Frond from " + currentCategory + " to "
 							+ nextCategory + " detected!");
-					graph.createEdge(gp.subcategoryLinkEC, currentVertex,
+					graph.createSubcategory(currentVertex,
 							categoryMap.get(nextCategory));
 				}
 			}
@@ -242,19 +246,19 @@ public class GraphExtractor {
 	}
 
 	private void initBfs() {
-		gp = GraphProperties.getInstance();
 
 		// Create graph conforming to the schema
-		graph = gp.schema.createGraph(ImplementationType.GENERIC);
+		CategorySchema schema = CategorySchema.instance();
+		graph = schema.createCategoryGraph(ImplementationType.STANDARD);
 
-		categoryMap = new HashMap<String, Vertex>();
+		categoryMap = new HashMap<String, Category>();
 
-		pageMap = new HashMap<String, Vertex>();
+		pageMap = new HashMap<String, Page>();
 
 		// Create first vertex
-		Vertex root = graph.createVertex(gp.categoryNodeVC);
-		root.setAttribute("title", rootCategory);
-		root.setAttribute("level", 0);
+		Category root = graph.createCategory();
+		root.set_title(rootCategory);
+		root.set_level(0);
 		propertyChangeSupport.firePropertyChange(GraphExtractor.levelChange,
 				null, 0);
 
@@ -262,7 +266,7 @@ public class GraphExtractor {
 		categoryMap.put(rootCategory, root);
 
 		// init the queue with the root node
-		queue = new LinkedList<Vertex>();
+		queue = new LinkedList<Category>();
 		queue.add(root);
 	}
 

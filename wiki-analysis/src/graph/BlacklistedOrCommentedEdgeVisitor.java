@@ -2,6 +2,7 @@ package graph;
 
 import java.util.ArrayList;
 
+import schemas.categoryschema.Subcategory;
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 import de.uni_koblenz.jgralab.algolib.algorithms.search.visitors.DFSVisitorAdapter;
@@ -14,20 +15,20 @@ import de.uni_koblenz.jgralab.algolib.algorithms.search.visitors.DFSVisitorAdapt
  */
 public class BlacklistedOrCommentedEdgeVisitor extends DFSVisitorAdapter {
 
-	ArrayList<Edge> edges = new ArrayList<Edge>();
+	ArrayList<Subcategory> edges = new ArrayList<Subcategory>();
 
 	@Override
 	public void visitEdge(Edge e) throws AlgorithmTerminatedException {
 		super.visitEdge(e);
-		if (e.isInstanceOf(GraphProperties.getInstance().subcategoryLinkEC)) {
-			if ((Boolean) e.getAttribute("blacklisted")
-					|| e.getAttribute("comment") != null) {
-				edges.add(e);
+		if (e.isInstanceOf(Subcategory.EC)) {
+			Subcategory s = (Subcategory) e;
+			if (s.is_blacklisted() || s.get_comment() != null) {
+				edges.add(s);
 			}
 		}
 	}
 
-	public ArrayList<Edge> getEdges() {
+	public ArrayList<Subcategory> getEdges() {
 		return edges;
 	}
 }

@@ -1,23 +1,26 @@
 package visualisation.view.extract;
 
+import schemas.categoryschema.Category;
+
 import com.jidesoft.swing.Selectable;
 
 import de.uni_koblenz.jgralab.Vertex;
 
 /**
  * This class wraps a {@link Vertex} which must contain the attribute
- * <code>title</code> of type {@link String}. Therefore it is not very type safe.
+ * <code>title</code> of type {@link String}. Therefore it is not very type
+ * safe.
  * 
  * @author dmosen
  * 
  */
 class CheckBoxListItem implements Selectable {
 
-	private Vertex vertex;
+	private Category vertex;
 	private boolean selected;
 	private boolean enabled;
 
-	protected CheckBoxListItem(Vertex vertex) {
+	protected CheckBoxListItem(Category vertex) {
 		this.vertex = vertex;
 		selected = false;
 		enabled = true;
@@ -50,10 +53,10 @@ class CheckBoxListItem implements Selectable {
 
 	@Override
 	public String toString() {
-		return vertex.getAttribute("title");
+		return vertex.get_title();
 	}
 
-	public Vertex getVertex() {
+	public Category getVertex() {
 		return vertex;
 	}
 }

@@ -4,7 +4,6 @@ import graph.BlacklistedGraphDFS;
 import graph.BlacklistedOrCommentedEdgeVisitor;
 import graph.CSVTreeExportVisitor;
 import graph.GraphExtractor;
-import graph.GraphProperties;
 import graph.GraphStats;
 import graph.JSONGraphExportVisitor;
 import graph.ReachabilityCountVisitor;
@@ -18,14 +17,17 @@ import java.util.ArrayList;
 
 import org.xml.sax.SAXException;
 
+import schemas.categoryschema.Category;
+import schemas.categoryschema.CategoryGraph;
+import schemas.categoryschema.CategorySchema;
+import schemas.categoryschema.Subcategory;
 import visualisation.model.CategoryTreeModel;
 import visualisation.model.CategoryTreeNode;
-import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.GraphIO;
 import de.uni_koblenz.jgralab.GraphIOException;
+import de.uni_koblenz.jgralab.ImplementationType;
 import de.uni_koblenz.jgralab.NoSuchAttributeException;
-import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 import de.uni_koblenz.jgralab.algolib.algorithms.search.IterativeDepthFirstSearch;
 
@@ -67,7 +69,7 @@ public class WikipediaAnalysis {
 	 * @param graph
 	 * @return
 	 */
-	public static GraphStats computeStatistics(Graph graph) {
+	public static GraphStats computeStatistics(CategoryGraph graph) {
 		// Calculate simple statistics for the graph
 		BlacklistedGraphDFS dfs = new BlacklistedGraphDFS();
 		StatisticalVisitor statisticalVisitor = new StatisticalVisitor(true);
@@ -79,11 +81,9 @@ public class WikipediaAnalysis {
 		// Calculate reachability count for every vertex
 		ReachabilityCountVisitor reachabilityCountVisitor = new ReachabilityCountVisitor();
 		dfs.addVisitor(reachabilityCountVisitor);
-		for (Vertex vertex : graph
-				.vertices(GraphProperties.getInstance().categoryNodeVC)) {
+		for (Category vertex : graph.getCategoryVertices()) {
 			dfs.execute(graph, vertex);
 		}
-
 		return stats;
 	}
 
@@ -125,9 +125,11 @@ public class WikipediaAnalysis {
 	 */
 	public static CategoryTreeModel createCategoryTreeModel(File file) {
 		// Load graph from file
-		Graph graph = null;
+		CategoryGraph graph = null;
 		try {
-			graph = GraphIO.loadGraphFromFile(file.getAbsolutePath(), null);
+			graph = GraphIO.loadGraphFromFile(file.getAbsolutePath(),
+					CategorySchema.instance(), ImplementationType.STANDARD,
+					null);
 		} catch (GraphIOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -146,7 +148,7 @@ public class WikipediaAnalysis {
 	 * @param graph
 	 * @return the corresponding category tree model
 	 */
-	public static CategoryTreeModel createCategoryTreeModel(Graph graph) {
+	public static CategoryTreeModel createCategoryTreeModel(CategoryGraph graph) {
 
 		CategoryTreeModel model = new CategoryTreeModel(graph);
 
@@ -180,8 +182,8 @@ public class WikipediaAnalysis {
 		return graph;
 	}
 
-	public static ArrayList<Edge> getBlacklistedOrCommentedEdges(Graph graph)
-			throws AlgorithmTerminatedException {
+	public static ArrayList<Subcategory> getBlacklistedOrCommentedEdges(
+			Graph graph) throws AlgorithmTerminatedException {
 		IterativeDepthFirstSearch dfs = new IterativeDepthFirstSearch(graph);
 		BlacklistedOrCommentedEdgeVisitor visitor = new BlacklistedOrCommentedEdgeVisitor();
 		dfs.addVisitor(visitor);

@@ -19,6 +19,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import schemas.categoryschema.Category;
 import utils.WikipediaAPI;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -26,8 +27,6 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jidesoft.swing.CheckBoxListWithSelectable;
-
-import de.uni_koblenz.jgralab.Vertex;
 
 /**
  * 
@@ -71,25 +70,17 @@ public class ExtractDialog extends JDialog {
 				ColumnSpec.decode("max(40dlu;pref)"),
 				ColumnSpec.decode("max(100dlu;pref)"),
 				ColumnSpec.decode("pref:grow"),
-				FormFactory.RELATED_GAP_COLSPEC,},
-			new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				RowSpec.decode("12dlu"),
-				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_COLSPEC, }, new RowSpec[] {
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				RowSpec.decode("12dlu"), FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("default:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.PREF_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,});
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC, FormFactory.PREF_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC, });
 		contentPanel.setLayout(fl_contentPanel);
 		{
 			JLabel lblRootCategory = new JLabel("Root category");
@@ -121,7 +112,8 @@ public class ExtractDialog extends JDialog {
 			contentPanel.add(lblLevelValue, "4, 6");
 		}
 		{
-			lblSelectCategoriesTo = new JLabel("Select categories to be excluded:");
+			lblSelectCategoriesTo = new JLabel(
+					"Select categories to be excluded:");
 			lblSelectCategoriesTo.setFont(new Font("Dialog", Font.ITALIC, 12));
 			contentPanel.add(lblSelectCategoriesTo, "2, 8, 5, 1");
 		}
@@ -176,7 +168,7 @@ public class ExtractDialog extends JDialog {
 
 				// valid category chosen
 				if (WikipediaAPI.isValidCategory(category)) {
-					
+
 					// warn the user
 					int answer = JOptionPane
 							.showConfirmDialog(
@@ -187,7 +179,7 @@ public class ExtractDialog extends JDialog {
 									"Run extraction?",
 									JOptionPane.OK_CANCEL_OPTION,
 									JOptionPane.QUESTION_MESSAGE);
-					
+
 					// extract the whole graph
 					if (answer == JOptionPane.OK_OPTION) {
 						if (extractor == null) {
@@ -222,7 +214,6 @@ public class ExtractDialog extends JDialog {
 
 				// valid category chosen
 				if (WikipediaAPI.isValidCategory(category)) {
-					
 
 					if (extractor == null) {
 						// no graph extractor available => construct one
@@ -260,13 +251,13 @@ public class ExtractDialog extends JDialog {
 						CheckBoxListItem[] items = new CheckBoxListItem[extractor
 								.getQueue().size()];
 						int i = 0;
-						for (Vertex v : extractor.getQueue()) {
+						for (Category v : extractor.getQueue()) {
 							items[i++] = new CheckBoxListItem(v);
 						}
 						list.setListData(items);
 					}
 				}
-				
+
 				// invalid category chosen => inform user
 				else {
 					JOptionPane.showMessageDialog(ExtractDialog.this, "\""

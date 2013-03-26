@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import schemas.categoryschema.Category;
+import schemas.categoryschema.ContainsPage;
+import schemas.categoryschema.Page;
+import schemas.categoryschema.Subcategory;
+
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Vertex;
@@ -15,7 +20,6 @@ import de.uni_koblenz.jgralab.Vertex;
  */
 public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 
-	private GraphProperties gp;
 	private GraphStats graphStats;
 
 	private Vertex root;
@@ -43,8 +47,6 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 	public void visitRoot(Vertex v) {
 		root = v;
 
-		gp = GraphProperties.getInstance();
-
 		pages = 0;
 		categories = 0;
 
@@ -57,44 +59,46 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 	@Override
 	public void visitEdge(Edge e) {
 		// count page links
-		if (e.isInstanceOf(gp.containsPageLinkEC)) {
+		if (e.isInstanceOf(ContainsPage.EC)) {
 			pageLinks++;
 		}
 
 		// count sub category links
-		if (e.isInstanceOf(gp.subcategoryLinkEC)) {
+		if (e.isInstanceOf(Subcategory.EC)) {
 			subcategoryLinks++;
 		}
 	}
 
 	@Override
 	public void visitVertex(Vertex v) {
-		if (v.isInstanceOf(gp.categoryNodeVC)) {
+		if (v.isInstanceOf(Category.VC)) {
 			categories++;
+			
+			Category c = (Category) v;
 
 			// count in-links from parent categories which are not blacklisted
 			int parentCategories = 0;
-			for (Edge e : v.incidences(gp.subcategoryLinkEC, EdgeDirection.IN)) {
-				if (!(Boolean) e.getAttribute("blacklisted")) {
+			for (Subcategory e : c.getSubcategoryIncidences(EdgeDirection.IN)) {
+				if (!(Boolean) e.is_blacklisted()) {
 					parentCategories++;
 				}
 			}
 
 			// count out-links to sub categories which are not blacklisted
 			int subCategories = 0;
-			for (Edge e : v.incidences(gp.subcategoryLinkEC, EdgeDirection.OUT)) {
-				if (!(Boolean) e.getAttribute("blacklisted")) {
+			for (Subcategory e : c.getSubcategoryIncidences(EdgeDirection.OUT)) {
+				if (!e.is_blacklisted()) {
 					subCategories++;
 				}
 			}
 
 			// count pages contained in the current category
-			int pages = v.getDegree(gp.containsPageLinkEC, EdgeDirection.OUT);
+			int pages = c.getDegree(ContainsPage.EC, EdgeDirection.OUT);
 
 			// set values for the current vertex
-			v.setAttribute("parentCategories", parentCategories);
-			v.setAttribute("subcategories", subCategories);
-			v.setAttribute("pages", pages);
+			c.set_parentCategories(parentCategories);
+			c.set_subcategories(subCategories);
+			c.set_pages(pages);
 
 			graphStats.setMaxPages(Math.max(pages, graphStats.getMaxPages()));
 			graphStats.setMaxSubcategories(Math.max(subCategories,
@@ -107,7 +111,7 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 			subcategoriesList.add(subCategories);
 		}
 
-		if (v.isInstanceOf(gp.pageNodeVC)) {
+		if (v.isInstanceOf(Page.VC)) {
 			pages++;
 		}
 	}

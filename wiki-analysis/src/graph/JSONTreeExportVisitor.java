@@ -6,6 +6,8 @@ import java.util.Stack;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import schemas.categoryschema.Category;
+
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 import de.uni_koblenz.jgralab.algolib.algorithms.search.visitors.DFSVisitorAdapter;
@@ -21,12 +23,10 @@ public class JSONTreeExportVisitor extends DFSVisitorAdapter {
 
 	private JSONObject root;
 	private Stack<JSONObject> stack = new Stack<JSONObject>();
-	private GraphProperties gp;
 
 	@Override
 	public void visitRoot(Vertex v) throws AlgorithmTerminatedException {
 		super.visitRoot(v);
-		gp = GraphProperties.getInstance();
 		root = new JSONObject();
 	}
 
@@ -35,7 +35,7 @@ public class JSONTreeExportVisitor extends DFSVisitorAdapter {
 	public void visitVertex(Vertex v) throws AlgorithmTerminatedException {
 		super.visitVertex(v);
 
-		if (v.isInstanceOf(gp.categoryNodeVC)) {
+		if (v.isInstanceOf(Category.VC)) {
 
 			JSONObject current;
 
@@ -73,7 +73,7 @@ public class JSONTreeExportVisitor extends DFSVisitorAdapter {
 	@Override
 	public void leaveVertex(Vertex v) throws AlgorithmTerminatedException {
 		super.leaveVertex(v);
-		if (v.isInstanceOf(gp.categoryNodeVC)) {
+		if (v.isInstanceOf(Category.VC)) {
 			stack.pop();
 		}
 	}

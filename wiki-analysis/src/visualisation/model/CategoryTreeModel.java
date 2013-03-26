@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import schemas.categoryschema.CategoryGraph;
 import utils.CategoryTreeFactory;
 import utils.WikipediaAnalysis;
 import visualisation.controller.Controller;
@@ -29,7 +30,7 @@ public class CategoryTreeModel extends DefaultTreeModel {
 
 	private PropertyChangeSupport propertyChangeSupport;
 
-	private Graph graph;
+	private CategoryGraph graph;
 	private GraphStats stats;
 
 	private CategoryTreeNode selectedNode;
@@ -37,7 +38,7 @@ public class CategoryTreeModel extends DefaultTreeModel {
 	private List<CategoryTreeNode> blacklistedNodes;
 	private HighlightingMode highlightingMode;
 
-	public CategoryTreeModel(Graph graph) {
+	public CategoryTreeModel(CategoryGraph graph) {
 		super(CategoryTreeFactory.buildCategoryTreeModel(graph));
 
 		propertyChangeSupport = new PropertyChangeSupport(this);
@@ -51,7 +52,7 @@ public class CategoryTreeModel extends DefaultTreeModel {
 		return graph;
 	}
 
-	public void setGraph(Graph graph) {
+	public void setGraph(CategoryGraph graph) {
 		setRoot(CategoryTreeFactory.buildCategoryTreeModel(graph));
 		stats = WikipediaAnalysis.computeStatistics(graph);
 
@@ -66,21 +67,6 @@ public class CategoryTreeModel extends DefaultTreeModel {
 
 	public String getRootCategory() {
 		return ((CategoryTreeNode) getRoot()).getTitle();
-	}
-
-	@Override
-	public Object getChild(Object parent, int index) {
-		return super.getChild(parent, index);
-	}
-
-	@Override
-	public int getChildCount(Object parent) {
-		return super.getChildCount(parent);
-	}
-
-	@Override
-	public boolean isLeaf(Object node) {
-		return super.isLeaf(node);
 	}
 
 	public void setSelectedNode(CategoryTreeNode selectedNode) {

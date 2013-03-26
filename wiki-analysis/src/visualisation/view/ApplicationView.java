@@ -18,6 +18,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import schemas.categoryschema.Category;
+import schemas.categoryschema.CategoryGraph;
+import schemas.categoryschema.CategorySchema;
 import utils.WikipediaAnalysis;
 import visualisation.controller.Controller;
 import visualisation.model.CategoryTreeModel;
@@ -30,9 +33,9 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jidesoft.plaf.LookAndFeelFactory;
 
-import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.GraphIO;
 import de.uni_koblenz.jgralab.GraphIOException;
+import de.uni_koblenz.jgralab.ImplementationType;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 
@@ -45,7 +48,7 @@ public class ApplicationView {
 
 	private Controller controller;
 	private CategoryTreeModel model;
-	private Graph graph;
+	private CategoryGraph graph;
 
 	private JFrame frmCategoryTreeExtraction;
 	private JFileChooser fileChooser;
@@ -92,7 +95,9 @@ public class ApplicationView {
 		model = null;
 
 		try {
-			graph = GraphIO.loadGraphFromFile("data/simple_graph.tg", null);
+			graph = GraphIO.loadGraphFromFile("data/simple_graph.tg",
+					CategorySchema.instance(), ImplementationType.STANDARD,
+					null);
 			model = new CategoryTreeModel(graph);
 		} catch (GraphIOException e) {
 			// TODO Auto-generated catch block
@@ -241,7 +246,9 @@ public class ApplicationView {
 
 			graph = null;
 			try {
-				graph = GraphIO.loadGraphFromFile(file.getAbsolutePath(), null);
+				graph = GraphIO.loadGraphFromFile(file.getAbsolutePath(),
+						CategorySchema.instance(), ImplementationType.STANDARD,
+						null);
 			} catch (GraphIOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -278,7 +285,7 @@ public class ApplicationView {
 				bw.write("");
 
 				String result = "";
-				for (List<Vertex> path : extractor.getRemovedCategoryPaths()) {
+				for (List<Category> path : extractor.getRemovedCategoryPaths()) {
 					for (Vertex v : path) {
 						result = result + v.getAttribute("title") + " ";
 					}

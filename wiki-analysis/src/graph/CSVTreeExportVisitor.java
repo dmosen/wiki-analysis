@@ -1,6 +1,8 @@
 package graph;
 
-import de.uni_koblenz.jgralab.Edge;
+import schemas.categoryschema.Category;
+import schemas.categoryschema.ContainsPage;
+import schemas.categoryschema.Page;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
@@ -17,13 +19,10 @@ public class CSVTreeExportVisitor extends DFSVisitorAdapter {
 
 	StringBuilder categoryTable;
 	StringBuilder pageTable;
-	GraphProperties gp;
 
 	@Override
 	public void visitRoot(Vertex v) throws AlgorithmTerminatedException {
 		super.visitRoot(v);
-
-		gp = GraphProperties.getInstance();
 
 		categoryTable = new StringBuilder();
 		categoryTable.append("ID\t");
@@ -46,23 +45,25 @@ public class CSVTreeExportVisitor extends DFSVisitorAdapter {
 	public void visitVertex(Vertex v) throws AlgorithmTerminatedException {
 		super.visitVertex(v);
 
-		if (v.isInstanceOf(gp.categoryNodeVC)) {
-			categoryTable.append(v.getId() + "\t");
-			categoryTable.append(v.getAttribute("title") + "\t");
-			categoryTable.append(v.getAttribute("subCategories") + "\t");
-			categoryTable.append(v.getAttribute("transitiveSubCategories") + "\t");
-			categoryTable.append(v.getAttribute("superCategories") + "\t");
-			categoryTable.append(v.getAttribute("pages") + "\t");
-			categoryTable.append(v.getAttribute("transitivePages") + "\n");
+		if (v.isInstanceOf(Category.VC)) {
+			Category c = (Category) v;
+			categoryTable.append(c.getId() + "\t");
+			categoryTable.append(c.get_title() + "\t");
+			categoryTable.append(c.get_subcategories() + "\t");
+			categoryTable.append(c.get_transitiveSubcategories() + "\t");
+			categoryTable.append(c.get_parentCategories() + "\t");
+			categoryTable.append(c.get_pages() + "\t");
+			categoryTable.append(c.get_transitivePages() + "\n");
 		}
 
-		if (v.isInstanceOf(gp.pageNodeVC)) {
-			for (Edge e : v.incidences(gp.containsPageLinkEC, EdgeDirection.IN)) {
-				pageTable.append(v.getId() + "\t");
-				pageTable.append(v.getAttribute("title") + "\t");
+		if (v.isInstanceOf(Page.VC)) {
+			Page p = (Page) v;
+			for (ContainsPage e : p.getContainsPageIncidences(EdgeDirection.IN)) {
+				pageTable.append(p.getId() + "\t");
+				pageTable.append(p.get_title() + "\t");
 				pageTable.append(e.getAlpha().getId() + "\t");
-				pageTable.append(e.getAlpha().getAttribute("title") + "\t");
-				pageTable.append(v.getDegree(gp.containsPageLinkEC, EdgeDirection.IN) + "\n");
+				pageTable.append(e.getAlpha().get_title() + "\t");
+				pageTable.append(p.getDegree(ContainsPage.EC, EdgeDirection.IN) + "\n");
 			}
 		}
 	}

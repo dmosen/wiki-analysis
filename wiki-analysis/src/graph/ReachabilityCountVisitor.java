@@ -1,5 +1,7 @@
 package graph;
 
+import schemas.categoryschema.Category;
+import schemas.categoryschema.Page;
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.Vertex;
 
@@ -11,15 +13,12 @@ import de.uni_koblenz.jgralab.Vertex;
  */
 public class ReachabilityCountVisitor implements BlacklistedGraphDFSVisitor {
 
-	private GraphProperties gp;
-
 	private Vertex root;
 	private Integer subcategoryCount;
 	private Integer pagesCount;
 
 	@Override
 	public void visitRoot(Vertex v) {
-		gp = GraphProperties.getInstance();
 		root = v;
 		subcategoryCount = 0;
 		pagesCount = 0;
@@ -28,9 +27,9 @@ public class ReachabilityCountVisitor implements BlacklistedGraphDFSVisitor {
 	@Override
 	public void visitVertex(Vertex v) {
 		if (!v.equals(root)) {
-			if (v.isInstanceOf(gp.categoryNodeVC)) {
+			if (v.isInstanceOf(Category.VC)) {
 				subcategoryCount++;
-			} else if (v.isInstanceOf(gp.pageNodeVC)) {
+			} else if (v.isInstanceOf(Page.VC)) {
 				pagesCount++;
 			}
 		}

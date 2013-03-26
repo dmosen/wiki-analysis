@@ -1,14 +1,13 @@
 package visualisation.model;
 
-import graph.GraphProperties;
-
 import java.util.ArrayList;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import de.uni_koblenz.jgralab.Edge;
+import schemas.categoryschema.Category;
+import schemas.categoryschema.ContainsPage;
+import schemas.categoryschema.Subcategory;
 import de.uni_koblenz.jgralab.EdgeDirection;
-import de.uni_koblenz.jgralab.Vertex;
 
 /**
  * 
@@ -18,12 +17,10 @@ import de.uni_koblenz.jgralab.Vertex;
 @SuppressWarnings("serial")
 public class CategoryTreeNode extends DefaultMutableTreeNode {
 
-	GraphProperties gp = GraphProperties.getInstance();
-	
-	private Vertex vertex;
-	private Edge edge;
+	private Category vertex;
+	private Subcategory edge;
 
-	public CategoryTreeNode(Vertex vertex, Edge edge) {
+	public CategoryTreeNode(Category vertex, Subcategory edge) {
 		super(edge);
 		this.vertex = vertex;
 		this.edge = edge;
@@ -31,30 +28,30 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 
 	public boolean isBlacklisted() {
 		if (edge != null) {
-			return edge.getAttribute("blacklisted");
+			return edge.is_blacklisted();
 		}
 		return false;
 	}
 
 	public void setBlacklisting(boolean value) {
 		if (edge != null) {
-			edge.setAttribute("blacklisted", value);
+			edge.set_blacklisted(value);
 		}
 	}
 
 	public String getTitle() {
-		return vertex.getAttribute("title");
+		return vertex.get_title();
 	}
 
 	public String getComment() {
 		if (isRoot()) {
 			return "root category";
 		}
-		return edge.getAttribute("comment");
+		return edge.get_comment();
 	}
 
 	public void setComment(String comment) {
-		edge.setAttribute("comment", comment);
+		edge.set_comment(comment);
 	}
 
 	public CategoryTreeNode getParent() {
@@ -66,41 +63,37 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 	}
 
 	public int getPages() {
-		return vertex.getAttribute("pages");
+		return vertex.get_pages();
 	}
 
 	public int getPagesTransitive() {
-		return vertex.getAttribute("transitivePages");
+		return vertex.get_transitivePages();
 	}
 
 	public int getSubcategories() {
-		return vertex.getAttribute("subcategories");
+		return vertex.get_subcategories();
 	}
 
 	public int getSubcategoriesTransitive() {
-		return vertex.getAttribute("transitiveSubcategories");
+		return vertex.get_transitiveSubcategories();
 	}
 
 	public String[] getPageStrings() {
-		String[] result = new String[vertex.getDegree(
-				GraphProperties.getInstance().containsPageLinkEC,
+		String[] result = new String[vertex.getDegree(ContainsPage.EC,
 				EdgeDirection.OUT)];
 		int i = 0;
-		for (Edge e : vertex.incidences(
-				GraphProperties.getInstance().containsPageLinkEC,
-				EdgeDirection.OUT)) {
-			result[i++] = ((String) e.getOmega().getAttribute("title"));
+		for (ContainsPage e : vertex
+				.getContainsPageIncidences(EdgeDirection.OUT)) {
+			result[i++] = (e.getOmega().get_title());
 		}
 		return result;
 	}
 
 	public String[] getParentCategoryStrings() {
 		ArrayList<String> results = new ArrayList<String>();
-		for (Edge e : vertex.incidences(
-				GraphProperties.getInstance().subcategoryLinkEC,
-				EdgeDirection.IN)) {
-			if (!(Boolean) e.getAttribute("blacklisted")) {
-				results.add((String) e.getAlpha().getAttribute("title"));
+		for (Subcategory e : vertex.getSubcategoryIncidences(EdgeDirection.IN)) {
+			if (!e.is_blacklisted()) {
+				results.add(e.getAlpha().get_title());
 			}
 		}
 		return results.toArray(new String[results.size()]);

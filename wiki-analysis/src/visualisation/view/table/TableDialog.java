@@ -18,14 +18,13 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableModel;
 
+import schemas.categoryschema.CategoryGraph;
 import visualisation.model.CategoryTableModel;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-
-import de.uni_koblenz.jgralab.Graph;
 
 /**
  * 
@@ -35,7 +34,7 @@ import de.uni_koblenz.jgralab.Graph;
 @SuppressWarnings("serial")
 public class TableDialog extends JDialog {
 
-	private Graph graph;
+	private CategoryGraph graph;
 
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
@@ -48,7 +47,7 @@ public class TableDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public TableDialog(Graph graph) {
+	public TableDialog(CategoryGraph graph) {
 		setTitle("Blacklisted or commented categories");
 
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);

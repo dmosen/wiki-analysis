@@ -1,12 +1,13 @@
 package graph;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import schemas.categoryschema.Category;
+import schemas.categoryschema.CategoryGraph;
+import schemas.categoryschema.Subcategory;
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.EdgeDirection;
-import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.Vertex;
 
 /**
@@ -25,20 +26,17 @@ public class BlacklistedGraphDFS {
 	private Integer time;
 	private HashMap<Vertex, Integer> visitTime;
 	private HashMap<Vertex, Integer> leaveTime;
-	private GraphProperties gp;
 
-	public void execute(Graph graph) {
+	public void execute(CategoryGraph graph) {
 		this.execute(graph, null);
 	}
 
-	public void execute(Graph graph, Vertex v) {
-		if (v == null) {
-			root = graph.getFirstVertex();
+	public void execute(CategoryGraph graph, Category vertex) {
+		if (vertex == null) {
+			root = graph.getFirstCategory();
 		} else {
-			root = v;
+			root = vertex;
 		}
-
-		gp = GraphProperties.getInstance();
 
 		visitTime = new HashMap<Vertex, Integer>();
 		leaveTime = new HashMap<Vertex, Integer>();
@@ -56,7 +54,7 @@ public class BlacklistedGraphDFS {
 
 		for (Edge e : current.incidences(EdgeDirection.OUT)) {
 			// process only those edges which are not blacklisted
-			if (!e.isInstanceOf(gp.subcategoryLinkEC)
+			if (!e.isInstanceOf(Subcategory.EC)
 					|| !(Boolean) e.getAttribute("blacklisted")) {
 
 				visitEdge(e);

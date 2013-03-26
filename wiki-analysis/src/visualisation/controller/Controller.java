@@ -5,13 +5,12 @@ import java.awt.event.ItemEvent;
 
 import javax.swing.event.TreeSelectionEvent;
 
+import schemas.categoryschema.CategoryGraph;
 import visualisation.model.CategoryTreeModel;
 import visualisation.model.CategoryTreeNode;
 import visualisation.view.EditCommentDialog;
 
 import com.jidesoft.swing.CheckBoxTreeSelectionModel;
-
-import de.uni_koblenz.jgralab.Graph;
 
 /**
  * 
@@ -62,7 +61,7 @@ public class Controller {
 		this.checkBoxTreeSelectionModel = checkBoxTreeSelectionModel;
 	}
 
-	public void graphChanged(Graph graph) {
+	public void graphChanged(CategoryGraph graph) {
 		model.setGraph(graph);
 	}
 
