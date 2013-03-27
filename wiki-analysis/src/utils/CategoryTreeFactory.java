@@ -7,7 +7,6 @@ import schemas.categoryschema.CategoryGraph;
 import schemas.categoryschema.Subcategory;
 import visualisation.model.CategoryTreeNode;
 import de.uni_koblenz.jgralab.EdgeDirection;
-import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 
 /**
@@ -17,11 +16,8 @@ import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
  */
 public class CategoryTreeFactory {
 
-	private static HashSet<Vertex> visitedVertices;
-	private static HashSet<Vertex> leftVertices;
-	private static CategoryTreeNode categoryTreeRoot;
-	private static CategoryTreeNode parentNode;
-	private static Subcategory parentEdge;
+	private static HashSet<Category> visitedVertices;
+	private static HashSet<Category> leftVertices;
 
 	/**
 	 * Builds a category tree from a given graph conforming to the schema
@@ -38,34 +34,24 @@ public class CategoryTreeFactory {
 
 		Category root = graph.getFirstCategory();
 
-		visitedVertices = new HashSet<Vertex>();
-		leftVertices = new HashSet<Vertex>();
+		CategoryTreeNode rootNode = new CategoryTreeNode(root, null);
+		rootNode.setRoot(true);
 
-		parentNode = null;
-		parentEdge = null;
+		visitedVertices = new HashSet<Category>();
+		leftVertices = new HashSet<Category>();
 
 		buildCategoryTreeModel(root);
-		return categoryTreeRoot;
+
+		return rootNode;
 	}
 
 	private static void buildCategoryTreeModel(Category current) {
 
-		CategoryTreeNode categoryTreeNode = new CategoryTreeNode(current,
-				parentEdge);
 		visitedVertices.add(current);
-
-		if (parentNode == null) {
-			categoryTreeRoot = categoryTreeNode;
-		} else {
-			parentNode.add(categoryTreeNode);
-		}
 
 		for (Subcategory e : current
 				.getSubcategoryIncidences(EdgeDirection.OUT)) {
 			if (!e.is_blacklisted()) {
-
-				parentNode = categoryTreeNode;
-				parentEdge = e;
 
 				Category next = e.getOmega();
 

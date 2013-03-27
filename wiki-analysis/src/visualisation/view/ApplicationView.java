@@ -232,8 +232,9 @@ public class ApplicationView {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				TableDialog dialog = new TableDialog(graph);
-				dialog.showDialog();
-				controller.graphChanged(graph);
+				if (dialog.showDialog()) {
+					controller.reloadGraph();
+				}
 			}
 		});
 	}

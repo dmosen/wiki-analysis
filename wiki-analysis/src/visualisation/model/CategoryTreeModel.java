@@ -6,17 +6,18 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import schemas.categoryschema.CategoryGraph;
+import schemas.categoryschema.Subcategory;
 import utils.CategoryTreeFactory;
 import utils.WikipediaAnalysis;
 import visualisation.controller.Controller;
 import visualisation.controller.HighlightingMode;
-import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.GraphIO;
 import de.uni_koblenz.jgralab.GraphIOException;
 
@@ -27,6 +28,8 @@ import de.uni_koblenz.jgralab.GraphIOException;
  */
 @SuppressWarnings("serial")
 public class CategoryTreeModel extends DefaultTreeModel {
+
+	public static HashMap<Subcategory, CategoryTreeNode> edgeToNodeMap = new HashMap<Subcategory, CategoryTreeNode>();
 
 	private PropertyChangeSupport propertyChangeSupport;
 
@@ -40,25 +43,34 @@ public class CategoryTreeModel extends DefaultTreeModel {
 
 	public CategoryTreeModel(CategoryGraph graph) {
 		super(CategoryTreeFactory.buildCategoryTreeModel(graph));
-
+		CategoryTreeModel.edgeToNodeMap.clear();
 		propertyChangeSupport = new PropertyChangeSupport(this);
-
 		highlightingMode = HighlightingMode.pages;
-
-		setGraph(graph);
+		blacklistedNodes = new ArrayList<CategoryTreeNode>();
+		this.graph = graph;
+		stats = WikipediaAnalysis.computeStatistics(graph);
 	}
 
-	public Graph getGraph() {
+	public CategoryGraph getGraph() {
 		return graph;
 	}
 
 	public void setGraph(CategoryGraph graph) {
-		setRoot(CategoryTreeFactory.buildCategoryTreeModel(graph));
+		CategoryTreeModel.edgeToNodeMap.clear();
+		blacklistedNodes.clear();
+		this.graph = graph;
+
+		root = CategoryTreeFactory.buildCategoryTreeModel(graph);
+
 		stats = WikipediaAnalysis.computeStatistics(graph);
 
-		blacklistedNodes = new ArrayList<CategoryTreeNode>();
-		this.graph = graph;
 		firePropertyChangeEvent(Controller.graphChange, null, graph);
+	}
+
+	public void reloadGraph() {
+		nodeStructureChanged(root);
+		stats = WikipediaAnalysis.computeStatistics(graph);
+		firePropertyChangeEvent(Controller.statsChange, null, stats);
 	}
 
 	public GraphStats getStats() {
@@ -316,12 +328,10 @@ public class CategoryTreeModel extends DefaultTreeModel {
 				if (node.isRoot()) {
 					continue;
 				}
-				node.setBlacklisting(true);
-
 				CategoryTreeNode parent = node.getParent();
 				int index = parent.getIndex(node);
 
-				node.removeFromParent();
+				node.setBlacklisting(true);
 
 				fireTreeNodesRemoved(this, parent.getPath(),
 						new int[] { index }, new CategoryTreeNode[] { node });

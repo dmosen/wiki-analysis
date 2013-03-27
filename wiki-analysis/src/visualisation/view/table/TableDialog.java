@@ -159,7 +159,7 @@ public class TableDialog extends JDialog {
 		bw.close();
 	}
 
-	public void showDialog() {
+	public boolean showDialog() {
 		CategoryTableModel model = new CategoryTableModel(graph);
 		table.setModel(model);
 		table.getColumnModel().getColumn(0).setPreferredWidth(250);
@@ -167,6 +167,7 @@ public class TableDialog extends JDialog {
 		table.getColumnModel().getColumn(3).setPreferredWidth(250);
 
 		setVisible(true);
+		return model.isBlacklistingChanged();
 	}
 
 }

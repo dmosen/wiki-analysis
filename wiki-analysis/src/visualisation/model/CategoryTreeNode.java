@@ -1,8 +1,12 @@
 package visualisation.model;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.Vector;
 
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 import schemas.categoryschema.Category;
 import schemas.categoryschema.ContainsPage;
@@ -14,21 +18,32 @@ import de.uni_koblenz.jgralab.EdgeDirection;
  * @author dmosen@uni-koblenz.de
  * 
  */
-@SuppressWarnings("serial")
-public class CategoryTreeNode extends DefaultMutableTreeNode {
+public class CategoryTreeNode implements MutableTreeNode {
 
 	private Category vertex;
 	private Subcategory edge;
+	private CategoryTreeNode parent;
+
+	private boolean root = false;
 
 	public CategoryTreeNode(Category vertex, Subcategory edge) {
-		super(edge);
 		this.vertex = vertex;
+
+		CategoryTreeModel.edgeToNodeMap.put(edge, this);
+
 		this.edge = edge;
 	}
 
 	public boolean isBlacklisted() {
 		if (edge != null) {
 			return edge.is_blacklisted();
+		}
+		return false;
+	}
+
+	public boolean isBackwardArc() {
+		if (edge != null) {
+			return edge.is_backwardArc();
 		}
 		return false;
 	}
@@ -47,19 +62,14 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 		if (isRoot()) {
 			return "root category";
 		}
-		return edge.get_comment();
+		if (edge.get_comment() != null) {
+			return edge.get_comment();
+		}
+		return "";
 	}
 
 	public void setComment(String comment) {
 		edge.set_comment(comment);
-	}
-
-	public CategoryTreeNode getParent() {
-		return (CategoryTreeNode) super.getParent();
-	}
-
-	public CategoryTreeNode getChildAt(int index) {
-		return (CategoryTreeNode) super.getChildAt(index);
 	}
 
 	public int getPages() {
@@ -102,5 +112,125 @@ public class CategoryTreeNode extends DefaultMutableTreeNode {
 	@Override
 	public String toString() {
 		return getTitle();
+	}
+
+	@Override
+	public CategoryTreeNode getChildAt(int childIndex) {
+		return getChildren().get(childIndex);
+
+	}
+
+	@Override
+	public int getChildCount() {
+		return getChildren().size();
+	}
+
+	@Override
+	public CategoryTreeNode getParent() {
+		if (!isRoot() && !edge.is_blacklisted()) {
+			return parent;
+		}
+		return null;
+	}
+
+	@Override
+	public int getIndex(TreeNode node) {
+		for (int index = 0; index < getChildCount(); index++) {
+			if (getChildAt(index).equals(node)) {
+				return index;
+			}
+		}
+		return -1;
+	}
+
+	@Override
+	public boolean getAllowsChildren() {
+		return true;
+	}
+
+	@Override
+	public boolean isLeaf() {
+		return getChildCount() <= 0;
+	}
+
+	@Override
+	public Enumeration<CategoryTreeNode> children() {
+		return getChildren().elements();
+	}
+
+	@Override
+	public void insert(MutableTreeNode child, int index) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void remove(int index) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void remove(MutableTreeNode node) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void removeFromParent() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setParent(MutableTreeNode newParent) {
+		parent = (CategoryTreeNode) newParent;
+	}
+
+	public void setRoot(boolean value) {
+		this.root = value;
+	}
+
+	public boolean isRoot() {
+		return root;
+	}
+
+	private Vector<CategoryTreeNode> getChildren() {
+		Vector<CategoryTreeNode> children = new Vector<CategoryTreeNode>();
+		for (Subcategory sub : vertex
+				.getSubcategoryIncidences(EdgeDirection.OUT)) {
+
+			CategoryTreeNode node;
+
+			// create tree node lazily
+			if (CategoryTreeModel.edgeToNodeMap.containsKey(sub)) {
+				node = CategoryTreeModel.edgeToNodeMap.get(sub);
+			} else {
+				node = new CategoryTreeNode(sub.getOmega(), sub);
+				node.setParent(this);
+				CategoryTreeModel.edgeToNodeMap.put(sub, node);
+			}
+			if (!sub.is_blacklisted() && !sub.is_backwardArc()) {
+				children.add(node);
+			}
+		}
+		return children;
+	}
+
+	public CategoryTreeNode[] getPath() {
+		LinkedList<CategoryTreeNode> path = new LinkedList<CategoryTreeNode>();
+		path.addFirst(this);
+		CategoryTreeNode current = parent;
+		while (current != null) {
+			path.addFirst(current);
+			current = current.getParent();
+		}
+		return path.toArray(new CategoryTreeNode[path.size()]);
+	}
+
+	@Override
+	public void setUserObject(Object object) {
+		// TODO Auto-generated method stub
+
 	}
 }

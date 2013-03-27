@@ -64,6 +64,10 @@ public class Controller {
 	public void graphChanged(CategoryGraph graph) {
 		model.setGraph(graph);
 	}
+	
+	public void reloadGraph() {
+		model.reloadGraph();
+	}
 
 	public void treeSelectionChanged(TreeSelectionEvent e) {
 
