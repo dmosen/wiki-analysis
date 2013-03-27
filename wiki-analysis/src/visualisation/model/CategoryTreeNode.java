@@ -3,6 +3,7 @@ package visualisation.model;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.tree.MutableTreeNode;
@@ -217,7 +218,7 @@ public class CategoryTreeNode implements MutableTreeNode {
 		return children;
 	}
 
-	public CategoryTreeNode[] getPath() {
+	public List<CategoryTreeNode> getPath() {
 		LinkedList<CategoryTreeNode> path = new LinkedList<CategoryTreeNode>();
 		path.addFirst(this);
 		CategoryTreeNode current = parent;
@@ -225,7 +226,7 @@ public class CategoryTreeNode implements MutableTreeNode {
 			path.addFirst(current);
 			current = current.getParent();
 		}
-		return path.toArray(new CategoryTreeNode[path.size()]);
+		return path;
 	}
 
 	@Override

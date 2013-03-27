@@ -330,10 +330,12 @@ public class CategoryTreeModel extends DefaultTreeModel {
 				}
 				CategoryTreeNode parent = node.getParent();
 				int index = parent.getIndex(node);
+				List<CategoryTreeNode> path = parent.getPath();
 
 				node.setBlacklisting(true);
 
-				fireTreeNodesRemoved(this, parent.getPath(),
+				fireTreeNodesRemoved(this,
+						path.toArray(new CategoryTreeNode[path.size()]),
 						new int[] { index }, new CategoryTreeNode[] { node });
 			}
 		}

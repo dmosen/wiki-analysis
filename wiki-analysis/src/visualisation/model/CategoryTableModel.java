@@ -45,7 +45,9 @@ public class CategoryTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		switch (columnIndex) {
 		case 0:
-			return nodes.get(rowIndex).getPath();
+			List<CategoryTreeNode> path = nodes.get(rowIndex).getPath();
+			path.remove(path.size() - 1);
+			return path;
 
 		case 1:
 			return nodes.get(rowIndex).getTitle();
