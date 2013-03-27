@@ -164,113 +164,15 @@ public class ExtractDialog extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String category = textField.getText();
-
-				// valid category chosen
-				if (WikipediaAPI.isValidCategory(category)) {
-
-					// warn the user
-					int answer = JOptionPane
-							.showConfirmDialog(
-									ExtractDialog.this,
-									"This will start the whole extraction of the category graph for \"http://en.wikipedia.org/wiki/"
-											+ category
-											+ "\". This could take a lot of time. \nDo you want to continue? ",
-									"Run extraction?",
-									JOptionPane.OK_CANCEL_OPTION,
-									JOptionPane.QUESTION_MESSAGE);
-
-					// extract the whole graph
-					if (answer == JOptionPane.OK_OPTION) {
-						if (extractor == null) {
-							extractor = new GraphExtractor(category);
-						} else {
-							extractor.setMaxLevel(Integer.MAX_VALUE);
-						}
-						ExtractionProgressDialog extractionProgressDialog = new ExtractionProgressDialog(
-								extractor);
-
-						extractionProgressDialog.showDialog();
-						btnExtractNextLevel.setEnabled(false);
-						btnExtractWholeGraph.setEnabled(false);
-						okButton.setEnabled(true);
-					}
-				}
-				// invalid category chosen
-				else {
-					JOptionPane.showMessageDialog(ExtractDialog.this, "\""
-							+ category + "\"" + " is not a valid category!",
-							"Invalid category", JOptionPane.WARNING_MESSAGE);
-				}
+				extractGraph(false);
 			}
-
 		});
 
 		btnExtractNextLevel.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String category = textField.getText();
-
-				// format the category string
-				category = category.replaceAll("_", " ");
-				category = category.toLowerCase();
-				char[] stringArray = category.toCharArray();
-				stringArray[0] = Character.toUpperCase(stringArray[0]);
-				category = new String(stringArray);
-
-				// valid category chosen
-				if (WikipediaAPI.isValidCategory(category)) {
-
-					if (extractor == null) {
-						// no graph extractor available => construct one
-						textField.setEditable(false);
-						extractor = new GraphExtractor(category, 1);
-						extractor.setExtractPages(ckbxExtractPages.isSelected());
-						ckbxExtractPages.setEnabled(false);
-						okButton.setEnabled(true);
-					} else {
-						// graph extractor available => remove items that the
-						// user has selected
-						for (Object o : list.getSelectedObjects()) {
-							if (o instanceof CheckBoxListItem) {
-								CheckBoxListItem item = (CheckBoxListItem) o;
-								extractor.removeAtMaxLevel(item.getVertex());
-							}
-						}
-						extractor.incrementMaxLevel();
-					}
-
-					// show extraction progress to indicate that something is
-					// happening
-					ExtractionProgressDialog extractionProgressDialog = new ExtractionProgressDialog(
-							extractor);
-					extractionProgressDialog.showDialog();
-					lblLevelValue.setText("" + extractor.getMaxLevel());
-
-					// show items that were just extracted at the current level
-					// to the user
-					if (extractor.getQueue().isEmpty()) {
-						list.setListData(new CheckBoxListItem[0]);
-						btnExtractNextLevel.setEnabled(false);
-						btnExtractWholeGraph.setEnabled(false);
-					} else {
-						CheckBoxListItem[] items = new CheckBoxListItem[extractor
-								.getQueue().size()];
-						int i = 0;
-						for (Category v : extractor.getQueue()) {
-							items[i++] = new CheckBoxListItem(v);
-						}
-						list.setListData(items);
-					}
-				}
-
-				// invalid category chosen => inform user
-				else {
-					JOptionPane.showMessageDialog(ExtractDialog.this, "\""
-							+ category + "\"" + " is not a valid category!",
-							"Invalid category", JOptionPane.WARNING_MESSAGE);
-				}
+				extractGraph(true);
 			}
 		});
 
@@ -291,6 +193,89 @@ public class ExtractDialog extends JDialog {
 				dispose();
 			}
 		});
+	}
+
+	private void extractGraph(boolean nextLevelOnly) {
+		String category = textField.getText();
+
+		// format the category string
+		category = category.replaceAll("_", " ");
+		category = category.toLowerCase();
+		char[] stringArray = category.toCharArray();
+		stringArray[0] = Character.toUpperCase(stringArray[0]);
+		category = new String(stringArray);
+
+		// valid category chosen
+		if (WikipediaAPI.isValidCategory(category)) {
+			int answer = JOptionPane.NO_OPTION;
+			if (!nextLevelOnly) {
+				// warn the user
+				answer = JOptionPane
+						.showConfirmDialog(
+								ExtractDialog.this,
+								"This will start the extraction of the whole category graph for \"http://en.wikipedia.org/wiki/"
+										+ category
+										+ "\". This could take a lot of time. \nDo you want to continue? ",
+								"Run extraction?", JOptionPane.YES_OPTION,
+								JOptionPane.QUESTION_MESSAGE);
+			}
+
+			if (answer == JOptionPane.YES_OPTION || nextLevelOnly) {
+				if (extractor == null) {
+					// no graph extractor available => construct one
+					textField.setEditable(false);
+					if (nextLevelOnly) {
+						extractor = new GraphExtractor(category, 1);
+					} else {
+						extractor = new GraphExtractor(category);
+					}
+					extractor.setExtractPages(ckbxExtractPages.isSelected());
+					ckbxExtractPages.setEnabled(false);
+					okButton.setEnabled(true);
+				} else {
+					// graph extractor available => remove items that the
+					// user has selected
+					for (Object o : list.getSelectedObjects()) {
+						if (o instanceof CheckBoxListItem) {
+							CheckBoxListItem item = (CheckBoxListItem) o;
+							extractor.removeAtMaxLevel(item.getVertex());
+						}
+					}
+					extractor.incrementMaxLevel();
+				}
+
+				// show extraction progress to indicate that something is
+				// happening
+				ExtractionProgressDialog extractionProgressDialog = new ExtractionProgressDialog(
+						extractor);
+				extractionProgressDialog.showDialog();
+
+				lblLevelValue.setText("" + extractor.getMaxReachedLevel());
+
+				// show items that were just extracted at the current level
+				// to the user
+				if (extractor.getQueue().isEmpty()) {
+					list.setListData(new CheckBoxListItem[0]);
+					btnExtractNextLevel.setEnabled(false);
+					btnExtractWholeGraph.setEnabled(false);
+				} else {
+					CheckBoxListItem[] items = new CheckBoxListItem[extractor
+							.getQueue().size()];
+					int i = 0;
+					for (Category v : extractor.getQueue()) {
+						items[i++] = new CheckBoxListItem(v);
+					}
+					list.setListData(items);
+				}
+			}
+		}
+		// invalid category chosen
+		else {
+			JOptionPane.showMessageDialog(ExtractDialog.this, "\"" + category
+					+ "\"" + " is not a valid category!", "Invalid category",
+					JOptionPane.WARNING_MESSAGE);
+		}
+
 	}
 
 	public GraphExtractor showDialog() {

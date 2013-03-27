@@ -48,6 +48,7 @@ public class GraphExtractor {
 	private CategoryGraph graph;
 	private LinkedList<Category> queue;
 	private int maxLevel;
+	private int maxReachedLevel;
 	private HashMap<String, Category> categoryMap;
 	private HashMap<String, Page> pageMap;
 	private boolean extractPages;
@@ -78,12 +79,8 @@ public class GraphExtractor {
 		return queue;
 	}
 
-	public int getMaxLevel() {
-		return maxLevel;
-	}
-
-	public void setMaxLevel(int maxLevel) {
-		this.maxLevel = maxLevel;
+	public int getMaxReachedLevel() {
+		return maxReachedLevel;
 	}
 
 	public List<List<Category>> getRemovedCategoryPaths() {
@@ -185,6 +182,7 @@ public class GraphExtractor {
 			Category currentVertex = queue.peek();
 			currentCategory = currentVertex.getAttribute("title");
 			currentLevel = currentVertex.getAttribute("level");
+			maxReachedLevel = Math.max(maxReachedLevel, currentLevel);
 
 			// stop if queue contains all categories from maxLevel
 			if (currentLevel >= maxLevel) {
