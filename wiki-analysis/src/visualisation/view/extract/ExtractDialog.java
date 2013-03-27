@@ -212,6 +212,13 @@ public class ExtractDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				String category = textField.getText();
 
+				// format the category string
+				category = category.replaceAll("_", " ");
+				category = category.toLowerCase();
+				char[] stringArray = category.toCharArray();
+				stringArray[0] = Character.toUpperCase(stringArray[0]);
+				category = new String(stringArray);
+
 				// valid category chosen
 				if (WikipediaAPI.isValidCategory(category)) {
 

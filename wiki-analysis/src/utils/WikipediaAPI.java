@@ -74,8 +74,8 @@ public class WikipediaAPI {
 
 		do {
 			String[] query = new String[] { "list", "categorymembers",
-					"cmtitle", "Category:" + category, "cmtype", cmtype.id, "cmlimit", "max",
-					"cmcontinue", cmcontinue };
+					"cmtitle", "Category:" + category, "cmtype", cmtype.id,
+					"cmlimit", "max", "cmcontinue", cmcontinue };
 
 			String rawXmlResponse = processQuery(query);
 
