@@ -25,8 +25,7 @@ public class Controller {
 	public static final String treeSelectionChange = "treeSelectionChange";
 
 	/**
-	 * Constant representing the change of the highlighting mode applied to tree
-	 * nodes
+	 * Constant representing the change of the highlighting mode
 	 */
 	public static final String highlightingModeChange = "highlightingModeChange";
 
@@ -44,8 +43,7 @@ public class Controller {
 
 	/**
 	 * Constant representing the change of the graph statistics, for example
-	 * when categories are removed and the graph statistics were therefore
-	 * recomputed
+	 * when categories are removed and the graph statistics were recomputed
 	 */
 	public static final String statsChange = "statsChange";
 
@@ -64,7 +62,7 @@ public class Controller {
 	public void graphChanged(CategoryGraph graph) {
 		model.setGraph(graph);
 	}
-	
+
 	public void reloadGraph() {
 		model.reloadGraph();
 	}

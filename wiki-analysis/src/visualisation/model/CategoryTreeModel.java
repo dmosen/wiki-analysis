@@ -60,9 +60,9 @@ public class CategoryTreeModel extends DefaultTreeModel {
 		blacklistedNodes.clear();
 		this.graph = graph;
 
-		root = CategoryTreeFactory.buildCategoryTreeModel(graph);
-
 		stats = WikipediaAnalysis.computeStatistics(graph);
+
+		setRoot(CategoryTreeFactory.buildCategoryTreeModel(graph));
 
 		firePropertyChangeEvent(Controller.graphChange, null, graph);
 	}
