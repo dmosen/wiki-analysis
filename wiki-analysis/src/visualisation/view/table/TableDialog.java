@@ -1,8 +1,13 @@
 package visualisation.view.table;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -10,12 +15,17 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 
 import schemas.categoryschema.CategoryGraph;
@@ -34,15 +44,20 @@ import com.jgoodies.forms.layout.RowSpec;
 @SuppressWarnings("serial")
 public class TableDialog extends JDialog {
 
-	private CategoryGraph graph;
-
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
+	CategoryTableModel model;
+
+	private String comment;
 
 	private JButton okButton;
 	private JButton btnExportAsCsv;
 
 	private final JFileChooser fc = new JFileChooser();
+	private JPanel panel;
+	private JLabel lblComment;
+	private JEditorPane editorPane;
+	private JScrollPane scrollPane_1;
 
 	/**
 	 * Create the dialog.
@@ -53,15 +68,15 @@ public class TableDialog extends JDialog {
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setModal(true);
 
-		this.graph = graph;
-
 		setBounds(100, 100, 800, 600);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new FormLayout(new ColumnSpec[] { ColumnSpec
-				.decode("default:grow"), }, new RowSpec[] { RowSpec
-				.decode("default:grow"), }));
+		contentPanel.setLayout(new FormLayout(
+				new ColumnSpec[] { ColumnSpec.decode("default:grow"),
+						FormFactory.RELATED_GAP_COLSPEC,
+						ColumnSpec.decode("150dlu"), }, new RowSpec[] { RowSpec
+						.decode("default:grow"), }));
 		{
 			JScrollPane scrollPane = new JScrollPane();
 			contentPanel.add(scrollPane, "1, 1, fill, fill");
@@ -70,6 +85,31 @@ public class TableDialog extends JDialog {
 				table.getTableHeader().setResizingAllowed(true);
 				table.setFillsViewportHeight(true);
 				scrollPane.setViewportView(table);
+
+				model = new CategoryTableModel(graph);
+				table.setModel(model);
+			}
+		}
+		{
+			panel = new JPanel();
+			contentPanel.add(panel, "3, 1, fill, fill");
+			panel.setLayout(new FormLayout(new ColumnSpec[] { ColumnSpec
+					.decode("default:grow"), }, new RowSpec[] {
+					FormFactory.DEFAULT_ROWSPEC,
+					RowSpec.decode("default:grow"), }));
+			{
+				lblComment = new JLabel("Commet");
+				lblComment.setFont(new Font("Tahoma", Font.BOLD, 11));
+				panel.add(lblComment, "1, 1");
+			}
+			{
+				scrollPane_1 = new JScrollPane();
+				panel.add(scrollPane_1, "1, 2, fill, fill");
+				{
+					editorPane = new JEditorPane();
+					editorPane.setEnabled(false);
+					scrollPane_1.setViewportView(editorPane);
+				}
 			}
 		}
 		{
@@ -77,7 +117,9 @@ public class TableDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			buttonPane.setLayout(new FormLayout(
 					new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC,
-							ColumnSpec.decode("594px:grow"),
+							ColumnSpec.decode("default:grow"),
+							FormFactory.RELATED_GAP_COLSPEC,
+							FormFactory.DEFAULT_COLSPEC,
 							FormFactory.UNRELATED_GAP_COLSPEC,
 							ColumnSpec.decode("47px"),
 							FormFactory.RELATED_GAP_COLSPEC, }, new RowSpec[] {
@@ -94,12 +136,54 @@ public class TableDialog extends JDialog {
 				okButton.setActionCommand("OK");
 				getRootPane().setDefaultButton(okButton);
 			}
-			buttonPane.add(okButton, "4, 2, left, top");
+			buttonPane.add(okButton, "6, 2, left, top");
 		}
 		addComponentListeners();
 	}
 
 	private void addComponentListeners() {
+
+		ListSelectionModel selectionModel = table.getSelectionModel();
+		selectionModel.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+
+				int selectedRow = table.getSelectedRow();
+
+				if (selectedRow >= 0) {
+					editorPane.setEnabled(model.isCellEditable(selectedRow, 2));
+					editorPane.setText((String) model
+							.getValueAt(selectedRow, 3));
+				}
+			}
+		});
+
+		editorPane.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				super.keyTyped(e);
+				comment = editorPane.getText();
+			}
+		});
+
+		editorPane.addFocusListener(new FocusListener() {
+
+			private int selectedRow;
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				System.out.println("focusLost: " + comment);
+				model.setValueAt(comment, selectedRow, 3);
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				selectedRow = table.getSelectedRow();
+			}
+		});
+
 		okButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -160,12 +244,6 @@ public class TableDialog extends JDialog {
 	}
 
 	public boolean showDialog() {
-		CategoryTableModel model = new CategoryTableModel(graph);
-		table.setModel(model);
-		table.getColumnModel().getColumn(0).setPreferredWidth(250);
-		table.getColumnModel().getColumn(2).setPreferredWidth(10);
-		table.getColumnModel().getColumn(3).setPreferredWidth(250);
-
 		setVisible(true);
 		return model.isBlacklistingChanged();
 	}
