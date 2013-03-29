@@ -19,6 +19,11 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
+/**
+ * 
+ * @author dmosen@uni-koblenz.de
+ * 
+ */
 @SuppressWarnings("serial")
 public class EditCommentDialog extends JDialog {
 

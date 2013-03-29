@@ -4,10 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -24,9 +20,12 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
+import javax.swing.text.BadLocationException;
 
 import schemas.categoryschema.CategoryGraph;
 import visualisation.model.CategoryTableModel;
@@ -160,28 +159,31 @@ public class TableDialog extends JDialog {
 			}
 		});
 
-		editorPane.addKeyListener(new KeyAdapter() {
+		editorPane.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override
-			public void keyTyped(KeyEvent e) {
-				super.keyTyped(e);
-				comment = editorPane.getText();
-			}
-		});
-
-		editorPane.addFocusListener(new FocusListener() {
-
-			private int selectedRow;
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				System.out.println("focusLost: " + comment);
-				model.setValueAt(comment, selectedRow, 3);
+			public void removeUpdate(DocumentEvent e) {
+				textChanged(e);
 			}
 
 			@Override
-			public void focusGained(FocusEvent e) {
-				selectedRow = table.getSelectedRow();
+			public void insertUpdate(DocumentEvent e) {
+				textChanged(e);
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+			}
+
+			private void textChanged(DocumentEvent e) {
+				try {
+					comment = e.getDocument().getText(0,
+							e.getDocument().getLength());
+				} catch (BadLocationException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				model.setValueAt(comment, table.getSelectedRow(), 3);
 			}
 		});
 

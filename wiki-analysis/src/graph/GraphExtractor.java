@@ -187,8 +187,6 @@ public class GraphExtractor {
 						GraphExtractor.categoryChange, null, currentLevel + " "
 								+ currentCategory);
 
-				System.out.println(currentLevel + " " + currentCategory);
-
 				queue.poll();
 
 				if (extractPages) {
@@ -235,8 +233,6 @@ public class GraphExtractor {
 					// if category already seen, add an edge only and report a
 					// frond
 					else {
-						System.out.println("Frond from " + currentCategory
-								+ " to " + nextCategory + " detected!");
 						createdEdges.add(graph.createSubcategory(currentVertex,
 								categoryMap.get(nextCategory)));
 					}
@@ -274,7 +270,6 @@ public class GraphExtractor {
 
 	@SuppressWarnings("unchecked")
 	private synchronized void saveState() {
-		System.out.println("Saved queue: " + queue);
 		createdEdges = new ArrayList<Edge>();
 		createdVertices = new ArrayList<Vertex>();
 
@@ -286,7 +281,6 @@ public class GraphExtractor {
 	}
 
 	public synchronized void restoreState() {
-		System.out.println("Restored queue: " + savedQueue);
 
 		for (Edge e : createdEdges) {
 			graph.deleteEdge(e);

@@ -2,7 +2,6 @@ package utils;
 
 import graph.BlacklistedGraphDFS;
 import graph.BlacklistedOrCommentedEdgeVisitor;
-import graph.CSVTreeExportVisitor;
 import graph.GraphStats;
 import graph.JSONGraphExportVisitor;
 import graph.ReachabilityCountVisitor;
@@ -35,12 +34,6 @@ import de.uni_koblenz.jgralab.algolib.algorithms.search.IterativeDepthFirstSearc
  * 
  */
 public class WikipediaAnalysis {
-
-	private static final String category = "Programming_languages";
-	private static final String categoryTableFilename = category
-			+ "_category_table.csv";
-	private static final String pageTableFilename = category
-			+ "_page_table.csv";
 
 	/**
 	 * Saves the category graph as JSON file
@@ -84,31 +77,6 @@ public class WikipediaAnalysis {
 	}
 
 	/**
-	 * Creates CSV files from a given category graph. One file listing all
-	 * categories and one listing all pages.
-	 * 
-	 * @param graph
-	 * @throws AlgorithmTerminatedException
-	 * @throws IOException
-	 */
-	public static void saveTables(Graph graph)
-			throws AlgorithmTerminatedException, IOException {
-		IterativeDepthFirstSearch dfs = new IterativeDepthFirstSearch(graph);
-		CSVTreeExportVisitor visitor = new CSVTreeExportVisitor();
-		dfs.addVisitor(visitor);
-		dfs.execute();
-		BufferedWriter categoryTable = new BufferedWriter(new FileWriter(
-				new File(categoryTableFilename)));
-		categoryTable.write(visitor.getCategoryTable());
-		categoryTable.close();
-
-		BufferedWriter pageTable = new BufferedWriter(new FileWriter(new File(
-				pageTableFilename)));
-		pageTable.write(visitor.getPageTable());
-		pageTable.close();
-	}
-
-	/**
 	 * Creates a category tree model from a previously saved graph conforming to
 	 * the schema <code>category-schema.tg</code>. The {@link CategoryTreeModel}
 	 * is composed of {@link CategoryTreeNode}s referring to vertices in the
@@ -119,7 +87,7 @@ public class WikipediaAnalysis {
 	 *            a TG-file containing the graph
 	 * @return the corresponding category tree model
 	 */
-	public static CategoryTreeModel createCategoryTreeModel(File file) {
+	public static CategoryTreeModel loadCategoryTreeModel(File file) {
 		// Load graph from file
 		CategoryGraph graph = null;
 		try {

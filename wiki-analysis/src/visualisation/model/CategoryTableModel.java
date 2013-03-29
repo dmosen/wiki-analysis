@@ -10,6 +10,11 @@ import schemas.categoryschema.Subcategory;
 import utils.WikipediaAnalysis;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 
+/**
+ * 
+ * @author dmosen@uni-koblenz.de
+ * 
+ */
 @SuppressWarnings("serial")
 public class CategoryTableModel extends AbstractTableModel {
 
@@ -86,7 +91,8 @@ public class CategoryTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if (columnIndex == 2 && !nodes.get(rowIndex).isBackwardArc() && !nodes.get(rowIndex).isExcluded()) {
+		if (columnIndex == 2 && !nodes.get(rowIndex).isBackwardArc()
+				&& !nodes.get(rowIndex).isExcluded()) {
 			return true;
 		}
 		return false;
