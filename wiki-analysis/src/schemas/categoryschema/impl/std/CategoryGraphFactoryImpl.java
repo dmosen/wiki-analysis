@@ -18,8 +18,8 @@ public class CategoryGraphFactoryImpl extends GraphFactoryImpl implements Catego
 		super(schemas.categoryschema.CategorySchema.instance(), ImplementationType.STANDARD);
 		createMaps();
 		setGraphImplementationClass(schemas.categoryschema.CategoryGraph.GC, schemas.categoryschema.impl.std.CategoryGraphImpl.class);
-		setVertexImplementationClass(schemas.categoryschema.Page.VC, schemas.categoryschema.impl.std.PageImpl.class);
 		setVertexImplementationClass(schemas.categoryschema.Category.VC, schemas.categoryschema.impl.std.CategoryImpl.class);
+		setVertexImplementationClass(schemas.categoryschema.Page.VC, schemas.categoryschema.impl.std.PageImpl.class);
 		setEdgeImplementationClass(schemas.categoryschema.Subcategory.EC, schemas.categoryschema.impl.std.SubcategoryImpl.class);
 		setEdgeImplementationClass(schemas.categoryschema.ContainsPage.EC, schemas.categoryschema.impl.std.ContainsPageImpl.class);
 	}

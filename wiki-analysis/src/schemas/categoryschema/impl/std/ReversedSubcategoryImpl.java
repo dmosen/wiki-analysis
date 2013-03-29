@@ -53,6 +53,14 @@ public class ReversedSubcategoryImpl extends ReversedEdgeImpl implements de.uni_
 		((schemas.categoryschema.Subcategory)normalEdge).set_comment(_comment);
 	}
 
+	public boolean is_excluded() {
+		return ((schemas.categoryschema.Subcategory)normalEdge).is_excluded();
+	}
+
+	public void set_excluded(boolean _excluded) {
+		((schemas.categoryschema.Subcategory)normalEdge).set_excluded(_excluded);
+	}
+
 	public void readAttributeValues(GraphIO io) throws GraphIOException {
 		throw new GraphIOException("Can not call readAttributeValues for reversed Edges.");
 	}

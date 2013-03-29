@@ -3,7 +3,6 @@ package utils;
 import graph.BlacklistedGraphDFS;
 import graph.BlacklistedOrCommentedEdgeVisitor;
 import graph.CSVTreeExportVisitor;
-import graph.GraphExtractor;
 import graph.GraphStats;
 import graph.JSONGraphExportVisitor;
 import graph.ReachabilityCountVisitor;
@@ -15,8 +14,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.xml.sax.SAXException;
-
 import schemas.categoryschema.Category;
 import schemas.categoryschema.CategoryGraph;
 import schemas.categoryschema.CategorySchema;
@@ -27,7 +24,6 @@ import de.uni_koblenz.jgralab.Graph;
 import de.uni_koblenz.jgralab.GraphIO;
 import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.ImplementationType;
-import de.uni_koblenz.jgralab.NoSuchAttributeException;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 import de.uni_koblenz.jgralab.algolib.algorithms.search.IterativeDepthFirstSearch;
 
@@ -155,31 +151,6 @@ public class WikipediaAnalysis {
 		computeStatistics(graph);
 
 		return model;
-	}
-
-	/**
-	 * Extracts a graph from Wikipedia consisting of categories for a given root
-	 * category.
-	 * 
-	 * @param rootCategory
-	 *            the root category
-	 * @param maxLevel
-	 *            the maximal depth at which the extraction is stopped
-	 * @return
-	 * @throws NoSuchAttributeException
-	 * @throws SAXException
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	public static Graph extractGraph(String rootCategory, int maxLevel)
-			throws NoSuchAttributeException, SAXException, IOException,
-			InterruptedException {
-		Graph graph;
-		GraphExtractor extractor = new GraphExtractor(rootCategory, maxLevel);
-
-		System.out.println("Extracting Graph for " + rootCategory + " ...");
-		graph = extractor.extract();
-		return graph;
 	}
 
 	public static ArrayList<Subcategory> getBlacklistedOrCommentedEdges(

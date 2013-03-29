@@ -26,8 +26,8 @@ import java.lang.ref.WeakReference;
  */
 public class CategorySchema extends SchemaImpl {
 	public final GraphClass gc_CategoryGraph;
-	public final VertexClass vc_Page;
 	public final VertexClass vc_Category;
+	public final VertexClass vc_Page;
 	public final EdgeClass ec_Subcategory;
 	public final EdgeClass ec_ContainsPage;
 
@@ -70,12 +70,6 @@ public class CategorySchema extends SchemaImpl {
 			VertexClass vc_Vertex = getDefaultVertexClass();
 
 			{
-				VertexClass vc = vc_Page = gc.createVertexClass("Page");
-				vc.setAbstract(false);
-				vc.addAttribute(createAttribute("title", getDomain("String"), getAttributedElementClass("Page"), null));
-			}
-
-			{
 				VertexClass vc = vc_Category = gc.createVertexClass("Category");
 				vc.setAbstract(false);
 				vc.addAttribute(createAttribute("level", getDomain("Integer"), getAttributedElementClass("Category"), null));
@@ -88,6 +82,12 @@ public class CategorySchema extends SchemaImpl {
 			}
 
 			{
+				VertexClass vc = vc_Page = gc.createVertexClass("Page");
+				vc.setAbstract(false);
+				vc.addAttribute(createAttribute("title", getDomain("String"), getAttributedElementClass("Page"), null));
+			}
+
+			{
 				EdgeClass ec = ec_Subcategory = gc.createEdgeClass("Subcategory",
 					vc_Category, 0, 2147483647, "category", de.uni_koblenz.jgralab.schema.AggregationKind.NONE,
 					vc_Category, 0, 2147483647, "subcategory", de.uni_koblenz.jgralab.schema.AggregationKind.NONE);
@@ -95,6 +95,7 @@ public class CategorySchema extends SchemaImpl {
 				ec.addAttribute(createAttribute("backwardArc", getDomain("Boolean"), getAttributedElementClass("Subcategory"), null));
 				ec.addAttribute(createAttribute("blacklisted", getDomain("Boolean"), getAttributedElementClass("Subcategory"), null));
 				ec.addAttribute(createAttribute("comment", getDomain("String"), getAttributedElementClass("Subcategory"), null));
+				ec.addAttribute(createAttribute("excluded", getDomain("Boolean"), getAttributedElementClass("Subcategory"), null));
 			}
 
 			{

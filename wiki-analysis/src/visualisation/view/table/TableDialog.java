@@ -82,6 +82,7 @@ public class TableDialog extends JDialog {
 			contentPanel.add(scrollPane, "1, 1, fill, fill");
 			{
 				table = new JTable();
+				table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				table.getTableHeader().setResizingAllowed(true);
 				table.setFillsViewportHeight(true);
 				scrollPane.setViewportView(table);

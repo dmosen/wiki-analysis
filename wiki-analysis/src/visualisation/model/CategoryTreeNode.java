@@ -234,4 +234,8 @@ public class CategoryTreeNode implements MutableTreeNode {
 		// TODO Auto-generated method stub
 
 	}
+
+	public boolean isExcluded() {
+		return edge.is_excluded();
+	}
 }

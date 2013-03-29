@@ -9,6 +9,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,7 +25,6 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
 import de.uni_koblenz.jgralab.NoSuchAttributeException;
-import javax.swing.JButton;
 
 /**
  * 
@@ -41,13 +41,17 @@ public class ExtractionProgressDialog extends JDialog {
 	private JScrollPane scrollPane;
 	private JTextArea progressArea;
 	private JButton btnOk;
+	private JButton btnCancel;
+
+	private boolean nextLevel;
 
 	/**
 	 * Create the dialog.
 	 */
-	public ExtractionProgressDialog(GraphExtractor extractor) {
+	public ExtractionProgressDialog(GraphExtractor extractor, boolean nextLevel) {
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		this.extractor = extractor;
+		this.nextLevel = nextLevel;
 
 		initView();
 		initWorker();
@@ -83,7 +87,7 @@ public class ExtractionProgressDialog extends JDialog {
 			@Override
 			protected GraphExtractor doInBackground() {
 				try {
-					extractor.extract();
+					extractor.extract(nextLevel);
 				} catch (NoSuchAttributeException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -106,10 +110,10 @@ public class ExtractionProgressDialog extends JDialog {
 
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals(
-						GraphExtractor.categoryChange)) {
+				if (evt.getPropertyName().equals(GraphExtractor.categoryChange)) {
 					progressArea.append(evt.getNewValue().toString() + "\n");
-					progressArea.setCaretPosition(progressArea.getDocument().getLength());
+					progressArea.setCaretPosition(progressArea.getDocument()
+							.getLength());
 				}
 			}
 		});
@@ -121,18 +125,22 @@ public class ExtractionProgressDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("pref:grow"),
-				FormFactory.RELATED_GAP_COLSPEC,},
-			new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.GLUE_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
+		contentPanel
+				.setLayout(new FormLayout(new ColumnSpec[] {
+						FormFactory.RELATED_GAP_COLSPEC,
+						ColumnSpec.decode("default:grow"),
+						FormFactory.RELATED_GAP_COLSPEC,
+						ColumnSpec.decode("50dlu"),
+						FormFactory.RELATED_GAP_COLSPEC,
+						ColumnSpec.decode("50dlu"),
+						FormFactory.RELATED_GAP_COLSPEC, }, new RowSpec[] {
+						FormFactory.RELATED_GAP_ROWSPEC,
+						FormFactory.GLUE_ROWSPEC,
+						FormFactory.RELATED_GAP_ROWSPEC,
+						FormFactory.DEFAULT_ROWSPEC, }));
 		{
 			scrollPane = new JScrollPane();
-			contentPanel.add(scrollPane, "2, 2, fill, fill");
+			contentPanel.add(scrollPane, "2, 2, 5, 1, fill, fill");
 			{
 				progressArea = new JTextArea();
 				progressArea.setEditable(false);
@@ -142,13 +150,27 @@ public class ExtractionProgressDialog extends JDialog {
 		{
 			btnOk = new JButton("OK");
 			btnOk.setEnabled(false);
-			contentPanel.add(btnOk, "2, 4, right, default");
+			contentPanel.add(btnOk, "4, 4, fill, default");
 		}
-		
+		{
+			btnCancel = new JButton("Cancel");
+			contentPanel.add(btnCancel, "6, 4");
+		}
+
 		btnOk.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+
+		btnCancel.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				extractor.cancel();
+				extractor.restoreState();
 				dispose();
 			}
 		});

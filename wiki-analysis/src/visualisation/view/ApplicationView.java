@@ -5,20 +5,15 @@ import graph.GraphExtractor;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 
-import schemas.categoryschema.Category;
 import schemas.categoryschema.CategoryGraph;
 import schemas.categoryschema.CategorySchema;
 import utils.WikipediaAnalysis;
@@ -36,7 +31,6 @@ import com.jidesoft.plaf.LookAndFeelFactory;
 import de.uni_koblenz.jgralab.GraphIO;
 import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.ImplementationType;
-import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 
 /**
@@ -194,9 +188,6 @@ public class ApplicationView {
 				GraphExtractor extractor = dialog.showDialog();
 				if (extractor != null) {
 					graph = extractor.getGraph();
-					if (extractor.getRemovedCategoryPaths().size() > 0) {
-						showSaveRemovedCategoriesDialog(extractor);
-					}
 					controller.graphChanged(graph);
 				}
 			}
@@ -275,35 +266,4 @@ public class ApplicationView {
 		}
 	}
 
-	private void showSaveRemovedCategoriesDialog(GraphExtractor extractor) {
-		fileChooser.setDialogTitle("Save removed category paths");
-		int value = fileChooser.showSaveDialog(frmCategoryTreeExtraction);
-
-		if (value == JFileChooser.APPROVE_OPTION) {
-			File file = fileChooser.getSelectedFile();
-			try {
-				BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-				bw.write("");
-
-				String result = "";
-				for (List<Category> path : extractor.getRemovedCategoryPaths()) {
-					for (Vertex v : path) {
-						result = result + v.getAttribute("title") + " ";
-					}
-					result = result += "\n";
-				}
-				bw.write(result);
-				bw.close();
-			} catch (IOException e) {
-				JOptionPane
-						.showMessageDialog(
-								frmCategoryTreeExtraction,
-								"Could not write to file "
-										+ file.getAbsolutePath()
-										+ ". Please try again and choose a writable location.",
-								"File access error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-		}
-	}
 }

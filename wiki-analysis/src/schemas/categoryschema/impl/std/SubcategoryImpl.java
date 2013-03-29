@@ -6,23 +6,27 @@
 
 package schemas.categoryschema.impl.std;
 
-import java.io.IOException;
+import de.uni_koblenz.jgralab.impl.std.EdgeImpl;
 
-import schemas.categoryschema.Category;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.GraphIO;
 import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.NoSuchAttributeException;
 import de.uni_koblenz.jgralab.Vertex;
-import de.uni_koblenz.jgralab.impl.std.EdgeImpl;
 
+import schemas.categoryschema.impl.std.ReversedSubcategoryImpl;
+
+import java.io.IOException;
+
+import schemas.categoryschema.Category;
 /**
- * FromVertexClass: Category FromRoleName : category ToVertexClass: Category
+ * FromVertexClass: Category
+ * FromRoleName : category
+ * ToVertexClass: Category
  * ToRoleName : subcategory
  */
 
-public class SubcategoryImpl extends EdgeImpl implements
-		de.uni_koblenz.jgralab.Edge, schemas.categoryschema.Subcategory {
+public class SubcategoryImpl extends EdgeImpl implements de.uni_koblenz.jgralab.Edge, schemas.categoryschema.Subcategory {
 
 	protected boolean _backwardArc;
 
@@ -30,11 +34,11 @@ public class SubcategoryImpl extends EdgeImpl implements
 
 	protected java.lang.String _comment;
 
-	public SubcategoryImpl(int id, de.uni_koblenz.jgralab.Graph g,
-			Vertex alpha, Vertex omega) {
+	protected boolean _excluded;
+
+	public SubcategoryImpl(int id, de.uni_koblenz.jgralab.Graph g, Vertex alpha, Vertex omega) {
 		super(id, g, alpha, omega);
-		((de.uni_koblenz.jgralab.impl.InternalGraph) graph).addEdge(this,
-				alpha, omega);
+		((de.uni_koblenz.jgralab.impl.InternalGraph) graph).addEdge(this, alpha, omega);
 	}
 
 	@Override
@@ -49,14 +53,11 @@ public class SubcategoryImpl extends EdgeImpl implements
 
 	@SuppressWarnings("unchecked")
 	public <T> T getAttribute(String attributeName) {
-		if (attributeName.equals("backwardArc"))
-			return (T) (java.lang.Boolean) is_backwardArc();
-		if (attributeName.equals("blacklisted"))
-			return (T) (java.lang.Boolean) is_blacklisted();
-		if (attributeName.equals("comment"))
-			return (T) get_comment();
-		throw new NoSuchAttributeException(
-				"Subcategory doesn't contain an attribute " + attributeName);
+		if (attributeName.equals("backwardArc")) return (T) (java.lang.Boolean) is_backwardArc();
+		if (attributeName.equals("blacklisted")) return (T) (java.lang.Boolean) is_blacklisted();
+		if (attributeName.equals("comment")) return (T) get_comment();
+		if (attributeName.equals("excluded")) return (T) (java.lang.Boolean) is_excluded();
+		throw new NoSuchAttributeException("Subcategory doesn't contain an attribute " + attributeName);
 	}
 
 	public <T> void setAttribute(String attributeName, T data) {
@@ -72,8 +73,11 @@ public class SubcategoryImpl extends EdgeImpl implements
 			set_comment((java.lang.String) data);
 			return;
 		}
-		throw new NoSuchAttributeException(
-				"Subcategory doesn't contain an attribute " + attributeName);
+		if (attributeName.equals("excluded")) {
+			set_excluded((java.lang.Boolean) data);
+			return;
+		}
+		throw new NoSuchAttributeException("Subcategory doesn't contain an attribute " + attributeName);
 	}
 
 	public boolean is_backwardArc() {
@@ -85,7 +89,7 @@ public class SubcategoryImpl extends EdgeImpl implements
 		Object oldValue = this._backwardArc;
 		this._backwardArc = _backwardArc;
 		graphModified();
-		ecaAttributeChanged("backwardArc", oldValue, _backwardArc);
+	ecaAttributeChanged("backwardArc", oldValue, _backwardArc);
 	}
 
 	public boolean is_blacklisted() {
@@ -97,7 +101,7 @@ public class SubcategoryImpl extends EdgeImpl implements
 		Object oldValue = this._blacklisted;
 		this._blacklisted = _blacklisted;
 		graphModified();
-		ecaAttributeChanged("blacklisted", oldValue, _blacklisted);
+	ecaAttributeChanged("blacklisted", oldValue, _blacklisted);
 	}
 
 	public java.lang.String get_comment() {
@@ -109,7 +113,19 @@ public class SubcategoryImpl extends EdgeImpl implements
 		Object oldValue = this._comment;
 		this._comment = _comment;
 		graphModified();
-		ecaAttributeChanged("comment", oldValue, _comment);
+	ecaAttributeChanged("comment", oldValue, _comment);
+	}
+
+	public boolean is_excluded() {
+		return _excluded;
+	}
+
+	public void set_excluded(boolean _excluded) {
+		ecaAttributeChanging("excluded", this._excluded, _excluded);
+		Object oldValue = this._excluded;
+		this._excluded = _excluded;
+		graphModified();
+	ecaAttributeChanged("excluded", oldValue, _excluded);
 	}
 
 	public void readAttributeValues(GraphIO io) throws GraphIOException {
@@ -119,10 +135,11 @@ public class SubcategoryImpl extends EdgeImpl implements
 		set_blacklisted(_blacklisted);
 		_comment = io.matchUtfString();
 		set_comment(_comment);
+		_excluded = io.matchBoolean();
+		set_excluded(_excluded);
 	}
 
-	public void readAttributeValueFromString(String attributeName, String value)
-			throws GraphIOException {
+	public void readAttributeValueFromString(String attributeName, String value) throws GraphIOException {
 		if (attributeName.equals("backwardArc")) {
 			GraphIO io = GraphIO.createStringReader(value, getSchema());
 			_backwardArc = io.matchBoolean();
@@ -141,20 +158,24 @@ public class SubcategoryImpl extends EdgeImpl implements
 			set_comment(_comment);
 			return;
 		}
-		throw new NoSuchAttributeException(
-				"Subcategory doesn't contain an attribute " + attributeName);
+		if (attributeName.equals("excluded")) {
+			GraphIO io = GraphIO.createStringReader(value, getSchema());
+			_excluded = io.matchBoolean();
+			set_excluded(_excluded);
+			return;
+		}
+		throw new NoSuchAttributeException("Subcategory doesn't contain an attribute " + attributeName);
 	}
 
-	public void writeAttributeValues(GraphIO io) throws GraphIOException,
-			IOException {
+	public void writeAttributeValues(GraphIO io) throws GraphIOException, IOException {
 		io.space();
 		io.writeBoolean(_backwardArc);
 		io.writeBoolean(_blacklisted);
 		io.writeUtfString(_comment);
+		io.writeBoolean(_excluded);
 	}
 
-	public String writeAttributeValueToString(String attributeName)
-			throws IOException, GraphIOException {
+	public String writeAttributeValueToString(String attributeName) throws IOException, GraphIOException {
 		if (attributeName.equals("backwardArc")) {
 			GraphIO io = GraphIO.createStringWriter(getSchema());
 			io.writeBoolean(_backwardArc);
@@ -170,22 +191,24 @@ public class SubcategoryImpl extends EdgeImpl implements
 			io.writeUtfString(_comment);
 			return io.getStringWriterResult();
 		}
-		throw new NoSuchAttributeException(
-				"Subcategory doesn't contain an attribute " + attributeName);
+		if (attributeName.equals("excluded")) {
+			GraphIO io = GraphIO.createStringWriter(getSchema());
+			io.writeBoolean(_excluded);
+			return io.getStringWriterResult();
+		}
+		throw new NoSuchAttributeException("Subcategory doesn't contain an attribute " + attributeName);
 	}
 
 	public schemas.categoryschema.Subcategory getNextSubcategoryInGraph() {
-		return (schemas.categoryschema.Subcategory) getNextEdge(schemas.categoryschema.Subcategory.class);
+		return (schemas.categoryschema.Subcategory)getNextEdge(schemas.categoryschema.Subcategory.class);
 	}
 
 	public schemas.categoryschema.Subcategory getNextSubcategoryIncidence() {
-		return (schemas.categoryschema.Subcategory) getNextIncidence(schemas.categoryschema.Subcategory.class);
+		return (schemas.categoryschema.Subcategory)getNextIncidence(schemas.categoryschema.Subcategory.class);
 	}
 
-	public schemas.categoryschema.Subcategory getNextSubcategoryIncidence(
-			EdgeDirection orientation) {
-		return (schemas.categoryschema.Subcategory) getNextIncidence(
-				schemas.categoryschema.Subcategory.class, orientation);
+	public schemas.categoryschema.Subcategory getNextSubcategoryIncidence(EdgeDirection orientation) {
+		return (schemas.categoryschema.Subcategory)getNextIncidence(schemas.categoryschema.Subcategory.class, orientation);
 	}
 
 	public de.uni_koblenz.jgralab.schema.AggregationKind getAggregationKind() {
@@ -205,11 +228,9 @@ public class SubcategoryImpl extends EdgeImpl implements
 	protected de.uni_koblenz.jgralab.impl.ReversedEdgeBaseImpl createReversedEdge() {
 		return new ReversedSubcategoryImpl(this, graph);
 	}
-
 	public Category getAlpha() {
 		return (Category) super.getAlpha();
 	}
-
 	public Category getOmega() {
 		return (Category) super.getOmega();
 	}

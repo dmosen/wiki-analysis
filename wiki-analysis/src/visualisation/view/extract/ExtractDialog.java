@@ -195,20 +195,22 @@ public class ExtractDialog extends JDialog {
 		});
 	}
 
-	private void extractGraph(boolean nextLevelOnly) {
+	private void extractGraph(boolean extractNextLevel) {
 		String category = textField.getText();
 
-		// format the category string
-		category = category.replaceAll("_", " ");
-		category = category.toLowerCase();
-		char[] stringArray = category.toCharArray();
-		stringArray[0] = Character.toUpperCase(stringArray[0]);
-		category = new String(stringArray);
+		if (category.length() > 0) {
+			// format the category string
+			category = category.replaceAll("_", " ");
+			category = category.toLowerCase();
+			char[] stringArray = category.toCharArray();
+			stringArray[0] = Character.toUpperCase(stringArray[0]);
+			category = new String(stringArray);
+		}
 
 		// valid category chosen
 		if (WikipediaAPI.isValidCategory(category)) {
 			int answer = JOptionPane.NO_OPTION;
-			if (!nextLevelOnly) {
+			if (!extractNextLevel) {
 				// warn the user
 				answer = JOptionPane
 						.showConfirmDialog(
@@ -220,12 +222,12 @@ public class ExtractDialog extends JDialog {
 								JOptionPane.QUESTION_MESSAGE);
 			}
 
-			if (answer == JOptionPane.YES_OPTION || nextLevelOnly) {
+			if (answer == JOptionPane.YES_OPTION || extractNextLevel) {
 				if (extractor == null) {
 					// no graph extractor available => construct one
 					textField.setEditable(false);
-					if (nextLevelOnly) {
-						extractor = new GraphExtractor(category, 1);
+					if (extractNextLevel) {
+						extractor = new GraphExtractor(category, 0);
 					} else {
 						extractor = new GraphExtractor(category);
 					}
@@ -241,13 +243,12 @@ public class ExtractDialog extends JDialog {
 							extractor.removeAtMaxLevel(item.getVertex());
 						}
 					}
-					extractor.incrementMaxLevel();
 				}
 
 				// show extraction progress to indicate that something is
 				// happening
 				ExtractionProgressDialog extractionProgressDialog = new ExtractionProgressDialog(
-						extractor);
+						extractor, extractNextLevel);
 				extractionProgressDialog.showDialog();
 
 				lblLevelValue.setText("" + extractor.getMaxReachedLevel());
@@ -258,7 +259,8 @@ public class ExtractDialog extends JDialog {
 					list.setListData(new CheckBoxListItem[0]);
 					btnExtractNextLevel.setEnabled(false);
 					btnExtractWholeGraph.setEnabled(false);
-				} else {
+				} else if (!extractor.isCancelled()) {
+					System.out.println(extractor.getQueue());
 					CheckBoxListItem[] items = new CheckBoxListItem[extractor
 							.getQueue().size()];
 					int i = 0;
