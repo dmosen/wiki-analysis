@@ -7,7 +7,6 @@ import schemas.categoryschema.Category;
 import schemas.categoryschema.ContainsPage;
 import schemas.categoryschema.Page;
 import schemas.categoryschema.Subcategory;
-
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
@@ -36,16 +35,17 @@ public class JSONGraphExportVisitor extends DFSVisitorAdapter {
 		JSONObject jsonVertex;
 
 		jsonVertex = new JSONObject();
-		
+
 		jsonVertex.put("id", v.getId());
 		jsonVertex.put("title", v.getAttribute("title"));
-		
+
 		if (v.isInstanceOf(Category.VC)) {
 			Category c = (Category) v;
 			jsonVertex.put("type", "Category");
 			jsonVertex.put("level", c.get_level());
 			jsonVertex.put("subcategories", c.get_subcategories());
-			jsonVertex.put("transitiveSubcategories", c.get_transitiveSubcategories());
+			jsonVertex.put("transitiveSubcategories",
+					c.get_transitiveSubcategories());
 			jsonVertex.put("parentCategories", c.get_parentCategories());
 			jsonVertex.put("pages", c.get_pages());
 			jsonVertex.put("transitivePages", c.get_transitivePages());
@@ -64,16 +64,17 @@ public class JSONGraphExportVisitor extends DFSVisitorAdapter {
 		JSONObject jsonEdge;
 
 		jsonEdge = new JSONObject();
-		
+
 		jsonEdge.put("start", e.getAlpha().getId());
 		jsonEdge.put("end", e.getOmega().getId());
-		
+
 		if (e.isInstanceOf(Subcategory.EC)) {
 			Subcategory s = (Subcategory) e;
 			jsonEdge.put("type", "Subcategory");
 			jsonEdge.put("backwardArc", s.is_backwardArc());
 			jsonEdge.put("blacklisted", s.is_blacklisted());
 			jsonEdge.put("comment", s.get_comment());
+			jsonEdge.put("excluded", s.is_excluded());
 			jsonArray.add(jsonEdge);
 		} else if (e.isInstanceOf(ContainsPage.EC)) {
 			jsonEdge.put("type", "ContainsPage");
