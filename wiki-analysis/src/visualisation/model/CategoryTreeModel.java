@@ -4,7 +4,6 @@ import graph.GraphStats;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +17,6 @@ import utils.CategoryTreeFactory;
 import utils.WikipediaAnalysis;
 import visualisation.controller.Controller;
 import visualisation.controller.HighlightingMode;
-import de.uni_koblenz.jgralab.GraphIO;
-import de.uni_koblenz.jgralab.GraphIOException;
 
 /**
  * 
@@ -306,15 +303,6 @@ public class CategoryTreeModel extends DefaultTreeModel {
 
 		default:
 			return "";
-		}
-	}
-
-	public void saveToFile(File file) {
-		try {
-			GraphIO.saveGraphToFile(graph, file.toString(), null);
-		} catch (GraphIOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 

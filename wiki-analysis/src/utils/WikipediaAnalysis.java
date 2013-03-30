@@ -15,14 +15,10 @@ import java.util.ArrayList;
 
 import schemas.categoryschema.Category;
 import schemas.categoryschema.CategoryGraph;
-import schemas.categoryschema.CategorySchema;
 import schemas.categoryschema.Subcategory;
 import visualisation.model.CategoryTreeModel;
 import visualisation.model.CategoryTreeNode;
 import de.uni_koblenz.jgralab.Graph;
-import de.uni_koblenz.jgralab.GraphIO;
-import de.uni_koblenz.jgralab.GraphIOException;
-import de.uni_koblenz.jgralab.ImplementationType;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 import de.uni_koblenz.jgralab.algolib.algorithms.search.IterativeDepthFirstSearch;
 
@@ -74,32 +70,6 @@ public class WikipediaAnalysis {
 			dfs.execute(graph, vertex);
 		}
 		return stats;
-	}
-
-	/**
-	 * Creates a category tree model from a previously saved graph conforming to
-	 * the schema <code>category-schema.tg</code>. The {@link CategoryTreeModel}
-	 * is composed of {@link CategoryTreeNode}s referring to vertices in the
-	 * underlying graph. Other than the graph the tree can have several nodes
-	 * referring the same vertex in the graph.
-	 * 
-	 * @param file
-	 *            a TG-file containing the graph
-	 * @return the corresponding category tree model
-	 */
-	public static CategoryTreeModel loadCategoryTreeModel(File file) {
-		// Load graph from file
-		CategoryGraph graph = null;
-		try {
-			graph = GraphIO.loadGraphFromFile(file.getAbsolutePath(),
-					CategorySchema.instance(), ImplementationType.STANDARD,
-					null);
-		} catch (GraphIOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		return createCategoryTreeModel(graph);
 	}
 
 	/**

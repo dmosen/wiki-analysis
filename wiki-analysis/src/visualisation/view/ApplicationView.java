@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import schemas.categoryschema.CategoryGraph;
 import schemas.categoryschema.CategorySchema;
@@ -39,6 +40,8 @@ import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
  * 
  */
 public class ApplicationView {
+
+	private final String FILE = "data/simple_graph.tg";
 
 	private Controller controller;
 	private CategoryTreeModel model;
@@ -83,19 +86,20 @@ public class ApplicationView {
 	private void initialize() {
 		LookAndFeelFactory.installDefaultLookAndFeelAndExtension();
 
-		// TODO instead of directly loading a graph leave it to the user to load
-		// an existing graph or to extract a model
 		graph = null;
 		model = null;
 
 		try {
-			graph = GraphIO.loadGraphFromFile("data/simple_graph.tg",
-					CategorySchema.instance(), ImplementationType.STANDARD,
-					null);
+			graph = GraphIO.loadGraphFromFile(FILE, CategorySchema.instance(),
+					ImplementationType.STANDARD, null);
 			model = new CategoryTreeModel(graph);
 		} catch (GraphIOException e) {
-			// TODO Auto-generated catch block
+			JOptionPane.showMessageDialog(frmCategoryTreeExtraction,
+					"Error on loading file " + new File(FILE).getAbsolutePath()
+							+ ".\nMake sure it is available and readable.",
+					"Error", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
+			System.exit(1);
 		}
 
 		Controller controller = new Controller();
@@ -207,8 +211,11 @@ public class ApplicationView {
 					try {
 						WikipediaAnalysis.saveGraphAsJSON(graph, file);
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						JOptionPane.showMessageDialog(
+								frmCategoryTreeExtraction,
+								"Error on writing to file "
+										+ file.getAbsolutePath() + ".",
+								"Error", JOptionPane.ERROR_MESSAGE);
 					} catch (AlgorithmTerminatedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -242,8 +249,10 @@ public class ApplicationView {
 						CategorySchema.instance(), ImplementationType.STANDARD,
 						null);
 			} catch (GraphIOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(frmCategoryTreeExtraction,
+						"Error on loading file " + file.getAbsolutePath()
+								+ ".\nMake sure it is available and readable.",
+						"Error", JOptionPane.ERROR_MESSAGE);
 			}
 
 			controller.graphChanged(graph);
@@ -260,8 +269,9 @@ public class ApplicationView {
 			try {
 				GraphIO.saveGraphToFile(graph, file.getAbsolutePath(), null);
 			} catch (GraphIOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(frmCategoryTreeExtraction,
+						"Error on writing to file " + file.getAbsolutePath()
+								+ ".", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

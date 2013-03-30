@@ -161,26 +161,26 @@ public class CategoryTreeNode implements MutableTreeNode {
 
 	@Override
 	public void insert(MutableTreeNode child, int index) {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException(
+				"This operation is unsupported by this tree node");
 	}
 
 	@Override
 	public void remove(int index) {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException(
+				"This operation is unsupported by this tree node");
 	}
 
 	@Override
 	public void remove(MutableTreeNode node) {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException(
+				"This operation is unsupported by this tree node");
 	}
 
 	@Override
 	public void removeFromParent() {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException(
+				"This operation is unsupported by this tree node");
 	}
 
 	@Override
@@ -231,8 +231,8 @@ public class CategoryTreeNode implements MutableTreeNode {
 
 	@Override
 	public void setUserObject(Object object) {
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException(
+				"This operation is unsupported by this tree node");
 	}
 
 	public boolean isExcluded() {

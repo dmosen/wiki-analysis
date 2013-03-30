@@ -14,6 +14,7 @@ import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -204,9 +205,15 @@ public class TableDialog extends JDialog {
 				if (value == JFileChooser.APPROVE_OPTION) {
 					try {
 						writeCSVFile(fc.getSelectedFile());
+						JOptionPane.showMessageDialog(TableDialog.this,
+								"Saved to " + fc.getSelectedFile() + ".",
+								"Success", JOptionPane.INFORMATION_MESSAGE);
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						JOptionPane.showMessageDialog(
+								TableDialog.this,
+								"Error on writing to file "
+										+ fc.getSelectedFile() + ".", "Error",
+								JOptionPane.ERROR_MESSAGE);
 					}
 
 				}
