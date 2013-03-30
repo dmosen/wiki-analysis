@@ -126,7 +126,7 @@ public class ExtractDialog extends JDialog {
 			}
 		}
 		{
-			btnExtractNextLevel = new JButton("Extract next level ...");
+			btnExtractNextLevel = new JButton("Extract next level");
 			contentPanel.add(btnExtractNextLevel, "2, 12, 3, 1");
 		}
 		{

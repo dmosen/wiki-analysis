@@ -94,10 +94,13 @@ public class ApplicationView {
 					ImplementationType.STANDARD, null);
 			model = new CategoryTreeModel(graph);
 		} catch (GraphIOException e) {
-			JOptionPane.showMessageDialog(frmCategoryTreeExtraction,
-					"Error on loading file " + new File(FILE).getAbsolutePath()
-							+ ".\nMake sure it is available and readable.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane
+					.showMessageDialog(
+							frmCategoryTreeExtraction,
+							"Error on loading file "
+									+ new File(FILE).getAbsolutePath()
+									+ ".\nMake sure it is readable and has the correct format.",
+							"Error", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -210,6 +213,10 @@ public class ApplicationView {
 
 					try {
 						WikipediaAnalysis.saveGraphAsJSON(graph, file);
+						JOptionPane.showMessageDialog(
+								frmCategoryTreeExtraction,
+								"Saved to " + file.getAbsolutePath() + ".",
+								"Success", JOptionPane.INFORMATION_MESSAGE);
 					} catch (IOException e1) {
 						JOptionPane.showMessageDialog(
 								frmCategoryTreeExtraction,
@@ -243,19 +250,24 @@ public class ApplicationView {
 		if (value == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 
-			graph = null;
+			CategoryGraph tGraph = null;
 			try {
-				graph = GraphIO.loadGraphFromFile(file.getAbsolutePath(),
+				tGraph = GraphIO.loadGraphFromFile(file.getAbsolutePath(),
 						CategorySchema.instance(), ImplementationType.STANDARD,
 						null);
+				if (tGraph != null) {
+					graph = tGraph;
+					controller.graphChanged(graph);
+				}
 			} catch (GraphIOException e1) {
-				JOptionPane.showMessageDialog(frmCategoryTreeExtraction,
-						"Error on loading file " + file.getAbsolutePath()
-								+ ".\nMake sure it is available and readable.",
-						"Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane
+						.showMessageDialog(
+								frmCategoryTreeExtraction,
+								"Error on loading file "
+										+ file.getAbsolutePath()
+										+ ".\nMake sure it is readable and has the correct format.",
+								"Error", JOptionPane.ERROR_MESSAGE);
 			}
-
-			controller.graphChanged(graph);
 		}
 	}
 
@@ -268,6 +280,9 @@ public class ApplicationView {
 
 			try {
 				GraphIO.saveGraphToFile(graph, file.getAbsolutePath(), null);
+				JOptionPane.showMessageDialog(frmCategoryTreeExtraction,
+						"Saved to " + file.getAbsolutePath() + ".", "Success",
+						JOptionPane.INFORMATION_MESSAGE);
 			} catch (GraphIOException e1) {
 				JOptionPane.showMessageDialog(frmCategoryTreeExtraction,
 						"Error on writing to file " + file.getAbsolutePath()
