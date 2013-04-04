@@ -112,7 +112,7 @@ public class ApplicationView {
 		fileChooser = new JFileChooser();
 
 		frmCategoryTreeExtraction = new JFrame();
-		frmCategoryTreeExtraction.setTitle("Category tree extraction");
+		frmCategoryTreeExtraction.setTitle("WikiTax");
 		frmCategoryTreeExtraction.setBounds(100, 100, 1000, 700);
 		frmCategoryTreeExtraction
 				.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

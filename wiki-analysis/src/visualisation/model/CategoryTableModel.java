@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import schemas.categoryschema.CategoryGraph;
-import schemas.categoryschema.Subcategory;
+import schemas.categoryschema.HasSubcategory;
 import utils.WikipediaAnalysis;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
 
@@ -25,9 +25,9 @@ public class CategoryTableModel extends AbstractTableModel {
 
 	public CategoryTableModel(CategoryGraph graph) {
 		try {
-			List<Subcategory> edges = WikipediaAnalysis
+			List<HasSubcategory> edges = WikipediaAnalysis
 					.getBlacklistedOrCommentedEdges(graph);
-			for (Subcategory e : edges) {
+			for (HasSubcategory e : edges) {
 				nodes.add(CategoryTreeModel.edgeToNodeMap.get(e));
 			}
 		} catch (AlgorithmTerminatedException e) {

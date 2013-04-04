@@ -18,9 +18,9 @@ import java.io.IOException;
 
 import schemas.categoryschema.Category;
 
-public class ReversedSubcategoryImpl extends ReversedEdgeImpl implements de.uni_koblenz.jgralab.Edge, schemas.categoryschema.Subcategory {
+public class ReversedHasSubcategoryImpl extends ReversedEdgeImpl implements de.uni_koblenz.jgralab.Edge, schemas.categoryschema.HasSubcategory {
 
-	ReversedSubcategoryImpl(EdgeImpl e, Graph g) {
+	ReversedHasSubcategoryImpl(EdgeImpl e, Graph g) {
 		super(e, g);
 	}
 
@@ -30,35 +30,35 @@ public class ReversedSubcategoryImpl extends ReversedEdgeImpl implements de.uni_
 	}
 
 	public boolean is_backwardArc() {
-		return ((schemas.categoryschema.Subcategory)normalEdge).is_backwardArc();
+		return ((schemas.categoryschema.HasSubcategory)normalEdge).is_backwardArc();
 	}
 
 	public void set_backwardArc(boolean _backwardArc) {
-		((schemas.categoryschema.Subcategory)normalEdge).set_backwardArc(_backwardArc);
+		((schemas.categoryschema.HasSubcategory)normalEdge).set_backwardArc(_backwardArc);
 	}
 
 	public boolean is_blacklisted() {
-		return ((schemas.categoryschema.Subcategory)normalEdge).is_blacklisted();
+		return ((schemas.categoryschema.HasSubcategory)normalEdge).is_blacklisted();
 	}
 
 	public void set_blacklisted(boolean _blacklisted) {
-		((schemas.categoryschema.Subcategory)normalEdge).set_blacklisted(_blacklisted);
+		((schemas.categoryschema.HasSubcategory)normalEdge).set_blacklisted(_blacklisted);
 	}
 
 	public java.lang.String get_comment() {
-		return ((schemas.categoryschema.Subcategory)normalEdge).get_comment();
+		return ((schemas.categoryschema.HasSubcategory)normalEdge).get_comment();
 	}
 
 	public void set_comment(java.lang.String _comment) {
-		((schemas.categoryschema.Subcategory)normalEdge).set_comment(_comment);
+		((schemas.categoryschema.HasSubcategory)normalEdge).set_comment(_comment);
 	}
 
 	public boolean is_excluded() {
-		return ((schemas.categoryschema.Subcategory)normalEdge).is_excluded();
+		return ((schemas.categoryschema.HasSubcategory)normalEdge).is_excluded();
 	}
 
 	public void set_excluded(boolean _excluded) {
-		((schemas.categoryschema.Subcategory)normalEdge).set_excluded(_excluded);
+		((schemas.categoryschema.HasSubcategory)normalEdge).set_excluded(_excluded);
 	}
 
 	public void readAttributeValues(GraphIO io) throws GraphIOException {
@@ -77,16 +77,16 @@ public class ReversedSubcategoryImpl extends ReversedEdgeImpl implements de.uni_
 		throw new GraphIOException("Can not call writeAttributeValueToString for reversed Edges.");
 	}
 
-	public schemas.categoryschema.Subcategory getNextSubcategoryInGraph() {
-		return ((schemas.categoryschema.Subcategory)normalEdge).getNextSubcategoryInGraph();
+	public schemas.categoryschema.HasSubcategory getNextHasSubcategoryInGraph() {
+		return ((schemas.categoryschema.HasSubcategory)normalEdge).getNextHasSubcategoryInGraph();
 	}
 
-	public schemas.categoryschema.Subcategory getNextSubcategoryIncidence() {
-		return (schemas.categoryschema.Subcategory)getNextIncidence(schemas.categoryschema.Subcategory.class);
+	public schemas.categoryschema.HasSubcategory getNextHasSubcategoryIncidence() {
+		return (schemas.categoryschema.HasSubcategory)getNextIncidence(schemas.categoryschema.HasSubcategory.class);
 	}
 
-	public schemas.categoryschema.Subcategory getNextSubcategoryIncidence(EdgeDirection orientation) {
-		return (schemas.categoryschema.Subcategory)getNextIncidence(schemas.categoryschema.Subcategory.class, orientation);
+	public schemas.categoryschema.HasSubcategory getNextHasSubcategoryIncidence(EdgeDirection orientation) {
+		return (schemas.categoryschema.HasSubcategory)getNextIncidence(schemas.categoryschema.HasSubcategory.class, orientation);
 	}
 	public Category getAlpha() {
 		return (Category) super.getAlpha();

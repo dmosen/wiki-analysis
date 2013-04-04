@@ -16,9 +16,9 @@ import schemas.categoryschema.Category;
  * ToRoleName : subcategory
  */
 
-public interface Subcategory extends de.uni_koblenz.jgralab.Edge {
+public interface HasSubcategory extends de.uni_koblenz.jgralab.Edge {
 
-	public static final de.uni_koblenz.jgralab.schema.EdgeClass EC = schemas.categoryschema.CategorySchema.instance().ec_Subcategory;
+	public static final de.uni_koblenz.jgralab.schema.EdgeClass EC = schemas.categoryschema.CategorySchema.instance().ec_HasSubcategory;
 
 	public boolean is_backwardArc();
 
@@ -37,20 +37,20 @@ public interface Subcategory extends de.uni_koblenz.jgralab.Edge {
 	public void set_excluded(boolean _excluded);
 
 	/**
-	 * @return the next schemas.categoryschema.Subcategory edge in the global edge sequence
+	 * @return the next schemas.categoryschema.HasSubcategory edge in the global edge sequence
 	 */
-	public schemas.categoryschema.Subcategory getNextSubcategoryInGraph();
+	public schemas.categoryschema.HasSubcategory getNextHasSubcategoryInGraph();
 
 	/**
-	 * @return the next edge of class schemas.categoryschema.Subcategory at the "this" vertex
+	 * @return the next edge of class schemas.categoryschema.HasSubcategory at the "this" vertex
 	 */
-	public schemas.categoryschema.Subcategory getNextSubcategoryIncidence();
+	public schemas.categoryschema.HasSubcategory getNextHasSubcategoryIncidence();
 
 	/**
-	 * @return the next edge of class schemas.categoryschema.Subcategory at the "this" vertex
+	 * @return the next edge of class schemas.categoryschema.HasSubcategory at the "this" vertex
 	 * @param orientation the orientation of the edge
 	 */
-	public schemas.categoryschema.Subcategory getNextSubcategoryIncidence(EdgeDirection orientation);
+	public schemas.categoryschema.HasSubcategory getNextHasSubcategoryIncidence(EdgeDirection orientation);
 	public Category getAlpha();
 	public Category getOmega();
 }

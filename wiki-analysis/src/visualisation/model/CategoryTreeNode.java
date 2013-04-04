@@ -11,7 +11,7 @@ import javax.swing.tree.TreeNode;
 
 import schemas.categoryschema.Category;
 import schemas.categoryschema.ContainsPage;
-import schemas.categoryschema.Subcategory;
+import schemas.categoryschema.HasSubcategory;
 import de.uni_koblenz.jgralab.EdgeDirection;
 
 /**
@@ -22,12 +22,12 @@ import de.uni_koblenz.jgralab.EdgeDirection;
 public class CategoryTreeNode implements MutableTreeNode {
 
 	private Category vertex;
-	private Subcategory edge;
+	private HasSubcategory edge;
 	private CategoryTreeNode parent;
 
 	private boolean root = false;
 
-	public CategoryTreeNode(Category vertex, Subcategory edge) {
+	public CategoryTreeNode(Category vertex, HasSubcategory edge) {
 		this.vertex = vertex;
 
 		CategoryTreeModel.edgeToNodeMap.put(edge, this);
@@ -102,7 +102,8 @@ public class CategoryTreeNode implements MutableTreeNode {
 
 	public String[] getParentCategoryStrings() {
 		ArrayList<String> results = new ArrayList<String>();
-		for (Subcategory e : vertex.getSubcategoryIncidences(EdgeDirection.IN)) {
+		for (HasSubcategory e : vertex
+				.getHasSubcategoryIncidences(EdgeDirection.IN)) {
 			if (!e.is_blacklisted()) {
 				results.add(e.getAlpha().get_title());
 			}
@@ -198,8 +199,8 @@ public class CategoryTreeNode implements MutableTreeNode {
 
 	private Vector<CategoryTreeNode> getChildren() {
 		Vector<CategoryTreeNode> children = new Vector<CategoryTreeNode>();
-		for (Subcategory sub : vertex
-				.getSubcategoryIncidences(EdgeDirection.OUT)) {
+		for (HasSubcategory sub : vertex
+				.getHasSubcategoryIncidences(EdgeDirection.OUT)) {
 
 			CategoryTreeNode node;
 

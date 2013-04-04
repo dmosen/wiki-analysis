@@ -130,6 +130,20 @@ public class CategoryGraphImpl extends GraphImpl implements schemas.categorysche
 		return graphFactory.<schemas.categoryschema.ContainsPage> createEdge(schemas.categoryschema.ContainsPage.EC, id, this, alpha, omega);
 	}
 
+	// ------------------------ Code for HasSubcategory ------------------------
+
+	public schemas.categoryschema.HasSubcategory getFirstHasSubcategory() {
+		return (schemas.categoryschema.HasSubcategory)getFirstEdge(schemas.categoryschema.HasSubcategory.EC);
+	}
+
+	public schemas.categoryschema.HasSubcategory createHasSubcategory(schemas.categoryschema.Category alpha, schemas.categoryschema.Category omega) {
+		return graphFactory.<schemas.categoryschema.HasSubcategory> createEdge(schemas.categoryschema.HasSubcategory.EC, 0, this, alpha, omega);
+	}
+
+	public schemas.categoryschema.HasSubcategory createHasSubcategory(int id, schemas.categoryschema.Category alpha, schemas.categoryschema.Category omega) {
+		return graphFactory.<schemas.categoryschema.HasSubcategory> createEdge(schemas.categoryschema.HasSubcategory.EC, id, this, alpha, omega);
+	}
+
 	// ------------------------ Code for Page ------------------------
 
 	public schemas.categoryschema.Page getFirstPage() {
@@ -144,22 +158,8 @@ public class CategoryGraphImpl extends GraphImpl implements schemas.categorysche
 		return graphFactory.<schemas.categoryschema.Page> createVertex(schemas.categoryschema.Page.VC, id, this);
 	}
 
-	// ------------------------ Code for Subcategory ------------------------
-
-	public schemas.categoryschema.Subcategory getFirstSubcategory() {
-		return (schemas.categoryschema.Subcategory)getFirstEdge(schemas.categoryschema.Subcategory.EC);
-	}
-
-	public schemas.categoryschema.Subcategory createSubcategory(schemas.categoryschema.Category alpha, schemas.categoryschema.Category omega) {
-		return graphFactory.<schemas.categoryschema.Subcategory> createEdge(schemas.categoryschema.Subcategory.EC, 0, this, alpha, omega);
-	}
-
-	public schemas.categoryschema.Subcategory createSubcategory(int id, schemas.categoryschema.Category alpha, schemas.categoryschema.Category omega) {
-		return graphFactory.<schemas.categoryschema.Subcategory> createEdge(schemas.categoryschema.Subcategory.EC, id, this, alpha, omega);
-	}
-
-	public Iterable<schemas.categoryschema.Subcategory> getSubcategoryEdges() {
-		return new EdgeIterable<schemas.categoryschema.Subcategory>(this, schemas.categoryschema.Subcategory.class);
+	public Iterable<schemas.categoryschema.HasSubcategory> getHasSubcategoryEdges() {
+		return new EdgeIterable<schemas.categoryschema.HasSubcategory>(this, schemas.categoryschema.HasSubcategory.class);
 	}
 	
 

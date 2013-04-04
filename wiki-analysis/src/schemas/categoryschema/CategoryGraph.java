@@ -38,6 +38,21 @@ public interface CategoryGraph extends de.uni_koblenz.jgralab.Graph {
 	*/
 	public schemas.categoryschema.ContainsPage createContainsPage(schemas.categoryschema.Category alpha, schemas.categoryschema.Page omega);
 
+	// ------------------------ Code for HasSubcategory ------------------------
+
+	/**
+	 * @return the first HasSubcategory edge in this graph
+	 */
+	public schemas.categoryschema.HasSubcategory getFirstHasSubcategory();
+
+	/**
+	 * Creates a new HasSubcategory edge in this graph.
+	 *
+	 * @param alpha the start vertex of the edge
+	 * @param omega the target vertex of the edge
+	*/
+	public schemas.categoryschema.HasSubcategory createHasSubcategory(schemas.categoryschema.Category alpha, schemas.categoryschema.Category omega);
+
 	// ------------------------ Code for Page ------------------------
 
 	/**
@@ -51,25 +66,10 @@ public interface CategoryGraph extends de.uni_koblenz.jgralab.Graph {
 	*/
 	public schemas.categoryschema.Page createPage();
 
-	// ------------------------ Code for Subcategory ------------------------
-
 	/**
-	 * @return the first Subcategory edge in this graph
+	 * @return an Iterable for all edges of this graph that are of type HasSubcategory or subtypes.
 	 */
-	public schemas.categoryschema.Subcategory getFirstSubcategory();
-
-	/**
-	 * Creates a new Subcategory edge in this graph.
-	 *
-	 * @param alpha the start vertex of the edge
-	 * @param omega the target vertex of the edge
-	*/
-	public schemas.categoryschema.Subcategory createSubcategory(schemas.categoryschema.Category alpha, schemas.categoryschema.Category omega);
-
-	/**
-	 * @return an Iterable for all edges of this graph that are of type Subcategory or subtypes.
-	 */
-	public Iterable<schemas.categoryschema.Subcategory> getSubcategoryEdges();
+	public Iterable<schemas.categoryschema.HasSubcategory> getHasSubcategoryEdges();
 	
 
 	/**

@@ -28,8 +28,8 @@ public class CategorySchema extends SchemaImpl {
 	public final GraphClass gc_CategoryGraph;
 	public final VertexClass vc_Category;
 	public final VertexClass vc_Page;
-	public final EdgeClass ec_Subcategory;
 	public final EdgeClass ec_ContainsPage;
+	public final EdgeClass ec_HasSubcategory;
 
 	/**
 	 * the weak reference to the singleton instance
@@ -88,21 +88,21 @@ public class CategorySchema extends SchemaImpl {
 			}
 
 			{
-				EdgeClass ec = ec_Subcategory = gc.createEdgeClass("Subcategory",
-					vc_Category, 0, 2147483647, "category", de.uni_koblenz.jgralab.schema.AggregationKind.NONE,
-					vc_Category, 0, 2147483647, "subcategory", de.uni_koblenz.jgralab.schema.AggregationKind.NONE);
-				ec.setAbstract(false);
-				ec.addAttribute(createAttribute("backwardArc", getDomain("Boolean"), getAttributedElementClass("Subcategory"), null));
-				ec.addAttribute(createAttribute("blacklisted", getDomain("Boolean"), getAttributedElementClass("Subcategory"), null));
-				ec.addAttribute(createAttribute("comment", getDomain("String"), getAttributedElementClass("Subcategory"), null));
-				ec.addAttribute(createAttribute("excluded", getDomain("Boolean"), getAttributedElementClass("Subcategory"), null));
-			}
-
-			{
 				EdgeClass ec = ec_ContainsPage = gc.createEdgeClass("ContainsPage",
 					vc_Category, 0, 2147483647, "category", de.uni_koblenz.jgralab.schema.AggregationKind.NONE,
 					vc_Page, 0, 2147483647, "containedPage", de.uni_koblenz.jgralab.schema.AggregationKind.NONE);
 				ec.setAbstract(false);
+			}
+
+			{
+				EdgeClass ec = ec_HasSubcategory = gc.createEdgeClass("HasSubcategory",
+					vc_Category, 0, 2147483647, "category", de.uni_koblenz.jgralab.schema.AggregationKind.NONE,
+					vc_Category, 0, 2147483647, "subcategory", de.uni_koblenz.jgralab.schema.AggregationKind.NONE);
+				ec.setAbstract(false);
+				ec.addAttribute(createAttribute("backwardArc", getDomain("Boolean"), getAttributedElementClass("HasSubcategory"), null));
+				ec.addAttribute(createAttribute("blacklisted", getDomain("Boolean"), getAttributedElementClass("HasSubcategory"), null));
+				ec.addAttribute(createAttribute("comment", getDomain("String"), getAttributedElementClass("HasSubcategory"), null));
+				ec.addAttribute(createAttribute("excluded", getDomain("Boolean"), getAttributedElementClass("HasSubcategory"), null));
 			}
 		}
 

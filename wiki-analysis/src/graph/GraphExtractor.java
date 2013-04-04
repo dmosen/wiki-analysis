@@ -14,8 +14,8 @@ import schemas.categoryschema.Category;
 import schemas.categoryschema.CategoryGraph;
 import schemas.categoryschema.CategorySchema;
 import schemas.categoryschema.ContainsPage;
+import schemas.categoryschema.HasSubcategory;
 import schemas.categoryschema.Page;
-import schemas.categoryschema.Subcategory;
 import utils.WikipediaAPI;
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.EdgeDirection;
@@ -130,8 +130,8 @@ public class GraphExtractor {
 					queue.remove(vertex);
 				}
 
-				for (Subcategory e : vertex
-						.getSubcategoryIncidences(EdgeDirection.IN)) {
+				for (HasSubcategory e : vertex
+						.getHasSubcategoryIncidences(EdgeDirection.IN)) {
 					if (remove) {
 						e.set_blacklisted(true);
 						e.set_excluded(true);
@@ -227,14 +227,14 @@ public class GraphExtractor {
 						queue.add(nextVertex);
 
 						categoryMap.put(nextCategory, nextVertex);
-						createdEdges.add(graph.createSubcategory(currentVertex,
-								nextVertex));
+						createdEdges.add(graph.createHasSubcategory(
+								currentVertex, nextVertex));
 					}
 					// if category already seen, add an edge only and report a
 					// frond
 					else {
-						createdEdges.add(graph.createSubcategory(currentVertex,
-								categoryMap.get(nextCategory)));
+						createdEdges.add(graph.createHasSubcategory(
+								currentVertex, categoryMap.get(nextCategory)));
 					}
 				}
 			}

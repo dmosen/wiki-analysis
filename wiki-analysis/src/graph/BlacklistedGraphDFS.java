@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import schemas.categoryschema.Category;
 import schemas.categoryschema.CategoryGraph;
-import schemas.categoryschema.Subcategory;
+import schemas.categoryschema.HasSubcategory;
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Vertex;
@@ -54,7 +54,7 @@ public class BlacklistedGraphDFS {
 
 		for (Edge e : current.incidences(EdgeDirection.OUT)) {
 			// process only those edges which are not blacklisted
-			if (!e.isInstanceOf(Subcategory.EC)
+			if (!e.isInstanceOf(HasSubcategory.EC)
 					|| !(Boolean) e.getAttribute("blacklisted")) {
 
 				visitEdge(e);

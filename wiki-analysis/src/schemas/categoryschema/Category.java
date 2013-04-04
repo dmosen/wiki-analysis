@@ -46,15 +46,15 @@ public interface Category extends de.uni_koblenz.jgralab.Vertex {
 	public schemas.categoryschema.Category getNextCategory();
 
 	/**
-	 * @return the first edge of class Subcategory at this vertex
+	 * @return the first edge of class HasSubcategory at this vertex
 	 */
-	public schemas.categoryschema.Subcategory getFirstSubcategoryIncidence();
+	public schemas.categoryschema.HasSubcategory getFirstHasSubcategoryIncidence();
 
 	/**
-	 * @return the first edge of class Subcategory at this vertex
+	 * @return the first edge of class HasSubcategory at this vertex
 	 * @param orientation the orientation of the edge
 	 */
-	public schemas.categoryschema.Subcategory getFirstSubcategoryIncidence(EdgeDirection orientation);
+	public schemas.categoryschema.HasSubcategory getFirstHasSubcategoryIncidence(EdgeDirection orientation);
 
 	/**
 	 * @return the first edge of class ContainsPage at this vertex
@@ -67,32 +67,32 @@ public interface Category extends de.uni_koblenz.jgralab.Vertex {
 	 */
 	public schemas.categoryschema.ContainsPage getFirstContainsPageIncidence(EdgeDirection orientation);
 		/**
-		 * adds the given vertex as <code>category</code> to this vertex, i.e. creates an
-		 * <code>schemas.categoryschema.Subcategory</code> edge from this vertex to the given 
+		 * adds the given vertex as <code>subcategory</code> to this vertex, i.e. creates an
+		 * <code>schemas.categoryschema.HasSubcategory</code> edge from this vertex to the given 
 		 * one and returns the created edge.
-		 * @return  a newly created edge of type <code>schemas.categoryschema.Subcategory</code>
+		 * @return  a newly created edge of type <code>schemas.categoryschema.HasSubcategory</code>
 		 *          between this vertex and the given one.
 		 */
-		public schemas.categoryschema.Subcategory add_category(schemas.categoryschema.Category vertex);
+		public schemas.categoryschema.HasSubcategory add_subcategory(schemas.categoryschema.Category vertex);
 		/**
-		 * removes all category adjacences to all vertices by 
-		 * deleting the <code>schemas.categoryschema.Subcategory</code> edges of this vertex to 
+		 * removes all subcategory adjacences to all vertices by 
+		 * deleting the <code>schemas.categoryschema.HasSubcategory</code> edges of this vertex to 
 		 * all other ones, but doesn't delete those vertices.
 		 *
 		 * @return the adjacent vertices prior to removal of incidences
 		 */
-		public java.util.List<? extends schemas.categoryschema.Category> remove_category();
+		public java.util.List<? extends schemas.categoryschema.Category> remove_subcategory();
 		/**
-		 * removes the given vertex as <code>category</code> from this vertex, i.e. 
-		 * deletes the <code>schemas.categoryschema.Subcategory</code> edge connections of this vertex with 
+		 * removes the given vertex as <code>subcategory</code> from this vertex, i.e. 
+		 * deletes the <code>schemas.categoryschema.HasSubcategory</code> edge connections of this vertex with 
 		 * the given one.
 		 */
-		public boolean remove_category(schemas.categoryschema.Category vertex);
+		public boolean remove_subcategory(schemas.categoryschema.Category vertex);
 		/**
-		 * @return an Iterable of all vertices adjacent to this one with the rolename 'category'
-		 *         (connected with a <code>schemas.categoryschema.Subcategory</code> edge).
+		 * @return an Iterable of all vertices adjacent to this one with the rolename 'subcategory'
+		 *         (connected with a <code>schemas.categoryschema.HasSubcategory</code> edge).
 		 */
-		public Iterable<? extends schemas.categoryschema.Category> get_category();
+		public Iterable<? extends schemas.categoryschema.Category> get_subcategory();
 		/**
 		 * adds the given vertex as <code>containedPage</code> to this vertex, i.e. creates an
 		 * <code>schemas.categoryschema.ContainsPage</code> edge from this vertex to the given 
@@ -121,43 +121,43 @@ public interface Category extends de.uni_koblenz.jgralab.Vertex {
 		 */
 		public Iterable<? extends schemas.categoryschema.Page> get_containedPage();
 		/**
-		 * adds the given vertex as <code>subcategory</code> to this vertex, i.e. creates an
-		 * <code>schemas.categoryschema.Subcategory</code> edge from this vertex to the given 
+		 * adds the given vertex as <code>category</code> to this vertex, i.e. creates an
+		 * <code>schemas.categoryschema.HasSubcategory</code> edge from this vertex to the given 
 		 * one and returns the created edge.
-		 * @return  a newly created edge of type <code>schemas.categoryschema.Subcategory</code>
+		 * @return  a newly created edge of type <code>schemas.categoryschema.HasSubcategory</code>
 		 *          between this vertex and the given one.
 		 */
-		public schemas.categoryschema.Subcategory add_subcategory(schemas.categoryschema.Category vertex);
+		public schemas.categoryschema.HasSubcategory add_category(schemas.categoryschema.Category vertex);
 		/**
-		 * removes all subcategory adjacences to all vertices by 
-		 * deleting the <code>schemas.categoryschema.Subcategory</code> edges of this vertex to 
+		 * removes all category adjacences to all vertices by 
+		 * deleting the <code>schemas.categoryschema.HasSubcategory</code> edges of this vertex to 
 		 * all other ones, but doesn't delete those vertices.
 		 *
 		 * @return the adjacent vertices prior to removal of incidences
 		 */
-		public java.util.List<? extends schemas.categoryschema.Category> remove_subcategory();
+		public java.util.List<? extends schemas.categoryschema.Category> remove_category();
 		/**
-		 * removes the given vertex as <code>subcategory</code> from this vertex, i.e. 
-		 * deletes the <code>schemas.categoryschema.Subcategory</code> edge connections of this vertex with 
+		 * removes the given vertex as <code>category</code> from this vertex, i.e. 
+		 * deletes the <code>schemas.categoryschema.HasSubcategory</code> edge connections of this vertex with 
 		 * the given one.
 		 */
-		public boolean remove_subcategory(schemas.categoryschema.Category vertex);
+		public boolean remove_category(schemas.categoryschema.Category vertex);
 		/**
-		 * @return an Iterable of all vertices adjacent to this one with the rolename 'subcategory'
-		 *         (connected with a <code>schemas.categoryschema.Subcategory</code> edge).
+		 * @return an Iterable of all vertices adjacent to this one with the rolename 'category'
+		 *         (connected with a <code>schemas.categoryschema.HasSubcategory</code> edge).
 		 */
-		public Iterable<? extends schemas.categoryschema.Category> get_subcategory();
+		public Iterable<? extends schemas.categoryschema.Category> get_category();
 
 	/**
-	 * Returns an Iterable for all incidence edges of this vertex that are of type Subcategory or subtypes.
+	 * Returns an Iterable for all incidence edges of this vertex that are of type HasSubcategory or subtypes.
 	 */
-	public Iterable<schemas.categoryschema.Subcategory> getSubcategoryIncidences();
+	public Iterable<schemas.categoryschema.HasSubcategory> getHasSubcategoryIncidences();
 	
 	/**
-	 * Returns an Iterable for all incidence edges of this vertex that are of type Subcategory.
+	 * Returns an Iterable for all incidence edges of this vertex that are of type HasSubcategory.
 	 * @param direction EdgeDirection.IN or EdgeDirection.OUT, only edges of this direction will be included in the Iterable
 	 */
-	public Iterable<schemas.categoryschema.Subcategory> getSubcategoryIncidences(EdgeDirection direction);
+	public Iterable<schemas.categoryschema.HasSubcategory> getHasSubcategoryIncidences(EdgeDirection direction);
 
 	/**
 	 * Returns an Iterable for all incidence edges of this vertex that are of type ContainsPage or subtypes.

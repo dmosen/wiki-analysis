@@ -17,7 +17,7 @@ VertexClass Page {
 	title: String
 };
 
-EdgeClass Subcategory from Category (0,*) role category to Category (0,*) role subcategory {
+EdgeClass HasSubcategory from Category (0,*) role category to Category (0,*) role subcategory {
 	backwardArc: Boolean,
 	blacklisted: Boolean,
 	excluded: Boolean,

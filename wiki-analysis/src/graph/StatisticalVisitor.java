@@ -6,9 +6,8 @@ import java.util.List;
 
 import schemas.categoryschema.Category;
 import schemas.categoryschema.ContainsPage;
+import schemas.categoryschema.HasSubcategory;
 import schemas.categoryschema.Page;
-import schemas.categoryschema.Subcategory;
-
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.Vertex;
@@ -64,7 +63,7 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 		}
 
 		// count sub category links
-		if (e.isInstanceOf(Subcategory.EC)) {
+		if (e.isInstanceOf(HasSubcategory.EC)) {
 			subcategoryLinks++;
 		}
 	}
@@ -73,12 +72,13 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 	public void visitVertex(Vertex v) {
 		if (v.isInstanceOf(Category.VC)) {
 			categories++;
-			
+
 			Category c = (Category) v;
 
 			// count in-links from parent categories which are not blacklisted
 			int parentCategories = 0;
-			for (Subcategory e : c.getSubcategoryIncidences(EdgeDirection.IN)) {
+			for (HasSubcategory e : c
+					.getHasSubcategoryIncidences(EdgeDirection.IN)) {
 				if (!(Boolean) e.is_blacklisted()) {
 					parentCategories++;
 				}
@@ -86,7 +86,8 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 
 			// count out-links to sub categories which are not blacklisted
 			int subCategories = 0;
-			for (Subcategory e : c.getSubcategoryIncidences(EdgeDirection.OUT)) {
+			for (HasSubcategory e : c
+					.getHasSubcategoryIncidences(EdgeDirection.OUT)) {
 				if (!e.is_blacklisted()) {
 					subCategories++;
 				}
@@ -144,9 +145,8 @@ public class StatisticalVisitor implements BlacklistedGraphDFSVisitor {
 
 		graphStats.setPagesQuantil25(pagesList.get(pagesList.size() / 4));
 		graphStats.setPagesMedian(pagesList.get(pagesList.size() / 2));
-		graphStats
-					.setPagesQuantil75(pagesList.get((pagesList.size() * 3) / 4));
-		
+		graphStats.setPagesQuantil75(pagesList.get((pagesList.size() * 3) / 4));
+
 		graphStats.setSubcategoriesQuantil25(subcategoriesList
 				.get(subcategoriesList.size() / 4));
 		graphStats.setSubcategoriesMedian(subcategoriesList

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import schemas.categoryschema.Category;
 import schemas.categoryschema.CategoryGraph;
-import schemas.categoryschema.Subcategory;
+import schemas.categoryschema.HasSubcategory;
 import visualisation.model.CategoryTreeModel;
 import visualisation.model.CategoryTreeNode;
 import de.uni_koblenz.jgralab.Graph;
@@ -91,7 +91,7 @@ public class WikipediaAnalysis {
 		return model;
 	}
 
-	public static ArrayList<Subcategory> getBlacklistedOrCommentedEdges(
+	public static ArrayList<HasSubcategory> getBlacklistedOrCommentedEdges(
 			Graph graph) throws AlgorithmTerminatedException {
 		IterativeDepthFirstSearch dfs = new IterativeDepthFirstSearch(graph);
 		BlacklistedOrCommentedEdgeVisitor visitor = new BlacklistedOrCommentedEdgeVisitor();

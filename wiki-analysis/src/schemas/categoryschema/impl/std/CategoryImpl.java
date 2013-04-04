@@ -294,13 +294,13 @@ public class CategoryImpl extends VertexImpl implements schemas.categoryschema.C
 	}
 
 	@Override
-	public schemas.categoryschema.Subcategory getFirstSubcategoryIncidence() {
-		return (schemas.categoryschema.Subcategory)getFirstIncidence(schemas.categoryschema.Subcategory.class);
+	public schemas.categoryschema.HasSubcategory getFirstHasSubcategoryIncidence() {
+		return (schemas.categoryschema.HasSubcategory)getFirstIncidence(schemas.categoryschema.HasSubcategory.class);
 	}
 
 	@Override
-	public schemas.categoryschema.Subcategory getFirstSubcategoryIncidence(EdgeDirection orientation) {
-		return (schemas.categoryschema.Subcategory)getFirstIncidence(schemas.categoryschema.Subcategory.class, orientation);
+	public schemas.categoryschema.HasSubcategory getFirstHasSubcategoryIncidence(EdgeDirection orientation) {
+		return (schemas.categoryschema.HasSubcategory)getFirstIncidence(schemas.categoryschema.HasSubcategory.class, orientation);
 	}
 
 	@Override
@@ -313,15 +313,15 @@ public class CategoryImpl extends VertexImpl implements schemas.categoryschema.C
 		return (schemas.categoryschema.ContainsPage)getFirstIncidence(schemas.categoryschema.ContainsPage.class, orientation);
 	}
 		@Override
-		public schemas.categoryschema.Subcategory add_category(schemas.categoryschema.Category vertex) {
-			return ((schemas.categoryschema.CategoryGraph)getGraph()).createEdge(schemas.categoryschema.Subcategory.EC, (schemas.categoryschema.Category) vertex, (schemas.categoryschema.Category) this);
+		public schemas.categoryschema.HasSubcategory add_subcategory(schemas.categoryschema.Category vertex) {
+			return ((schemas.categoryschema.CategoryGraph)getGraph()).createEdge(schemas.categoryschema.HasSubcategory.EC, (schemas.categoryschema.Category) this, (schemas.categoryschema.Category) vertex);
 		}
 		@Override
-		public java.util.List<? extends schemas.categoryschema.Category> remove_category() {
+		public java.util.List<? extends schemas.categoryschema.Category> remove_subcategory() {
 			java.util.List<schemas.categoryschema.Category> adjacences = new java.util.ArrayList<schemas.categoryschema.Category>();
-			schemas.categoryschema.Subcategory edge = (schemas.categoryschema.Subcategory) getFirstIncidence(schemas.categoryschema.Subcategory.class, EdgeDirection.IN);
+			schemas.categoryschema.HasSubcategory edge = (schemas.categoryschema.HasSubcategory) getFirstIncidence(schemas.categoryschema.HasSubcategory.class, EdgeDirection.OUT);
 			while (edge != null) {
-				schemas.categoryschema.Subcategory next = (schemas.categoryschema.Subcategory) edge.getNextIncidence(schemas.categoryschema.Subcategory.class, EdgeDirection.IN);
+				schemas.categoryschema.HasSubcategory next = (schemas.categoryschema.HasSubcategory) edge.getNextIncidence(schemas.categoryschema.HasSubcategory.class, EdgeDirection.OUT);
 				adjacences.add((schemas.categoryschema.Category) edge.getThat());
 				edge.delete();
 				edge = next;
@@ -329,11 +329,11 @@ public class CategoryImpl extends VertexImpl implements schemas.categoryschema.C
 			return adjacences;
 		}
 		@Override
-		public boolean remove_category(schemas.categoryschema.Category vertex) {
+		public boolean remove_subcategory(schemas.categoryschema.Category vertex) {
 			boolean elementRemoved = false;
-			schemas.categoryschema.Subcategory edge = (schemas.categoryschema.Subcategory) getFirstIncidence(schemas.categoryschema.Subcategory.class, EdgeDirection.IN);
+			schemas.categoryschema.HasSubcategory edge = (schemas.categoryschema.HasSubcategory) getFirstIncidence(schemas.categoryschema.HasSubcategory.class, EdgeDirection.OUT);
 			while (edge != null) {
-				schemas.categoryschema.Subcategory next = (schemas.categoryschema.Subcategory) edge.getNextIncidence(schemas.categoryschema.Subcategory.class, EdgeDirection.IN);
+				schemas.categoryschema.HasSubcategory next = (schemas.categoryschema.HasSubcategory) edge.getNextIncidence(schemas.categoryschema.HasSubcategory.class, EdgeDirection.OUT);
 				if (edge.getThat().equals(vertex)) {			edge.delete();
 					elementRemoved = true;
 				}
@@ -342,8 +342,8 @@ public class CategoryImpl extends VertexImpl implements schemas.categoryschema.C
 			return elementRemoved;
 		}
 		@Override
-		public Iterable<? extends schemas.categoryschema.Category> get_category() {
-			return new de.uni_koblenz.jgralab.impl.NeighbourIterable<schemas.categoryschema.Subcategory, schemas.categoryschema.Category>(this, schemas.categoryschema.Subcategory.class, EdgeDirection.IN);
+		public Iterable<? extends schemas.categoryschema.Category> get_subcategory() {
+			return new de.uni_koblenz.jgralab.impl.NeighbourIterable<schemas.categoryschema.HasSubcategory, schemas.categoryschema.Category>(this, schemas.categoryschema.HasSubcategory.class, EdgeDirection.OUT);
 		}
 		@Override
 		public schemas.categoryschema.ContainsPage add_containedPage(schemas.categoryschema.Page vertex) {
@@ -379,15 +379,15 @@ public class CategoryImpl extends VertexImpl implements schemas.categoryschema.C
 			return new de.uni_koblenz.jgralab.impl.NeighbourIterable<schemas.categoryschema.ContainsPage, schemas.categoryschema.Page>(this, schemas.categoryschema.ContainsPage.class, EdgeDirection.OUT);
 		}
 		@Override
-		public schemas.categoryschema.Subcategory add_subcategory(schemas.categoryschema.Category vertex) {
-			return ((schemas.categoryschema.CategoryGraph)getGraph()).createEdge(schemas.categoryschema.Subcategory.EC, (schemas.categoryschema.Category) this, (schemas.categoryschema.Category) vertex);
+		public schemas.categoryschema.HasSubcategory add_category(schemas.categoryschema.Category vertex) {
+			return ((schemas.categoryschema.CategoryGraph)getGraph()).createEdge(schemas.categoryschema.HasSubcategory.EC, (schemas.categoryschema.Category) vertex, (schemas.categoryschema.Category) this);
 		}
 		@Override
-		public java.util.List<? extends schemas.categoryschema.Category> remove_subcategory() {
+		public java.util.List<? extends schemas.categoryschema.Category> remove_category() {
 			java.util.List<schemas.categoryschema.Category> adjacences = new java.util.ArrayList<schemas.categoryschema.Category>();
-			schemas.categoryschema.Subcategory edge = (schemas.categoryschema.Subcategory) getFirstIncidence(schemas.categoryschema.Subcategory.class, EdgeDirection.OUT);
+			schemas.categoryschema.HasSubcategory edge = (schemas.categoryschema.HasSubcategory) getFirstIncidence(schemas.categoryschema.HasSubcategory.class, EdgeDirection.IN);
 			while (edge != null) {
-				schemas.categoryschema.Subcategory next = (schemas.categoryschema.Subcategory) edge.getNextIncidence(schemas.categoryschema.Subcategory.class, EdgeDirection.OUT);
+				schemas.categoryschema.HasSubcategory next = (schemas.categoryschema.HasSubcategory) edge.getNextIncidence(schemas.categoryschema.HasSubcategory.class, EdgeDirection.IN);
 				adjacences.add((schemas.categoryschema.Category) edge.getThat());
 				edge.delete();
 				edge = next;
@@ -395,11 +395,11 @@ public class CategoryImpl extends VertexImpl implements schemas.categoryschema.C
 			return adjacences;
 		}
 		@Override
-		public boolean remove_subcategory(schemas.categoryschema.Category vertex) {
+		public boolean remove_category(schemas.categoryschema.Category vertex) {
 			boolean elementRemoved = false;
-			schemas.categoryschema.Subcategory edge = (schemas.categoryschema.Subcategory) getFirstIncidence(schemas.categoryschema.Subcategory.class, EdgeDirection.OUT);
+			schemas.categoryschema.HasSubcategory edge = (schemas.categoryschema.HasSubcategory) getFirstIncidence(schemas.categoryschema.HasSubcategory.class, EdgeDirection.IN);
 			while (edge != null) {
-				schemas.categoryschema.Subcategory next = (schemas.categoryschema.Subcategory) edge.getNextIncidence(schemas.categoryschema.Subcategory.class, EdgeDirection.OUT);
+				schemas.categoryschema.HasSubcategory next = (schemas.categoryschema.HasSubcategory) edge.getNextIncidence(schemas.categoryschema.HasSubcategory.class, EdgeDirection.IN);
 				if (edge.getThat().equals(vertex)) {			edge.delete();
 					elementRemoved = true;
 				}
@@ -408,18 +408,18 @@ public class CategoryImpl extends VertexImpl implements schemas.categoryschema.C
 			return elementRemoved;
 		}
 		@Override
-		public Iterable<? extends schemas.categoryschema.Category> get_subcategory() {
-			return new de.uni_koblenz.jgralab.impl.NeighbourIterable<schemas.categoryschema.Subcategory, schemas.categoryschema.Category>(this, schemas.categoryschema.Subcategory.class, EdgeDirection.OUT);
+		public Iterable<? extends schemas.categoryschema.Category> get_category() {
+			return new de.uni_koblenz.jgralab.impl.NeighbourIterable<schemas.categoryschema.HasSubcategory, schemas.categoryschema.Category>(this, schemas.categoryschema.HasSubcategory.class, EdgeDirection.IN);
 		}
 
 	@Override
-	public Iterable<schemas.categoryschema.Subcategory> getSubcategoryIncidences() {
-		return new IncidenceIterable<schemas.categoryschema.Subcategory>(this, schemas.categoryschema.Subcategory.class);
+	public Iterable<schemas.categoryschema.HasSubcategory> getHasSubcategoryIncidences() {
+		return new IncidenceIterable<schemas.categoryschema.HasSubcategory>(this, schemas.categoryschema.HasSubcategory.class);
 	}
 	
 	@Override
-	public Iterable<schemas.categoryschema.Subcategory> getSubcategoryIncidences(EdgeDirection direction) {
-		return new IncidenceIterable<schemas.categoryschema.Subcategory>(this, schemas.categoryschema.Subcategory.class, direction);
+	public Iterable<schemas.categoryschema.HasSubcategory> getHasSubcategoryIncidences(EdgeDirection direction) {
+		return new IncidenceIterable<schemas.categoryschema.HasSubcategory>(this, schemas.categoryschema.HasSubcategory.class, direction);
 	}
 
 	@Override

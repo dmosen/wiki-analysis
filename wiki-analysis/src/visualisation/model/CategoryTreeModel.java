@@ -12,7 +12,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import schemas.categoryschema.CategoryGraph;
-import schemas.categoryschema.Subcategory;
+import schemas.categoryschema.HasSubcategory;
 import utils.CategoryTreeFactory;
 import utils.WikipediaAnalysis;
 import visualisation.controller.Controller;
@@ -26,7 +26,7 @@ import visualisation.controller.HighlightingMode;
 @SuppressWarnings("serial")
 public class CategoryTreeModel extends DefaultTreeModel {
 
-	public static HashMap<Subcategory, CategoryTreeNode> edgeToNodeMap = new HashMap<Subcategory, CategoryTreeNode>();
+	public static HashMap<HasSubcategory, CategoryTreeNode> edgeToNodeMap = new HashMap<HasSubcategory, CategoryTreeNode>();
 
 	private PropertyChangeSupport propertyChangeSupport;
 

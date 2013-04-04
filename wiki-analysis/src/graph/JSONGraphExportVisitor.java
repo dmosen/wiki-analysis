@@ -5,8 +5,8 @@ import org.json.simple.JSONObject;
 
 import schemas.categoryschema.Category;
 import schemas.categoryschema.ContainsPage;
+import schemas.categoryschema.HasSubcategory;
 import schemas.categoryschema.Page;
-import schemas.categoryschema.Subcategory;
 import de.uni_koblenz.jgralab.Edge;
 import de.uni_koblenz.jgralab.Vertex;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
@@ -68,8 +68,8 @@ public class JSONGraphExportVisitor extends DFSVisitorAdapter {
 		jsonEdge.put("start", e.getAlpha().getId());
 		jsonEdge.put("end", e.getOmega().getId());
 
-		if (e.isInstanceOf(Subcategory.EC)) {
-			Subcategory s = (Subcategory) e;
+		if (e.isInstanceOf(HasSubcategory.EC)) {
+			HasSubcategory s = (HasSubcategory) e;
 			jsonEdge.put("type", "Subcategory");
 			jsonEdge.put("backwardArc", s.is_backwardArc());
 			jsonEdge.put("blacklisted", s.is_blacklisted());

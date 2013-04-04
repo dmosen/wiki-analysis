@@ -14,7 +14,7 @@ import de.uni_koblenz.jgralab.GraphIOException;
 import de.uni_koblenz.jgralab.NoSuchAttributeException;
 import de.uni_koblenz.jgralab.Vertex;
 
-import schemas.categoryschema.impl.std.ReversedSubcategoryImpl;
+import schemas.categoryschema.impl.std.ReversedHasSubcategoryImpl;
 
 import java.io.IOException;
 
@@ -26,7 +26,7 @@ import schemas.categoryschema.Category;
  * ToRoleName : subcategory
  */
 
-public class SubcategoryImpl extends EdgeImpl implements de.uni_koblenz.jgralab.Edge, schemas.categoryschema.Subcategory {
+public class HasSubcategoryImpl extends EdgeImpl implements de.uni_koblenz.jgralab.Edge, schemas.categoryschema.HasSubcategory {
 
 	protected boolean _backwardArc;
 
@@ -36,19 +36,19 @@ public class SubcategoryImpl extends EdgeImpl implements de.uni_koblenz.jgralab.
 
 	protected boolean _excluded;
 
-	public SubcategoryImpl(int id, de.uni_koblenz.jgralab.Graph g, Vertex alpha, Vertex omega) {
+	public HasSubcategoryImpl(int id, de.uni_koblenz.jgralab.Graph g, Vertex alpha, Vertex omega) {
 		super(id, g, alpha, omega);
 		((de.uni_koblenz.jgralab.impl.InternalGraph) graph).addEdge(this, alpha, omega);
 	}
 
 	@Override
 	public final de.uni_koblenz.jgralab.schema.EdgeClass getAttributedElementClass() {
-		return schemas.categoryschema.Subcategory.EC;
+		return schemas.categoryschema.HasSubcategory.EC;
 	}
 
 	@Override
 	public final java.lang.Class<? extends de.uni_koblenz.jgralab.Edge> getSchemaClass() {
-		return schemas.categoryschema.Subcategory.class;
+		return schemas.categoryschema.HasSubcategory.class;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -57,7 +57,7 @@ public class SubcategoryImpl extends EdgeImpl implements de.uni_koblenz.jgralab.
 		if (attributeName.equals("blacklisted")) return (T) (java.lang.Boolean) is_blacklisted();
 		if (attributeName.equals("comment")) return (T) get_comment();
 		if (attributeName.equals("excluded")) return (T) (java.lang.Boolean) is_excluded();
-		throw new NoSuchAttributeException("Subcategory doesn't contain an attribute " + attributeName);
+		throw new NoSuchAttributeException("HasSubcategory doesn't contain an attribute " + attributeName);
 	}
 
 	public <T> void setAttribute(String attributeName, T data) {
@@ -77,7 +77,7 @@ public class SubcategoryImpl extends EdgeImpl implements de.uni_koblenz.jgralab.
 			set_excluded((java.lang.Boolean) data);
 			return;
 		}
-		throw new NoSuchAttributeException("Subcategory doesn't contain an attribute " + attributeName);
+		throw new NoSuchAttributeException("HasSubcategory doesn't contain an attribute " + attributeName);
 	}
 
 	public boolean is_backwardArc() {
@@ -164,7 +164,7 @@ public class SubcategoryImpl extends EdgeImpl implements de.uni_koblenz.jgralab.
 			set_excluded(_excluded);
 			return;
 		}
-		throw new NoSuchAttributeException("Subcategory doesn't contain an attribute " + attributeName);
+		throw new NoSuchAttributeException("HasSubcategory doesn't contain an attribute " + attributeName);
 	}
 
 	public void writeAttributeValues(GraphIO io) throws GraphIOException, IOException {
@@ -196,19 +196,19 @@ public class SubcategoryImpl extends EdgeImpl implements de.uni_koblenz.jgralab.
 			io.writeBoolean(_excluded);
 			return io.getStringWriterResult();
 		}
-		throw new NoSuchAttributeException("Subcategory doesn't contain an attribute " + attributeName);
+		throw new NoSuchAttributeException("HasSubcategory doesn't contain an attribute " + attributeName);
 	}
 
-	public schemas.categoryschema.Subcategory getNextSubcategoryInGraph() {
-		return (schemas.categoryschema.Subcategory)getNextEdge(schemas.categoryschema.Subcategory.class);
+	public schemas.categoryschema.HasSubcategory getNextHasSubcategoryInGraph() {
+		return (schemas.categoryschema.HasSubcategory)getNextEdge(schemas.categoryschema.HasSubcategory.class);
 	}
 
-	public schemas.categoryschema.Subcategory getNextSubcategoryIncidence() {
-		return (schemas.categoryschema.Subcategory)getNextIncidence(schemas.categoryschema.Subcategory.class);
+	public schemas.categoryschema.HasSubcategory getNextHasSubcategoryIncidence() {
+		return (schemas.categoryschema.HasSubcategory)getNextIncidence(schemas.categoryschema.HasSubcategory.class);
 	}
 
-	public schemas.categoryschema.Subcategory getNextSubcategoryIncidence(EdgeDirection orientation) {
-		return (schemas.categoryschema.Subcategory)getNextIncidence(schemas.categoryschema.Subcategory.class, orientation);
+	public schemas.categoryschema.HasSubcategory getNextHasSubcategoryIncidence(EdgeDirection orientation) {
+		return (schemas.categoryschema.HasSubcategory)getNextIncidence(schemas.categoryschema.HasSubcategory.class, orientation);
 	}
 
 	public de.uni_koblenz.jgralab.schema.AggregationKind getAggregationKind() {
@@ -226,7 +226,7 @@ public class SubcategoryImpl extends EdgeImpl implements de.uni_koblenz.jgralab.
 	}
 
 	protected de.uni_koblenz.jgralab.impl.ReversedEdgeBaseImpl createReversedEdge() {
-		return new ReversedSubcategoryImpl(this, graph);
+		return new ReversedHasSubcategoryImpl(this, graph);
 	}
 	public Category getAlpha() {
 		return (Category) super.getAlpha();

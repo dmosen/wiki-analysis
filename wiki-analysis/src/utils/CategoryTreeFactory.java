@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 import schemas.categoryschema.Category;
 import schemas.categoryschema.CategoryGraph;
-import schemas.categoryschema.Subcategory;
+import schemas.categoryschema.HasSubcategory;
 import visualisation.model.CategoryTreeNode;
 import de.uni_koblenz.jgralab.EdgeDirection;
 import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
@@ -49,8 +49,8 @@ public class CategoryTreeFactory {
 
 		visitedVertices.add(current);
 
-		for (Subcategory e : current
-				.getSubcategoryIncidences(EdgeDirection.OUT)) {
+		for (HasSubcategory e : current
+				.getHasSubcategoryIncidences(EdgeDirection.OUT)) {
 			if (!e.is_blacklisted()) {
 
 				Category next = e.getOmega();
