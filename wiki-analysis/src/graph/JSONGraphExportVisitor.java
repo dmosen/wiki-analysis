@@ -70,7 +70,7 @@ public class JSONGraphExportVisitor extends DFSVisitorAdapter {
 
 		if (e.isInstanceOf(HasSubcategory.EC)) {
 			HasSubcategory s = (HasSubcategory) e;
-			jsonEdge.put("type", "Subcategory");
+			jsonEdge.put("type", "HasSubcategory");
 			jsonEdge.put("backwardArc", s.is_backwardArc());
 			jsonEdge.put("blacklisted", s.is_blacklisted());
 			jsonEdge.put("comment", s.get_comment());
