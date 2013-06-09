@@ -134,7 +134,7 @@ public class GraphExtractor {
 						.getHasSubcategoryIncidences(EdgeDirection.IN)) {
 					if (remove) {
 						e.set_blacklisted(true);
-						e.set_excluded(true);
+						e.set_excluded(false);
 						e.set_comment("excluded on extraction");
 					} else {
 						e.set_blacklisted(false);
