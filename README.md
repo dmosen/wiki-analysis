@@ -1,5 +1,5 @@
-Wiki-Analysis
-=============
+## Introducing Wiki-Analysis
+
 As Wikipedia provides much information on almost every topic and uses different means of 
 structuring its information it can be used as a basis to create taxonomies. Wiki-Analysis 
 is a tool which helps to build such taxonomies based on the Wikipedia category graph.
@@ -9,11 +9,14 @@ The process of bulding taxonomies with Wiki-Analysis is essentially done in two 
 * Secondly, the extracted graph is reduced by repeatedly removing categories until a 
 satisfying result is reached.
 
-Running Wiki-Analysis
-=====================
+## Running Wiki-Analysis
+
 Recommended prerequisites:
 * JDK 6 or higher
-* Eclipse IDE with Maven and Git integration (The version for Java developers should be fine.)
+* Eclipse IDE 
+    * Tested with Eclipse 4.3 for Java developers
+    * Maven (included in Eclipse for Java developers)
+    * Optional Git (included in Eclipse for Java developers)
 
 To run Wiki-Analysis import the three projects (common, jgralab, wiki-analysis) contained in 
 this repository (git://github.com/dmosen/wiki-analysis.git) into Eclipse and execute 
