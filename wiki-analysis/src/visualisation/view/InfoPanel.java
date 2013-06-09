@@ -51,8 +51,8 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 	private JLabel lblHighlightingValue2;
 	private JLabel lblHighlightingValue3;
 	private JLabel lblHighlightingValue4;
-	private JList<String> pagesList;
-	private JList<String> parentsList;
+	private JList pagesList;
+	private JList parentsList;
 	private JLabel lblSelectedNodeValue;
 	private JButton btnEditComment;
 	private JLabel lblCategoriesOverallValue;
@@ -255,7 +255,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		JScrollPane scrollPane_1 = new JScrollPane();
 		add(scrollPane_1, "2, 36, 7, 1, fill, fill");
 
-		parentsList = new JList<String>();
+		parentsList = new JList();
 		parentsList.setFont(new Font("Dialog", Font.PLAIN, 12));
 		scrollPane_1.setViewportView(parentsList);
 
@@ -266,7 +266,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "2, 40, 7, 1, fill, fill");
 
-		pagesList = new JList<String>();
+		pagesList = new JList();
 		pagesList.setFont(new Font("Dialog", Font.PLAIN, 12));
 		scrollPane.setViewportView(pagesList);
 
@@ -329,8 +329,8 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		lblSubcategoriesValue.setText("");
 		lblSubcategoriesTransitiveValue.setText("");
 		lblParentCategoriesValue.setText("");
-		pagesList.setModel(new DefaultListModel<String>());
-		parentsList.setModel(new DefaultListModel<String>());
+		pagesList.setModel(new DefaultListModel());
+		parentsList.setModel(new DefaultListModel());
 		lblCommentValue.setText("");
 		btnEditComment.setEnabled(false);
 	}
