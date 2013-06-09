@@ -28,7 +28,7 @@ import com.jgoodies.forms.layout.RowSpec;
 public class ControlPanel extends JPanel {
 
 	private Controller controller;
-	private JComboBox<HighlightingMode> cbHighlightingMode;
+	private JComboBox cbHighlightingMode;
 	private JButton btnRemoveMarkedCategories;
 	
 	/**
@@ -55,7 +55,7 @@ public class ControlPanel extends JPanel {
 		lblHighlightingMode.setFont(new Font("Dialog", Font.BOLD, 12));
 		add(lblHighlightingMode, "2, 2");
 		
-		cbHighlightingMode = new JComboBox<HighlightingMode>(HighlightingMode.values());
+		cbHighlightingMode = new JComboBox(HighlightingMode.values());
 		add(cbHighlightingMode, "2, 4, fill, default");
 		
 		btnRemoveMarkedCategories = new JButton("remove marked categories");
