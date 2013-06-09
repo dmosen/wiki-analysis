@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -13,7 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
+import utils.SwingLink;
+import utils.WikipediaAPI;
 import visualisation.controller.Controller;
 import visualisation.model.CategoryTreeModel;
 import visualisation.model.CategoryTreeNode;
@@ -53,7 +58,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 	private JLabel lblHighlightingValue4;
 	private JList pagesList;
 	private JList parentsList;
-	private JLabel lblSelectedNodeValue;
+	private SwingLink lblSelectedNodeValue;
 	private JButton btnEditComment;
 	private JLabel lblCategoriesOverallValue;
 	private JLabel lblPagesOverallValue;
@@ -119,7 +124,8 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 		lblSelectedNode.setFont(new Font("Dialog", Font.BOLD, 12));
 		add(lblSelectedNode, "2, 6, 5, 1");
 
-		lblSelectedNodeValue = new JLabel("");
+		lblSelectedNodeValue = new SwingLink("",
+				WikipediaAPI.CATEGORY_URL_PREFIX);
 		lblSelectedNodeValue.setFont(new Font("Dialog", Font.PLAIN, 12));
 		add(lblSelectedNodeValue, "8, 6");
 
@@ -289,6 +295,44 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 				controller.editCommentButtonClicked(e);
 			}
 		});
+
+		pagesList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+
+				if (SwingUtilities.isRightMouseButton(e)) {
+					int location = pagesList.locationToIndex(e.getPoint());
+					if (location >= 0) {
+						Object element = pagesList.getModel().getElementAt(
+								location);
+						if (element != null) {
+							SwingLink.open(WikipediaAPI.PAGE_URL_PREFIX
+									+ element.toString());
+						}
+					}
+				}
+			}
+		});
+
+		parentsList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+
+				if (SwingUtilities.isRightMouseButton(e)) {
+					int location = parentsList.locationToIndex(e.getPoint());
+					if (location >= 0) {
+						Object element = parentsList.getModel().getElementAt(
+								location);
+						if (element != null) {
+							SwingLink.open(WikipediaAPI.CATEGORY_URL_PREFIX
+									+ element.toString());
+						}
+					}
+				}
+			}
+		});
 	}
 
 	@Override
@@ -310,7 +354,7 @@ public class InfoPanel extends JPanel implements PropertyChangeListener {
 			updateLegend();
 			clearSelectionValues();
 		}
-		
+
 		if (property.equals(Controller.commentChange)) {
 			updateComment();
 		}

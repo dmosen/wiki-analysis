@@ -22,8 +22,12 @@ import org.xml.sax.SAXException;
  */
 public class WikipediaAPI {
 
-	private final static User user = new User("", "",
-			"http://en.wikipedia.org/w/api.php");
+	public static final String URL_PREFIX = "http://en.wikipedia.org/";
+	public static final String PAGE_URL_PREFIX = URL_PREFIX + "wiki/";
+	public static final String CATEGORY_URL_PREFIX = PAGE_URL_PREFIX + "Category:";
+	public static final String API_URL = URL_PREFIX + "w/api.php";
+
+	private final static User user = new User("", "", API_URL);
 
 	private final static Connector connector = new Connector();
 

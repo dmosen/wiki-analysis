@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -17,9 +19,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import schemas.categoryschema.Category;
+import utils.SwingLink;
 import utils.WikipediaAPI;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -193,6 +197,23 @@ public class ExtractDialog extends JDialog {
 				dispose();
 			}
 		});
+
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				if (SwingUtilities.isRightMouseButton(e)) {
+					int location = list.locationToIndex(e.getPoint());
+					if (list.getModel().getSize() > 0) {
+						Object element = list.getModel().getElementAt(location);
+						if (location >= 0 && element != null) {
+							SwingLink.open(WikipediaAPI.CATEGORY_URL_PREFIX
+									+ element.toString());
+						}
+					}
+				}
+			}
+		});
 	}
 
 	private void extractGraph(boolean extractNextLevel) {
@@ -215,7 +236,9 @@ public class ExtractDialog extends JDialog {
 				answer = JOptionPane
 						.showConfirmDialog(
 								ExtractDialog.this,
-								"This will start the extraction of the whole category graph for \"http://en.wikipedia.org/wiki/"
+								"This will start the extraction of the whole category graph for \""
+										+ WikipediaAPI.CATEGORY_URL_PREFIX
+										+ ""
 										+ category
 										+ "\". This could take a lot of time. \nDo you want to continue? ",
 								"Run extraction?", JOptionPane.YES_OPTION,
