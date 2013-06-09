@@ -15,10 +15,9 @@ Recommended prerequisites:
 * JDK 6 or higher
 * Eclipse IDE 
     * Tested with Eclipse 4.3 for Java developers
-    * Maven (included in Eclipse for Java developers)
-    * Optional Git (included in Eclipse for Java developers)
+    * Maven support (included in Eclipse for Java developers)
+    * Git support (included in Eclipse for Java developers or use external client)
 
-To run Wiki-Analysis import the three projects (common, jgralab, wiki-analysis) contained in 
-this repository (git://github.com/dmosen/wiki-analysis.git) into Eclipse and execute 
+To run Wiki-Analysis, import the three projects (common, jgralab, wiki-analysis) contained in this repository (git://github.com/dmosen/wiki-analysis.git) into Eclipse and execute 
 "ApplicationView.java" contained in the project "wiki-analysis" in the package
 "visualisation.view".
