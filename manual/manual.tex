@@ -45,9 +45,10 @@
       {]}{{{\color{delim}{]}}}}{1},
 }
 
-\titlehead{University of Koblenz-Landau}
 \title{WikiTax - A tool for taxonomy extraction based on the Wikipedia Category Graph}
-\author{Dominik Mosen (dmosen@uni-koblenz.de)}
+\subtitle{Manual}
+\author{Dominik Mosen (dmosen@uni-koblenz.de)\\Software Languages Team, University of Koblenz-Landau}
+\date{19 March 2013}
 
 \begin{document}
 \maketitle
@@ -57,11 +58,12 @@
 % \end{abstract}
 
 \section{Introduction}
+
 Wikipedia - as a collaboratively created encyclopedia - uses several means to organise its information. Examples include links from articles to other related articles forming an article graph \cite{ZeschGurevych2007analysis}, stand-alone lists\footnote{\url{http://en.wikipedia.org/wiki/Wikipedia:Manual_of_Style/Stand-alone_lists}, last visit 17th April 2013} listing articles that describe a certain theme, or portals\footnote{\url{http://en.wikipedia.org/wiki/Wikipedia:Portal}, last visit 17th April 2013} which are meant to introduce users to the main topics of Wikipedia. Besides these methods, categories\footnote{\url{http://en.wikipedia.org/wiki/Wikipedia:FAQ/Categories}, last visit 17th April 2013} can be used to classify articles. Therefore, categories are defined that again contain other categories and articles thus shaping a category graph \cite{ZeschGurevych2007analysis}. 
 
-While the main purpose of the mentioned means is to provide users with additional or related information to certain topics, the given data can also be used to derive domain specific taxonomies which can be leveraged in several areas, such as in the 101companies project \cite{FavreLaemmel101}. This project provides knowledge concerning software technologies, software languages and technological spaces. As it is wiki-based and has similar requirements for structuring its information as Wikipedia, it should be examined how Wikipedia handles the problem of organising its content. In this context, Wikipedia's knowledge on computer science topics could be helpful to improve the 101companies' wiki\footnote{\url{http://101companies.org/}, last visit 17th April 2013}. At the present time, efforts are made to incorporate the Semantic MediaWiki extension\footnote{\url{http://semantic-mediawiki.org/}, last visit 17th April 2013} into the 101companies' wiki, which makes MediaWiki\footnote{\url{http://www.mediawiki.org/wiki/MediaWiki}, last visit 17th April 2013} contents computer-processable by adding semantic annotations. To develop a meaningful structure, condensed information from Wikipedia on relevant topics could serve as a starting point or reveal missing or under-represented subjects.
+While the main purpose of the mentioned means is to provide users with additional or related information to certain topics, the given data can also be used to derive domain specific taxonomies.
 
-Therefore, this paper describes the tool \emph{WikiTax}, which supports the creation of taxonomies based on the Wikipedia category graph and helps to analyse the structure of Wikipedia for desired domains. For this purpose, the structure the Wikipedia Category Graph is described in §\ref{sec:category_graph}, before §\ref{sec:wiki_tax} explains the developed tool and gives operating instructions. §\ref{sec:conclusion} summarises this paper and gives a short outlook.
+This manual describes the tool \emph{WikiTax}, which supports the creation of taxonomies based on the Wikipedia category graph and helps to analyse the structure of Wikipedia for desired domains. For this purpose, the structure the Wikipedia Category Graph is described in §\ref{sec:category_graph}, before §\ref{sec:wiki_tax} explains the developed tool and gives operating instructions. §\ref{sec:conclusion} summarises this manual and gives a short outlook.
 
 \section{The Wikipedia Category Graph}
 \label{sec:category_graph}
@@ -306,11 +308,12 @@ Listing \ref{lst:json} shows a serialised JSON graph, which consists of five ele
 
 \section{Conclusion}
 \label{sec:conclusion}
+
 The developed tool \emph{WikiTax} provides basic functions to extract parts of the Wikipedia category graph and to reduce it iteratively in order to carve out the essential structure of Wikipedia. The concepts that are required for this process are explained in an application-oriented manner.
 
 \emph{WikiTax} should be regarded as a prototypical implementation with the aim to visualise, analyse and extract relevant parts of the Wikipedia category graph. It was therefore generically designed and tested. Hence, it is essential to apply \emph{WikiTax} with a specific target in mind, rather than to perform generic tests while developing it. A need for adjustments of the highlighting modes or of the provided statistics could thus arise to improve the usability and suitability of the tool.
 
 \bibliographystyle{alpha}
-\bibliography{sources}
+\bibliography{manual}
 
 \end{document}

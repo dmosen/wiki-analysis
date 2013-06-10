@@ -9,6 +9,8 @@ The process of bulding taxonomies with Wiki-Analysis is essentially done in two 
 * Secondly, the extracted graph is reduced by repeatedly removing categories until a 
 satisfying result is reached.
 
+See the manual (subfolder manual) for details.
+
 ## Running Wiki-Analysis
 
 Recommended prerequisites:
