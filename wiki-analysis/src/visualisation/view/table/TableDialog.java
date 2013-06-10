@@ -6,8 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -141,14 +142,14 @@ public class TableDialog extends JDialog {
 			}
 			buttonPane.add(okButton, "6, 2, left, top");
 		}
-		
+
 		fc.setFileFilter(new FileFilter() {
-			
+
 			@Override
 			public String getDescription() {
 				return "CSV files";
 			}
-			
+
 			@Override
 			public boolean accept(File f) {
 				if (f.isDirectory()) {
@@ -157,7 +158,7 @@ public class TableDialog extends JDialog {
 				return f.getName().toLowerCase().endsWith(CSV_SUFFIX);
 			}
 		});
-		
+
 		addComponentListeners();
 	}
 
@@ -225,7 +226,8 @@ public class TableDialog extends JDialog {
 	}
 
 	private void writeCSVFile(File file) throws IOException {
-		BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(file), "UTF-8"));
 
 		for (int col = 0; col < table.getColumnCount(); col++) {
 			bw.write(table.getColumnName(col));
@@ -274,9 +276,9 @@ public class TableDialog extends JDialog {
 
 			int override = JOptionPane.YES_OPTION;
 			if (file.exists()) {
-				override = JOptionPane.showConfirmDialog(this, "\"" + file.getPath()
-						+ "\" already exists. Ovewrite?", "File exists",
-						JOptionPane.YES_NO_OPTION);
+				override = JOptionPane.showConfirmDialog(this,
+						"\"" + file.getPath() + "\" already exists. Overwrite?",
+						"File exists", JOptionPane.YES_NO_OPTION);
 			}
 
 			if (override == JOptionPane.YES_OPTION) {
