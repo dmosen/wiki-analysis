@@ -91,8 +91,7 @@ public class CategoryTableModel extends AbstractTableModel {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if (columnIndex == 2 && !nodes.get(rowIndex).isBackwardArc()
-				&& !nodes.get(rowIndex).isExcluded()) {
+		if (columnIndex == 2 && !nodes.get(rowIndex).isBackwardArc()) {
 			return true;
 		}
 		return false;
