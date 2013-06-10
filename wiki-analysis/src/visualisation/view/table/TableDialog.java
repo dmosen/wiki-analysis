@@ -25,6 +25,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableModel;
 import javax.swing.text.BadLocationException;
 
@@ -44,6 +45,7 @@ import com.jgoodies.forms.layout.RowSpec;
 @SuppressWarnings("serial")
 public class TableDialog extends JDialog {
 
+	private final String CSV_SUFFIX = ".csv";
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	CategoryTableModel model;
@@ -139,6 +141,23 @@ public class TableDialog extends JDialog {
 			}
 			buttonPane.add(okButton, "6, 2, left, top");
 		}
+		
+		fc.setFileFilter(new FileFilter() {
+			
+			@Override
+			public String getDescription() {
+				return "CSV files";
+			}
+			
+			@Override
+			public boolean accept(File f) {
+				if (f.isDirectory()) {
+					return true;
+				}
+				return f.getName().toLowerCase().endsWith(CSV_SUFFIX);
+			}
+		});
+		
 		addComponentListeners();
 	}
 
@@ -200,23 +219,7 @@ public class TableDialog extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int value = fc.showSaveDialog(TableDialog.this);
-
-				if (value == JFileChooser.APPROVE_OPTION) {
-					try {
-						writeCSVFile(fc.getSelectedFile());
-						JOptionPane.showMessageDialog(TableDialog.this,
-								"Saved to " + fc.getSelectedFile() + ".",
-								"Success", JOptionPane.INFORMATION_MESSAGE);
-					} catch (IOException e1) {
-						JOptionPane.showMessageDialog(
-								TableDialog.this,
-								"Error on writing to file "
-										+ fc.getSelectedFile() + ".", "Error",
-								JOptionPane.ERROR_MESSAGE);
-					}
-
-				}
+				saveCSVFile();
 			}
 		});
 	}
@@ -258,4 +261,39 @@ public class TableDialog extends JDialog {
 		return model.isBlacklistingChanged();
 	}
 
+	private void saveCSVFile() {
+		fc.setDialogTitle("Save CSV");
+		int value = fc.showSaveDialog(this);
+
+		if (value == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+
+			if (!file.getPath().toLowerCase().endsWith(CSV_SUFFIX)) {
+				file = new File(file.getPath() + CSV_SUFFIX);
+			}
+
+			int override = JOptionPane.YES_OPTION;
+			if (file.exists()) {
+				override = JOptionPane.showConfirmDialog(this, "\"" + file.getPath()
+						+ "\" already exists. Ovewrite?", "File exists",
+						JOptionPane.YES_NO_OPTION);
+			}
+
+			if (override == JOptionPane.YES_OPTION) {
+				try {
+					writeCSVFile(file);
+
+					JOptionPane.showMessageDialog(this,
+							"Saved to \"" + file.getAbsolutePath() + "\".",
+							"Success", JOptionPane.INFORMATION_MESSAGE);
+				} catch (IOException e) {
+					JOptionPane.showMessageDialog(
+							this,
+							"Error on writing to file "
+									+ file.getAbsolutePath() + ".", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+	}
 }

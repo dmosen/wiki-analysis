@@ -14,6 +14,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
 
 import schemas.categoryschema.CategoryGraph;
 import schemas.categoryschema.CategorySchema;
@@ -41,6 +42,8 @@ import de.uni_koblenz.jgralab.algolib.algorithms.AlgorithmTerminatedException;
  */
 public class ApplicationView {
 
+	private final String JSON_SUFFIX = ".json";
+	private final String WIKITAX_SUFFIX = ".wikitax";
 	private final String FILE = "data/simple_graph.tg";
 
 	private Controller controller;
@@ -48,7 +51,8 @@ public class ApplicationView {
 	private CategoryGraph graph;
 
 	private JFrame frmCategoryTreeExtraction;
-	private JFileChooser fileChooser;
+	private JFileChooser saveFileChooser;
+	private JFileChooser exportJSONFileChooser;
 
 	private JMenuItem mntmLoad;
 	private JMenuItem mntmExtract;
@@ -109,7 +113,39 @@ public class ApplicationView {
 		controller.setModel(model);
 		this.controller = controller;
 
-		fileChooser = new JFileChooser();
+		exportJSONFileChooser = new JFileChooser();
+		exportJSONFileChooser.setFileFilter(new FileFilter() {
+
+			@Override
+			public String getDescription() {
+				return "JSON files";
+			}
+
+			@Override
+			public boolean accept(File f) {
+				if (f.isDirectory()) {
+					return true;
+				}
+				return f.getName().toLowerCase().endsWith(JSON_SUFFIX);
+			}
+		});
+
+		saveFileChooser = new JFileChooser();
+		saveFileChooser.setFileFilter(new FileFilter() {
+
+			@Override
+			public String getDescription() {
+				return "Wikitax files";
+			}
+
+			@Override
+			public boolean accept(File f) {
+				if (f.isDirectory()) {
+					return true;
+				}
+				return f.getName().toLowerCase().endsWith(WIKITAX_SUFFIX);
+			}
+		});
 
 		frmCategoryTreeExtraction = new JFrame();
 		frmCategoryTreeExtraction.setTitle("WikiTax");
@@ -183,7 +219,7 @@ public class ApplicationView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				showSaveGraphDialog();
+				saveFile(saveFileChooser, WIKITAX_SUFFIX);
 			}
 		});
 
@@ -204,31 +240,7 @@ public class ApplicationView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				fileChooser.setDialogTitle("Save JSON graph");
-				int value = fileChooser
-						.showSaveDialog(frmCategoryTreeExtraction);
-
-				if (value == JFileChooser.APPROVE_OPTION) {
-					File file = fileChooser.getSelectedFile();
-
-					try {
-						WikipediaAnalysis.saveGraphAsJSON(graph, file);
-						JOptionPane.showMessageDialog(
-								frmCategoryTreeExtraction,
-								"Saved to " + file.getAbsolutePath() + ".",
-								"Success", JOptionPane.INFORMATION_MESSAGE);
-					} catch (IOException e1) {
-						JOptionPane.showMessageDialog(
-								frmCategoryTreeExtraction,
-								"Error on writing to file "
-										+ file.getAbsolutePath() + ".",
-								"Error", JOptionPane.ERROR_MESSAGE);
-					} catch (AlgorithmTerminatedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-
+				saveFile(exportJSONFileChooser, JSON_SUFFIX);
 			}
 		});
 
@@ -245,10 +257,10 @@ public class ApplicationView {
 	}
 
 	private void loadGraph() {
-		int value = fileChooser.showOpenDialog(frmCategoryTreeExtraction);
+		int value = saveFileChooser.showOpenDialog(frmCategoryTreeExtraction);
 
 		if (value == JFileChooser.APPROVE_OPTION) {
-			File file = fileChooser.getSelectedFile();
+			File file = saveFileChooser.getSelectedFile();
 
 			CategoryGraph tGraph = null;
 			try {
@@ -271,24 +283,54 @@ public class ApplicationView {
 		}
 	}
 
-	private void showSaveGraphDialog() {
+	private void saveFile(JFileChooser fileChooser, String suffix) {
 		fileChooser.setDialogTitle("Save graph");
 		int value = fileChooser.showSaveDialog(frmCategoryTreeExtraction);
 
 		if (value == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 
-			try {
-				GraphIO.saveGraphToFile(graph, file.getAbsolutePath(), null);
-				JOptionPane.showMessageDialog(frmCategoryTreeExtraction,
-						"Saved to " + file.getAbsolutePath() + ".", "Success",
-						JOptionPane.INFORMATION_MESSAGE);
-			} catch (GraphIOException e1) {
-				JOptionPane.showMessageDialog(frmCategoryTreeExtraction,
-						"Error on writing to file " + file.getAbsolutePath()
-								+ ".", "Error", JOptionPane.ERROR_MESSAGE);
+			if (!file.getPath().toLowerCase().endsWith(suffix)) {
+				file = new File(file.getPath() + suffix);
+			}
+
+			int override = JOptionPane.YES_OPTION;
+			if (file.exists()) {
+				override = JOptionPane.showConfirmDialog(
+						frmCategoryTreeExtraction, "\"" + file.getPath()
+								+ "\" already exists. Overwrite?", "File exists",
+						JOptionPane.YES_NO_OPTION);
+			}
+
+			if (override == JOptionPane.YES_OPTION) {
+				try {
+					if (suffix == WIKITAX_SUFFIX) {
+						GraphIO.saveGraphToFile(graph, file.getPath(), null);
+					} else if (suffix == JSON_SUFFIX) {
+						WikipediaAnalysis.saveGraphAsJSON(graph, file);
+					}
+					JOptionPane.showMessageDialog(frmCategoryTreeExtraction,
+							"Saved to \"" + file.getAbsolutePath() + "\".",
+							"Success", JOptionPane.INFORMATION_MESSAGE);
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(
+							frmCategoryTreeExtraction,
+							"Error on writing to file "
+									+ file.getAbsolutePath() + ".", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} catch (GraphIOException e) {
+					JOptionPane
+							.showMessageDialog(
+									frmCategoryTreeExtraction,
+									"Error on loading file "
+											+ new File(FILE).getAbsolutePath()
+											+ ".\nMake sure it is readable and has the correct format.",
+									"Error", JOptionPane.ERROR_MESSAGE);
+				} catch (AlgorithmTerminatedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}
-
 }
