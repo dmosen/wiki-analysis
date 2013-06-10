@@ -80,6 +80,8 @@ public class TreePanel extends JPanel implements PropertyChangeListener {
 						Object element = path.getLastPathComponent();
 						SwingLink.open(WikipediaAPI.CATEGORY_URL_PREFIX
 								+ element.toString());
+					} else {
+						tree.clearSelection();
 					}
 				}
 			}
