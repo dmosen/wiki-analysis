@@ -9,8 +9,9 @@ import graph.StatisticalVisitor;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import schemas.categoryschema.Category;
@@ -43,7 +44,8 @@ public class WikipediaAnalysis {
 		dfs.addVisitor(visitor);
 		dfs.execute();
 
-		BufferedWriter jsonWriter = new BufferedWriter(new FileWriter(file));
+		BufferedWriter jsonWriter = new BufferedWriter(new OutputStreamWriter(
+				new FileOutputStream(file), "UTF-8"));
 		jsonWriter.write(visitor.getJSON().toJSONString());
 		jsonWriter.close();
 	}
