@@ -51,7 +51,7 @@ public class ApplicationView {
 	private CategoryGraph graph;
 
 	private JFrame frmCategoryTreeExtraction;
-	private JFileChooser saveFileChooser;
+	private JFileChooser fileChooser;
 	private JFileChooser exportJSONFileChooser;
 
 	private JMenuItem mntmLoad;
@@ -130,8 +130,8 @@ public class ApplicationView {
 			}
 		});
 
-		saveFileChooser = new JFileChooser();
-		saveFileChooser.setFileFilter(new FileFilter() {
+		fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(new FileFilter() {
 
 			@Override
 			public String getDescription() {
@@ -219,7 +219,7 @@ public class ApplicationView {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				saveFile(saveFileChooser, WIKITAX_SUFFIX);
+				saveFile(fileChooser, WIKITAX_SUFFIX);
 			}
 		});
 
@@ -257,10 +257,11 @@ public class ApplicationView {
 	}
 
 	private void loadGraph() {
-		int value = saveFileChooser.showOpenDialog(frmCategoryTreeExtraction);
+		fileChooser.setDialogTitle("Load graph");
+		int value = fileChooser.showOpenDialog(frmCategoryTreeExtraction);
 
 		if (value == JFileChooser.APPROVE_OPTION) {
-			File file = saveFileChooser.getSelectedFile();
+			File file = fileChooser.getSelectedFile();
 
 			CategoryGraph tGraph = null;
 			try {
