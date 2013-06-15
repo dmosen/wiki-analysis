@@ -1,0 +1,16 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+\label{S:intro}
+
+Ever since 2008, the calls for papers for the \emph{Software Language Engineering} (SLE) conference\footnote{\url{http://planet-sl.org/}} have contained slightly different, more implicit or more explicit definitions of the term `software language'. Other community material contains yet other definition attempts; see, for example, the IEEE TSE special section on SLE in 2009~\cite{FavreGLW09}. At SLEBOK 2012 (i.e., an SLE 2012 satellite event dedicated to the the SL(E) body of knowledge), the attendees were also getting into the issue of what exactly a software language is and what classification may help in arriving at an acceptable, comprehensive definition.
+
+The inclusion of some major classes of languages into the universe of software language is not debated and there exist classification attempts for some of these classes. For instance, programming languages are definitely software languages; they are conceptually well understood and classifiers of programming languages or, in fact, their concepts exist in various variants and forms; see, for example, textbooks on programming languages, programming paradigms, and programming language theory such as \cite{Mosses92,Sebesta12,Pierce02,Sestoft12}. In more specific SL(E) contexts, scholarly work has addressed language classification; see, for example, classification of model transformation languages~\cite{CzarneckiH06}, business rule modeling languages~\cite{SkalnaG12}, visual languages~\cite{BottoniG04,MarriottM97,BurnettB94}, architecture description languages~\cite{MedvidovicT00}, and programming languages~\cite{BabenkoRY75,DoyleS87}.
+
+In our work on the software chrestomathy `\oneohone'~\cite{FavreLV12}\footnote{\url{http://101companies.org/}}, we attempted comprehensive classification of software languages time and again---only to learn that we cannot yet offer a strong proposal, simply because of uncertainties regarding classification style, expected level of detail, and treatment of multiple dimensions of classification. In fact, such a SL(E) classification challenge is by no means limited to software languages; it also applies to \emph{software technologies} and \emph{software concepts}. Perhaps, we may need to lower expectations and accept the use of simpler tagging schemes (as used on StackOverflow, for example) as opposed to hierarchically organized, consistent and comprehensive taxonomies.
+
+\Wikipedia{} contains substantial amounts of taxonomy-like (if not ontology-like) information---also for software languages, technologies, and concepts. Thus, we decided that the SL(E) classification challenge may need to be informed by a systematic exploration of \Wikipedia{} data. In this paper, we describe such exploration based on the \WikiTax{} tool that was developed exactly for this use case. The source code of \WikiTax, a comprehensive manual, and all data covered in this paper are available online.\footnote{\url{https://github.com/dmosen/wiki-analysis}}
+
+\paragraph*{Road-map} \S\ref{S:tool} describes the \WikiTax{} tool. \S\ref{S:study} describes a case study on \Wikipedia's computer and programming languages. \S\ref{S:concl} concludes the paper. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
