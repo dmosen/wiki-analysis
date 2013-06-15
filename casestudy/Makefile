@@ -16,7 +16,7 @@ ignore:
 clean:
 	rm -f *.aux *.pdf *.bbl *.pdf *.ps *.blg *.log *.out
 
-upload: create-webdir
+upload: all create-webdir
 	scp -r -p index.html paper.pdf ${ssh-user}:${www-dir}
 
 upload-html: create-webdir
