@@ -3,13 +3,13 @@
 \section{Explorative study}
 \label{S:study}
 
-In this study, we start from the assumed root category for software languages on \Wikipedia, i.e., \WikipediaCategory{Computer languages}. Our objective is to determine a validated category tree of actual classifiers for software languages including measures for the size of the categories.\footnote{All \Wikipedia{} access for this study was validated (again) during 7-18 June 2013 which is also when quotes were extracted from \Wikipedia, as they appear in the text of this section.}
+In this study, we examine some \Wikipedia{} categories with two objectives: a) to retrieve some candidate classifiers of an emerging taxonomy of software languages; b) to get some experience with \Wikipedia's approach to classification and related issues of style and consistency.\footnote{All \Wikipedia{} access for this study was validated (again) during 7-18 June 2013 which is also when quotes were extracted from \Wikipedia, as they appear in the text of this section.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Computer languages: levels 1 and 2}
+\paragraph*{\textbf{Designation of a root}}
 
-We begin by pointing \WikiTax{} to \WikipediaCategory{Computer languages}. \WikiTax returns with a small set of immediate subcategories; see \autoref{F:clLevel1}. The figure shows the situation in the tool's dialog past selecting level 1 categories for exclusion in the ultimate category graph. We contend that \WikipediaCategory{Lists of computer languages}, \WikipediaCategory{Articles with example code}, \WikipediaCategory{Data types}, and \WikipediaCategory{Programming language topics} are not concerned with \emph{classification} of languages, and thus, they should be excluded. Arguably, \WikipediaCategory{Data types} could be viewed as computer (or software) languages in the broadest sense, but we did not apply such a broad view.
+\Wikipedia's classification hierarchies are complex and thus, it is not straightforward to determine a root for exploration unambiguously. However, we have established by an ad-hoc search that the category \WikipediaCategory{Computer languages} may be a suitable root as its intended coverage may be similar to what the SL(E) community has in mind for the notion of software languages. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -22,6 +22,12 @@ We begin by pointing \WikiTax{} to \WikipediaCategory{Computer languages}. \Wiki
 \label{F:clLevel1}
 \vspace{-42\in}
 \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Category \WikipediaCategory{Computer languages} only has a few immediate subcategories; see \autoref{F:clLevel1}. The figure shows the situation in the \WikiTax{} dialog past selecting a few level 1 categories for exclusion. That is, \WikipediaCategory{Lists of computer languages}, \WikipediaCategory{Articles with example code}, \WikipediaCategory{Data types}, and \WikipediaCategory{Programming language topics} should be excluded because they are not directly concerned with the \emph{classification} of languages.
+
+We also observe that the category \WikipediaCategory{Programming languages} is reachable in one step from \WikipediaCategory{Computer languages} while there is another major classifier for programming languages, namely \WikipediaCategory{Programming language classification}, which would be reachable through the excluded category \WikipediaCategory{Programming language topics}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -46,7 +52,10 @@ We begin by pointing \WikiTax{} to \WikipediaCategory{Computer languages}. \Wiki
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-We decided to extract another level to obtain a graph of manageable size. Again, we excluded several categories, if they did not meet our objective of language classification. As a result, we obtained the categories shown in \autoref{F:twolevels}. This is a pretty manageable set of language classifiers. It happens that they all end on ``... languages'' except for two subcategories of \WikipediaCategory{Markup languages} which end on ``... formats''. In contrast, most of the excluded categories (see below) do not end on ``... languages'' .
+\paragraph*{\textbf{Level-by-level extraction}}
+
+We decided to extract another level to obtain a graph of manageable size. Again, we excluded several categories, if they did not meet our objective of language classification. As a result, we obtained the categories shown in \autoref{F:twolevels}. This is a pretty manageable set of language classifiers. 
+It happens that they all end on ``... languages'' except for two subcategories of \WikipediaCategory{Markup languages} which end on ``... formats''. In contrast, most of the excluded categories (see below) do not end on ``... languages'' . We take this to provide a hint at the different classification styles of \Wikipedia.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -71,38 +80,33 @@ We decided to extract another level to obtain a graph of manageable size. Again,
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Classifier classification}
+\paragraph*{\textbf{Classifier classification}}
 
-In order to obtain the reduced result of \autoref{F:twolevels}, we had to exclude 29 categories. This may seem like a small number, but it is clear that we will need to exclude much more categories once we push extraction deeper into the category tree. Thus, we embarked on the classification of reasons for exclusion so that any decision can be labeled accordingly, also suggesting a foundation for reproducing our results. We identified the following classifiers; see \autoref{F:metaclassify} for the full list of excluded categories with the associated classifier:
-
-\medskip
-
-\noindent
-\textbf{Alternative classifier}\ \ The category classifies software languages in a manner that is not related to software concepts. For instance, the category \WikipediaCategory{Academic programming languages} describes itself as being concerned with languages that are ``influential in computer science and programming language theory''.
+In order to obtain the reduced result of \autoref{F:twolevels}, we had to exclude 29 categories. This may seem like a small number, but it is clear that we will need to exclude much more categories once we push extraction deeper into the category graph. Thus, we embarked on the classification of reasons for exclusion, thereby standardizing comments for exclusion, also suggesting a foundation for reproducing our results. We identified the following classifiers; see \autoref{F:metaclassify} for the full list of excluded categories with the associated classifier:
 
 \smallskip
 
-\noindent
-\textbf{Deviating classifier}\ \ The category does not actually classify software languages. It rather classifies something else. For instance, category \WikipediaCategory{Articles with example code} describes itself as being concerned with ``articles which include reference implementations of algorithms''.
+{\small
 
-\smallskip
+\begin{description}
 
-\noindent
-\textbf{Singleton classifier}\ \ The category is effectively concerned with a single software language for which it serves as a container of related entities such as technologies or standards. For instance, category \WikipediaCategory{Cascading Style Sheets} contains pages on all kinds of topics related to the CSS language.
+\item[Alternative classifier] The category classifies software languages in a manner that is not related to software concepts. For instance, the category \WikipediaCategory{Academic programming languages} describes itself as being concerned with languages that are ``influential in computer science and programming language theory''.
 
-\smallskip
+\item[Deviating classifier] The category does not actually classify software languages. It rather classifies something else. For instance, category \WikipediaCategory{Articles with example code} describes itself as being concerned with ``articles which include reference implementations of algorithms''.
 
-\noindent
-\textbf{List classifier}\ \ The category collects lists or categories of lists (rather than plain categories) of software languages. For instance, category \WikipediaCategory{Lists of computer languages} has \WikipediaCategory{Lists of programming languages} as a subcategory, which in turn contains pages for some lists of languages, such as the \WikipediaPage{List of BASIC dialects}.
+\item[Singleton classifier] The category is effectively concerned with a single software language for which it serves as a container of related entities such as technologies or standards. For instance, category \WikipediaCategory{Cascading Style Sheets} contains pages on all kinds of topics related to the CSS language.
 
-\smallskip
+\item[List classifier] The category collects lists or categories of lists (rather than plain categories) of software languages. For instance, category \WikipediaCategory{Lists of computer languages} has \WikipediaCategory{Lists of programming languages} as a subcategory, which in turn contains pages for some lists of languages, such as the \WikipediaPage{List of BASIC dialects}.
 
-\noindent
-\textbf{Maintenance classifier}\ \ The category is used by the \Wikipedia{} authors to capture some content maintenance-related information. For instance, category \WikipediaCategory{Markup language stubs} describes itself as serving ``for stub articles relating to markup languages''.
+\item[Maintenance classifier] The category is used by the \Wikipedia{} authors to capture some information related to the maintenance of content. For instance, category \WikipediaCategory{Markup language stubs} describes itself as serving ``for stub articles relating to markup languages''.
+
+\end{description}
+
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Point-wise inquiry}
+\paragraph*{\textbf{An observation regarding \Wikipedia{} style}}
 
 At this point, exploration already had led to a manageable view on the category graph for software languages. This view is, in fact, quite effective, which we illustrate with an inquiry that suggested itself during exploration.
 
@@ -112,9 +116,9 @@ We take this sort of observation to mean that the derivation of a highly consist
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Programming languages: all levels}
+\paragraph*{\textbf{ Programming languages: all levels}}
 
-\autoref{F:metaclassify} makes it obvious that the subcategory of \WikipediaCategory{Computer languages} with by far the most subcategories is 
+\autoref{F:twolevels} makes it obvious that the subcategory of \WikipediaCategory{Computer languages} with by far the most subcategories is 
 \WikipediaCategory{Programming languages}. Thus, we embarked on a more comprehensive exploration of category \WikipediaCategory{Programming languages}:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

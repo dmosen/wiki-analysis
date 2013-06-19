@@ -5,15 +5,29 @@
 
 \paragraph*{\textbf{\Wikipedia's category graph}}
 
-\Wikipedia{} uses several means of organizing its information: plain links giving rise to an article graph, designated article lists, portals meant to introduce users to key topics, infoboxes for semantic (`typed') data, and categories giving rise to a category graph for the classification of articles. When it comes to taxonomy mining, the category graph is particularly relevant; the graph is accessible, for example, through the \MediaWiki{} API\footnote{\url{http://www.mediawiki.org/wiki/API:Main_page}}, which is the access path chosen by \WikiTax.
+\Wikipedia{} uses several means of organizing its information: plain links giving rise to an article graph, designated article lists, portals meant to introduce users to key topics, info-boxes for semantic (`typed') data, and categories giving rise to a category graph for the classification of articles. When it comes to taxonomy mining, the category graph is particularly relevant; the graph is accessible, for example, through the \MediaWiki{} API\footnote{\url{http://www.mediawiki.org/wiki/API:Main_page}}, which is the access path chosen by \WikiTax.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \paragraph*{\textbf{Graph extraction and reduction with \WikiTax}}
 
-Initially, \WikiTax{} is pointed to a root category (level 0) for extraction. Iteratively, subcategories and pages (in fact, page titles) can be extracted level by level or exhaustively. Exhaustive extraction may take minutes our hours depending the root category. The \Wikipedia{} category graph contains many surprising edges, which easily implies inclusion of large irrelevant subgraphs. 
+Initially, \WikiTax{} is pointed to a root category (level 0) for
+extraction. Iteratively, subcategories and pages (in fact, page
+titles) can be extracted level by level or exhaustively. Exhaustive
+extraction may take minutes to hours depending on the root
+category. The \Wikipedia{} category graph contains many surprising
+edges, which would easily imply inclusion of large, arguably
+irrelevant subgraphs. Thus, extraction needs to be controlled.
 
-\WikiTax{} supports reduction of the graph both along level-by-level extraction and post extraction. Reduction involves the selection of edges exclusion. If all edges to a given category are excluded, then the corresponding category node also becomes excluded. (We node that a category may have multiple parent categories.) If reduction is applied post extraction, the exclusion is actually implemented as blacklisting. In this manner, all decisions can be easily revisited and adapted.
+\WikiTax{} supports reduction of the graph---both during
+(level-by-level) extraction and post extraction. Reduction is based on
+the selection of edges for exclusion. If all edges to a given category
+are excluded, then the corresponding category node is also effectively
+excluded. (We note that a category may have multiple parent
+categories.) When reduction is performed during extraction, then the
+excluded edges (nodes) are not followed by subsequent extraction
+steps. When reduction is performed post extraction, then edges are
+only blacklisted so that all decisions can be easily revised later.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -29,8 +43,18 @@ Initially, \WikiTax{} is pointed to a root category (level 0) for extraction. It
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\autoref{F:clLevel12} shows the \WikiTax{} exploration view in the following state.
-Two levels (level 1 and 2) were extracted starting from the category \Wikipedia{Computer languages}. (That is, we are about to hit the `removal/blacklist' button.) Some edges are already selected for exclusion. In \S\ref{S:study}, we discuss reasons for exclusion systematically, but it suffices here to say that the selected categories are not proper language classifiers. The categories are highlighted according to the metrics of immediate member pages. We have selected the category \WikipediaCategory{Articles with example code} for which some extra data is shown in the panel on the right. All categories and pages are clickable to navigate to \Wikipedia.
+\autoref{F:clLevel12} shows the \WikiTax{} exploration view after the
+extraction of two levels (level 1 and 2) starting from the category
+\WikipediaCategory{Computer languages}. Some edges are selected for
+exclusion. (Exclusion happens upon pushing the
+`removal/blacklist' button.)  In \S\ref{S:study}, we discuss reasons
+for exclusion systematically, but it suffices here to say that the
+selected categories are not proper language classifiers in a certain
+narrow sense. Highlighting is applied to the categories according to
+the metric of immediate member pages. We have selected the category
+\WikipediaCategory{Articles with example code} for which some extra
+data is shown in the panel on the right. All categories and pages are
+clickable to navigate to \Wikipedia.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -54,7 +78,7 @@ Two levels (level 1 and 2) were extracted starting from the category \Wikipedia{
 \item[backwardArc] Marker for cyclic edges in the category graph.
 \item[blacklisted] Marker for categories blacklisted past extraction.
 \item[excluded] Marker for categories excluded during reduction.
-\item[comment] Label to be associated with the edge.
+\item[comment] Label (`reason for exclusion') to be associated with the edge.
 \end{description}
 
 }
@@ -81,6 +105,9 @@ Categories are associated with measures as follows:
 \vspace{-22\in}
 
 \noindent
-Internally, \WikiTax{} uses the Java-based JGraLab library\footnote{\url{https://github.com/jgralab}} for the representation of (annotated) graphs with JSON as an export format. (Labels are also exposed as CSV.)
+Internally, \WikiTax{} uses the Java-based JGraLab
+library\footnote{\url{https://github.com/jgralab}} for the
+representation of (annotated) graphs with JSON as an export
+format.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
