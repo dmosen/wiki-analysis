@@ -1,4 +1,4 @@
-\documentclass[a4paper,runningheads]{myllncs}
+\documentclass[a4paper,runningheads]{llncs}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -67,11 +67,11 @@
       {]}{{{\color{delim}{]}}}}{1},
 }
 
-\author{Ralf L\"ammel \and Dominik Mosen and Andrei Varanovich}
+\author{Ralf L\"ammel \and Dominik Mosen \and Andrei Varanovich}
 \institute{University of Koblenz-Landau, Software Languages Team}
-\title{Exploration of Wikipedia's categories for software languages
-  with \WikiTax}
-\subtitle{Tool demonstration}
+%\title{Exploration of Wikipedia's categories for software languages with \WikiTax}
+\title{Method and tool support for classifying software languages with \Wikipedia}
+%\subtitle{Tool demonstration}
 
 \begin{document}
 
@@ -81,22 +81,21 @@
 
   \Wikipedia{} provides useful input for efforts on mining taxonomies
   or ontologies in specific domains. In particular, \Wikipedia's
-  category construct expresses classification. In this paper, we
-  describe a workflow and corresponding tool support for exploring
-  \Wikipedia's category graph with the objective of better
-  understanding a possible classification of software languages. The
-  \WikiTax{} tool supports exploration of \Wikipedia's category graph
-  in an interactive manner such that it is rendered in a tree-like
-  manner, irrelevant edges and nodes may be excluded, comments on the
-  corresponding judgmental decisions may be added, and visualization
-  based on graph-based metrics is provided.
-
+  categories serve classification. In this paper, we describe a
+  method and a corresponding tool, \WikiTax, for exploring
+  \Wikipedia's category graph with the objective of supporting the
+  development of a classification of software languages. The category
+  graph is extracted level by level. The extracted graph is visualized
+  in a tree-like manner. Category attributes (i.e., metrics) such as
+  depth are visualized. Irrelevant edges and nodes may be
+  excluded. These exclusions are documented while using a manageable
+  and well-defined set of `exclusion types' as comments.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \input{intro}
-\input{tool}
+\input{approach}
 \input{study}
 \input{concl}
 

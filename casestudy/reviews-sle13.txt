@@ -1,0 +1,221 @@
+From: SLE 2013 <sle2013@easychair.org>
+Date: Sat, Aug 3, 2013 at 1:20 AM
+Subject: SLE 2013 notification for paper 65
+To: Ralf Laemmel <rlaemmel@gmail.com>
+
+
+Dear author(s),
+
+We are pleased to inform you that your submission
+
+Tool demonstration: Exploration of Wikipedia's categories for software languages with WikiTax
+
+to SLE 2013 has been accepted as a tools paper.
+
+SLE 2013 received a total of 56 submissions. We accepted 17 out of 51 research
+papers (for an acceptance rate of 33%) plus 2 tool demonstrations.
+
+The reviews of your submission are included below. Please take this feedback
+into account when preparing both your final version and your presentation for
+the conference. Your presentation will be allocated fifteen minutes in the
+program, including time for questions. You will also have the opportunity to
+demonstrate your tool during a poster session.
+
+Your paper will be included in the proceedings to be distributed to conference
+attendees at the conference. Unlike past years, this year SLE will be
+preparing Springer LNCS proceedings *before* the conference. Therefore, note
+carefully that our camera ready paper is due on
+
+        16 August 2013  (5pm, BST)
+
+This is a firm deadline for the production of the proceedings.
+
+FINAL PROCEEDINGS PAPER: Please submit the files belonging to your
+camera-ready paper using your EasyChair author account. Follow the
+instructions after the login for uploading three files:
+
+        (a) a zipped file containing all your LaTeX sources, and
+        (b) PDF version of your camera-ready paper, and
+        (c) a signed copyright form (if you have not done so already)
+
+The page limit, as given in the call for papers, is strict. For your
+paper, the page limit is 10. Please follow strictly the author instructions
+of Springer-Verlag when preparing the final version:
+
+        http://www.springer.de/comp/lncs/authors.html
+
+When filling out the copyright form, please use the following proceeding
+information:
+
+        Title: 6th International Conference on Software Language Engineering
+        Editors: Martin Erwig, Richard F. Paige and Eric van Wyk
+
+Congratulations again, and we look forward to seeing you at the conference in
+Indianapolis in October.
+
+Regards,
+Martin Erwig
+Richard Paige
+SLE 2013 PC Chairs
+
+
+----------------------- REVIEW 1 ---------------------
+
+PAPER: 65
+TITLE: Tool demonstration: Exploration of Wikipedia's categories for software languages with WikiTax
+AUTHORS: Ralf Laemmel, Dominik Mosen and Andrei Varanovich
+
+----------- REVIEW -----------
+
+Summary:
+
+This paper presents a tool for exploring the Wikipedia's category
+graph. The main objective of this tool is to construct interactively
+a taxonomy of software languages based on Wikipedia categories.
+
+Review:
+
+The authors mainly discuss about the tool design and the techniques
+for interactive graph reduction. These techniques rely on classifiers
+and metrics-based highlighting. Such techniques are general enough to
+be used in another application domain but the paper focuses on the
+study of software languages' categories. In this context, the authors
+give general remarks but unfortunately do not provide a detailed
+assessment of this taxonomy. For example, how do these results compare
+with what was previously done by the authors in the context of the 101
+companies project?
+
+Several simple tools were previously proposed to browse categories in
+the ToolServer project (e.g., CatSan, catanalyzer, categorycount) and
+some of them should be soon migrated in the Wikimedia Labs. How does
+WikiTax compare to them?  Do the authors plan to integrate WikiTax in
+Tool Labs? It seems that the proposed tool could be useful in a more
+general setting for helping people to improve category classification.
+In particular, it could be interesting to provide refactoring features
+for exploring and assessing new category graphs.
+
+Detailed comments:
+
+- The authors provide interactive graph reduction based on textual
+  representation of the categories. How about having visual
+  representation? In particular, it could be useful to enrich this
+  visual representation with the corresponding set
+  of pages, showing overlap between categories.
+
+- May other metrics be chosen for highlighting (e.g., more complex
+  formulae based on the measures given page 4)?  As a page is
+  generally associated to several language categories, it could also be
+  interesting to study distance formulae. Indeed the intersection of
+  pages between categories can give feedback about conceptual
+  conflicts in the organization of the categories.
+
+- In Figure 4, it seems that the graph is of depth 2, resulting in
+  very large categories that do not really help for constructing a
+  hierarchical taxonomy. In particular, the programming languages
+  category is very large with both feature/paradigm-based
+  classification and application-based classification. How could this
+  be reflected in the taxonomy? Similarly, the DSL category is very
+  fuzzy and could be identified as an alternative classifier.
+
+- In Figure 5, there is a category named "uncategorized" that has been
+  identified as a maintenance classifier. What is the content of this
+  category? Can it help to identify some missing categories?
+
+- How to take into account the changes related to a category and its
+  subcategories? For example, when creating a new language page,
+  consistence rules could be encoded (feature modeling?) to help the
+  author to provide the proper set of language categories.
+
+- In the conclusion, as this work is preliminary, the authors should
+  clearly indicate the next steps for both the tool development and
+  the building of the software language taxonomy.
+
+
+----------------------- REVIEW 2 ---------------------
+PAPER: 65
+TITLE: Tool demonstration: Exploration of Wikipedia's categories for software languages with WikiTax
+AUTHORS: Ralf Laemmel, Dominik Mosen and Andrei Varanovich
+
+
+----------- REVIEW -----------
+
+This paper presents the results of experimenting with a tool, WikiTax,
+which can explore semantic information inside Wikipedia. The tools was
+used with the goal of extracting taxonomical information relevant to
+the SLE community.
+
+I found the paper interesting to read, although it presents no clear
+conclusions or results. Also, the precise goal is not quite clear. The
+paper is more like a report of what the authors did. But I found it
+sufficiently interesting to keep reading until the end.
+
+The WikiTax tool itself seems to be rather unrelated to SLE, since it
+is a generic tool to visualize and extract taxonomic information
+within Wikipedia. Only the particular usage scenario that the authors
+have choosen to work on is related to SLE. It is hence not entirely
+clear whether the tool is suitable for an SLE tool demonstration.
+
+One maybe obvious but for me important question whose answer I missed
+in the paper is this: Why do we need a taxonomy for SLE? Do other
+related research fields have such taxonomies? If yes, what is the
+value of these taxonomies for these fields, and how were they
+generated? If no, why should we care?
+
+
+----------------------- REVIEW 3 ---------------------
+PAPER: 65
+TITLE: Tool demonstration: Exploration of Wikipedia's categories for software languages with WikiTax
+AUTHORS: Ralf Laemmel, Dominik Mosen and Andrei Varanovich
+
+
+----------- REVIEW -----------
+
+This tool demo paper introduces WikiTax, which is a tool for
+extracting taxonomy descriptions that are a part of topics covered in
+WikiPedia. The tool automates the extraction of categories and allows
+the user to exclude categories that can affect further exploration
+into subcategories. In addition to the WikiTax tool itself, the paper
+applies the tool to the topic of software languages to make a
+contribution through the analysis of the current state of Wikipedia on
+this topic of software language categorization. The authors note a
+benefit in using WikiTax to observe the taxonomies for software
+languages, compared to doing the derivation manually.
+
+It seems that the ability to do the exclusions requires deep domain
+knowledge (e.g., knowing why to exclude 29 categories in one step of
+the paper). It would seem that WikiTax would be very useful to also
+explore unknown areas, but the knowledge needed to do the exclusions
+would be limited. I am just wondering if this issue can be improved
+somehow to allow more general usage of the tool so that non-experts
+can also explore some taxonomy. In the third paragraph of the
+conclusion, it seems like the authors are arguing against such
+automation, but it seems a bit limiting of the potential (many would
+likely want to explore category spaces to which they may not have deep
+domain knowledge).
+
+It seems that the majority of the manual work was 2 hours of checking
+exclusion assumptions. What about this process is just an accidental
+complexity, versus true complexity of the process? Can any of this be
+automated further?
+
+In Figure 1, the contrast is poor. The dark background with dark text
+for some of the blues and reds makes it very challenging to read
+
+Minor comments on grammar or other typographical comments:
+
+Author line: “Ralf and Dominik and Andrei” to “Ralf, Dominik, and Andrei”
+
+Page 1:
+“[3,12,4]” to “[3,4,12]”
+
+Page 2:
+“shall be informed” to “can be informed”
+Perhaps use “Section” instead of symbols at end of section 1.
+
+Page 4:
+“as its intended” to “as it’s intended”
+
+Page 9:
+“see, e.g., tools” to “see tools”
+
+
