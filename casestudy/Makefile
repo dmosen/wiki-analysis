@@ -27,5 +27,8 @@ upload: all create-webdir
 upload-html: create-webdir
 	scp -r -p index.html ${ssh-user}:${www-dir}
 
+upload-slides: create-webdir
+	scp -r -p slides.pdf ${ssh-user}:${www-dir}
+
 create-webdir:
 	ssh ${ssh-user} mkdir -p ${www-dir}
